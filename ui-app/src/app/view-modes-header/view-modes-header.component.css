@@ -1,0 +1,9 @@
+.vertical-header {
+  width: 50px;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  position: absolute;
+  background-color: purple;
+  displaY: inline-block;
+}
