@@ -1,0 +1,7 @@
+{
+    // Wrapping columns.
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 89,
+    // Use indentation settings.
+    "editor.detectIndentation": false
+}

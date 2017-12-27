@@ -1,0 +1,34 @@
+{
+  "name": "pm-server",
+  "version": "0.0.1",
+  "description": "Project Management Server Application",
+  "main": "./dist/server-app.js",
+  "scripts": {
+    "test": "",
+    "build-app": "d:\\Projects\\ProjectManagement\\server-app\\node_modules\\.bin\\tsc.cmd -p \"d:\\Projects\\ProjectManagement\\server-app\\tsconfig.json\"",
+    "start": "node ./dist/server-app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miroslavlabs/ProjectManagement.git"
+  },
+  "keywords": [
+    "project",
+    "management"
+  ],
+  "author": "Yordanka Ivanova and Miroslav Shtarbev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miroslavlabs/ProjectManagement/issues"
+  },
+  "homepage": "https://github.com/miroslavlabs/ProjectManagement#readme",
+  "dependencies": {
+    "@types/node": "^8.5.2",
+    "body-parser": "^1.18.2",
+    "express-server": "^0.7.0",
+    "http-server": "^0.10.0",
+    "neo4j-driver": "^1.5.1",
+    "ts-node": "^4.1.0",
+    "typescript": "^2.6.2"
+  }
+}
