@@ -1,9 +1,35 @@
-.vertical-header {
+header {
     width: 50px;
     height: 100vh;
     top: 0;
     left: 0;
     position: absolute;
-    background-color: purple;
-    displaY: inline-block;
+    border-right: 2px solid hsl(174, 100%, 29%);
+    display: inline-block;
+    background-color: #fff;
+
+    nav {
+        margin-top: 60px;
+        .arrow {
+            font-size: 20px;
+            padding: 18px;
+            color: #009688;
+        }
+
+        a {
+            display: block;
+            padding: 12px;
+            font-size: 21px;
+
+            &:last-child {
+                border-bottom: 1px solid #009688;
+            }
+        }
+    }
+
+    div {
+        font-size: 24px;
+        color: #009688;
+        padding: 14px;
+    }
 }

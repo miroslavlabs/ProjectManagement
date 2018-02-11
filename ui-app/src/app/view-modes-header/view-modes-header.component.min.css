@@ -1,1 +1,1 @@
-.vertical-header{width:50px;height:100vh;top:0;left:0;position:absolute;background-color:purple;displaY:inline-block}
+header{width:50px;height:100vh;top:0;left:0;position:absolute;border-right:2px solid #009485;display:inline-block;background-color:#fff}header nav{margin-top:60px}header nav .arrow{font-size:20px;padding:18px;color:#009688}header nav a{display:block;padding:12px;font-size:21px}header nav a:last-child{border-bottom:1px solid #009688}header div{font-size:24px;color:#009688;padding:14px}

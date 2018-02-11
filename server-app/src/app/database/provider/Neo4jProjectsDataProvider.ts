@@ -1,7 +1,7 @@
 import { Session, Transaction, Record, Node } from 'neo4j-driver/types/v1';
-import { Neo4jDriver } from './Neo4jDriver';
+import { Neo4jDriver } from '../core/Neo4jDriver';
 import { Neo4jBaseDataProvider } from './Neo4jBaseDataProvider';
-import { Project } from '../components/Project';
+import { Project } from 'pm-shared-components';
 
 /**
  * This class retrives and maintains information on projects from the Neo4j database.
@@ -25,28 +25,32 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
             `MATCH (${this.PROJECT_CYPHER_VARIABLE}:Project) 
             RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
 
-        super.executeQuery(
+        super.executeReadQuery(
             getAllProjectsQuery,
+            {} /*parameters*/,
             this.createRecordToProjectCallbackInterceptor(successCallback),
             errorCallback);
     }
 
     /**
      * Acquire data about a project, given the ID of the project data Node.
-     * @param projectId The ID of the Node which contains the requested project data.
+     * @param projectIdParam The ID of the Node which contains the requested project data.
      * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
      * @param errorCallback This callback is invoked with an error should the data retrieval fail.
      */
     public getProject(
-        projectId: number,
+        projectIdParam: number,
         successCallback: (result: Project[]) => void,
         errorCallback: (result: Error) => void): void {
 
         let getProjectQuery =
-            `MATCH (project:Project) WHERE ID(project)=${projectId} RETURN project`;
+            `MATCH (${this.PROJECT_CYPHER_VARIABLE}:Project)
+            WHERE ID(${this.PROJECT_CYPHER_VARIABLE})=$projectId
+            RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
 
-        super.executeQuery(
+        super.executeReadQuery(
             getProjectQuery,
+            { projectId: projectIdParam },
             this.createRecordToProjectCallbackInterceptor(successCallback),
             errorCallback);
     }
@@ -64,13 +68,14 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
 
         let createProjectQuery =
             `CREATE (${this.PROJECT_CYPHER_VARIABLE}:Project {
-                title:"${project.title}",
-                shortDescription:"${project.shortDescription}",
-                fullDescription:"${project.fullDescription}"})
+                title:$title,
+                shortDescription:$shortDescription,
+                fullDescription:$fullDescription})
             RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
 
-        super.executeQuery(
+        super.executeWriteQuery(
             createProjectQuery,
+            project,
             this.createRecordToProjectCallbackInterceptor(successCallback),
             errorCallback);
     }

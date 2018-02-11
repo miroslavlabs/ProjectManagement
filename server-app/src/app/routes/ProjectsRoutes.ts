@@ -2,7 +2,7 @@ import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import { Neo4jDriver, Neo4jConnector, Neo4jProjectsDataProvider } from '../database/';
 import { Record } from 'neo4j-driver/types/v1';
-import { Project } from "../components/Project";
+import { Project } from "pm-shared-components";
 
 /**
  * This class provides methods which define the different REST endpoint functions for 
@@ -46,7 +46,7 @@ class ProjectsRoutes {
     private getProject(): (req: Request, res: Response, next: NextFunction) => void {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProivder.getProject(
-                req.params["id"],
+                +req.params["id"],
                 (projects: Project[]) => {
                     res.send(projects[0]);
                     next();

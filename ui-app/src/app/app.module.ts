@@ -1,22 +1,22 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule }   from '@angular/forms';
 
 
-import { ProjectComponent } from './projects-page/projects-page.component';
-import { MenuComponent } from './main-menu-header/main-menu-header.component';
-import { ViewModesComponent } from './view-modes-header/view-modes-header.component';
+import { MainMenuModule } from './main-menu-header/main-menu-header.module';
+import { ViewModesModule } from './view-modes-header/view-modes-header.module';
+import { AppComponent } from './app.component';
 
 
 @NgModule({
-  declarations: [
-    ProjectComponent,
-    MenuComponent,
-    ViewModesComponent
-  ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule, 
+    MainMenuModule,
+    ViewModesModule
   ],
+  declarations: [ AppComponent ],
   providers: [],
-  bootstrap: [ProjectComponent, MenuComponent, ViewModesComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

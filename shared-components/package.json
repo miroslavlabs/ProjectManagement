@@ -1,0 +1,26 @@
+{
+  "name": "pm-shared-components",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Contains shared components between the UI and the back-end.",
+  "main": "index.js",
+  "scripts": {
+    "test": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miroslavlabs/ProjectManagement.git"
+  },
+  "keywords": [
+    "project",
+    "management",
+    "shaared",
+    "components"
+  ],
+  "author": "Yordanka Ivanova and Miroslav Shtarbev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/miroslavlabs/ProjectManagement/issues"
+  },
+  "homepage": "https://github.com/miroslavlabs/ProjectManagement#readme"
+}

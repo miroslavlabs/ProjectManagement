@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 
+import * as $ from "jquery";
+
 @Component({
-  selector: 'projects-page',
+  selector: 'projects',
   templateUrl: './projects-page.component.html',
   styleUrls: ['./projects-page.component.scss']
 })
@@ -9,7 +11,7 @@ export class ProjectComponent {
   projects = [
       {
         id: 1,
-        projectName: 'My new project',
+        projectName: 'My new',
         shortProjDesc: 'My new project is very flexible, callaborative and easy to manage.'
       },
       {
@@ -24,4 +26,7 @@ export class ProjectComponent {
       }
     ];
 
+    onClick() {
+      $('project-details-form').css('display', 'block');
+    }
 }
