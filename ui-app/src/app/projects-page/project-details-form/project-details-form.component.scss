@@ -27,11 +27,32 @@
             }
         }
 
+        .tools-bar {
+            border-bottom: 2px solid #009485;
+            width: 80%;
+            height: 39px;
+        }
+
+        .rel-container {
+            position: relative;
+
+            .view-bar {
+                border-right: 2px solid #009485;
+                width: 20%;
+                height: 100%;
+                position: absolute;
+            }
+        }
+
         form {
-            padding: 20px;
+            margin-left: 60px;
 
             .form-group {
                 padding: 10px;
+
+                &:first-child {
+                    padding-right: 0;
+                }
 
                 label {
                     display: block;
@@ -44,8 +65,23 @@
                 }
 
                 input {
-                    border: none;
+                    height: 24px;
+                    width: 100%;
+                    border: 2px solid #eae3e3;
+                    padding-left: 10px;
                 }
+
+                #project-title {
+                    width: 95.2%;
+                }
+            }
+
+            .submit-project-btn {
+                background: #009688;
+                border-radius: 7px;
+                border-color: #009688;
+                height: 30px;
+                color: #fff;
             }
         }
     }

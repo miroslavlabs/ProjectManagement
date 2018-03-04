@@ -1,15 +1,16 @@
 <!--Template for projects page.-->
 <div class="projects-container">
-    <div *ngFor = "let project of projects" class="project-container" (click)="onClick()">
+    <div *ngFor = "let project of projects" class="project-container" (click)="onClick(project.id)">
         <div class="project-details">
-            <a class ="project-name">{{ project.projectName }}</a>
+            <a class ="project-name">{{ project.title }}</a>
             <div class ="project-id">{{ project.id }}</div>
-            <div class ="project-short-desc">{{ project.shortProjDesc }}</div>
+            <div class ="project-short-desc">{{ project.shortDescription }}</div>
         </div>
         <div class = "progress-bar">
             <div class="current-progress-segment"></div>
         </div>
     </div>
 </div>
-<project-details-form></project-details-form>
+<project-details-form [projectId]="selectedProjectId" (projectChange)="onProjectChange($event)">
+</project-details-form>
   

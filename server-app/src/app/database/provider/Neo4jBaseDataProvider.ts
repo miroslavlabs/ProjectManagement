@@ -25,17 +25,22 @@ abstract class Neo4jBaseDataProvider {
         errorCallback: (result: Error) => void): void {
 
         let session: Session = this.driver.session;
-        let records: Record[] = null;
         let writeTxPromise =
             session.readTransaction(tx => tx.run(query, parameters));
 
         writeTxPromise
             .then((result) => {
-                successCallback(result.records);
+                if (result.records.length == 0) {
+                    errorCallback(new Error(`Could not find projects.`));
+                } else {
+                    successCallback(result.records);
+                }
+
                 this.driver.closeSession(session);
             })
-            .catch((error) => {
+            .catch((error: Error) => {
                 errorCallback(error);
+                this.driver.closeSession(session);
             });
     }
 
@@ -66,6 +71,7 @@ abstract class Neo4jBaseDataProvider {
             })
             .catch((error) => {
                 errorCallback(error);
+                this.driver.closeSession(session);
             });
     }
 }

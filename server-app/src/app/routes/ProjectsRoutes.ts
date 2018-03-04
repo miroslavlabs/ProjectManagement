@@ -9,10 +9,10 @@ import { Project } from "pm-shared-components";
  * performing CRUD opertations on the projects' data.
  */
 class ProjectsRoutes {
-    private neo4jProjectsDataProivder: Neo4jProjectsDataProvider;
+    private neo4jProjectsDataProvider: Neo4jProjectsDataProvider;
 
     constructor(private neo4jDriver: Neo4jDriver) {
-        this.neo4jProjectsDataProivder = new Neo4jProjectsDataProvider(neo4jDriver);
+        this.neo4jProjectsDataProvider = new Neo4jProjectsDataProvider(neo4jDriver);
     }
 
     /**
@@ -23,7 +23,8 @@ class ProjectsRoutes {
 
         router.get('/', this.getAllProjects());
         router.post('/', this.createProject());
-
+        router.put('/', this.updateProject());
+        
         router.get('/:id', this.getProject());
 
         return router;
@@ -31,7 +32,7 @@ class ProjectsRoutes {
 
     private getAllProjects(): (req: Request, res: Response, next: NextFunction) => void {
         return (req: Request, res: Response, next: NextFunction) => {
-            this.neo4jProjectsDataProivder.getAllProjects(
+            this.neo4jProjectsDataProvider.getAllProjects(
                 (projects: Project[]) => {
                     res.send(projects);
                     next();
@@ -45,7 +46,7 @@ class ProjectsRoutes {
 
     private getProject(): (req: Request, res: Response, next: NextFunction) => void {
         return (req: Request, res: Response, next: NextFunction) => {
-            this.neo4jProjectsDataProivder.getProject(
+            this.neo4jProjectsDataProvider.getProject(
                 +req.params["id"],
                 (projects: Project[]) => {
                     res.send(projects[0]);
@@ -60,7 +61,22 @@ class ProjectsRoutes {
 
     private createProject(): (req: Request, res: Response, next: NextFunction) => void {
         return (req: Request, res: Response, next: NextFunction) => {
-            this.neo4jProjectsDataProivder.createProject(
+            this.neo4jProjectsDataProvider.createProject(
+                req.body,
+                (projects: Project[]) => {
+                    res.send(projects[0]);
+                    next();
+                },
+                (error: Error) => {
+                    res.send(error);
+                    next();
+                });
+        }
+    }
+
+    private updateProject(): (req: Request, res: Response, next: NextFunction) => void {
+        return (req: Request, res: Response, next: NextFunction) => {
+            this.neo4jProjectsDataProvider.updateProject(
                 req.body,
                 (projects: Project[]) => {
                     res.send(projects[0]);

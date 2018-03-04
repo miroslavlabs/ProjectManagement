@@ -80,6 +80,15 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
             errorCallback);
     }
 
+    //FIXME inplement, add jsdoc
+    public updateProject(
+        project: Project,
+        successCallback: (result: Project[]) => void,
+        errorCallback: (result: Error) => void): void {
+        
+        successCallback([project]);
+    }
+
     private createRecordToProjectCallbackInterceptor(
         interceptedCallback: (result: Project[]) => void): (result: Record[]) => void {
         return (result: Record[]) => {
@@ -97,12 +106,11 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
         let projectNode: Node =
             record.get(this.PROJECT_CYPHER_VARIABLE);
 
-        let project = new Project(
-            projectNode.properties["title"],
-            projectNode.properties["fullDescription"],
-            projectNode.properties["shortDescription"],
-            projectNode.identity.toNumber()
-        );
+        let project = new Project();
+        project.id = projectNode.identity.toNumber();
+        project.title = projectNode.properties["title"];
+        project.shortDescription = projectNode.properties["shortDescription"];
+        project.fullDescription = projectNode.properties["fullDescription"];
 
         return project;
     }

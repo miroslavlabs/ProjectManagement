@@ -28,11 +28,15 @@
   "dependencies": {
     "@types/node": "^8.5.8",
     "body-parser": "^1.18.2",
+    "cors": "^2.8.4",
     "express-server": "^0.7.0",
     "http-server": "^0.10.0",
     "neo4j-driver": "^1.5.2",
     "pm-shared-components": "file:../shared-components",
     "ts-node": "^4.1.0",
     "typescript": "^2.6.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.3"
   }
 }
