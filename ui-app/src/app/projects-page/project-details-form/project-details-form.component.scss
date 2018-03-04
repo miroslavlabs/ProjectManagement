@@ -36,6 +36,17 @@
             }
         }
 
+        .edit-message {
+            position: absolute;
+            width: 200px;
+            height: 50px;
+            z-index: 1;
+            border: 1px solid #009688;
+            margin-left: 714px;
+            margin-top: 15px;
+            background: #fff;
+        }
+
         .details-control-cont {
             position: relative;
 
@@ -97,6 +108,17 @@
                         #project-title {
                             width: 94.7%;
                         }
+                    }
+
+                    .project-form-actions {
+                        display: none;
+                        border: 1px solid #009485;
+                        border-radius: 7px;
+                        padding: 7px;
+                        font-size: 15px;
+                        background: #fff;
+                        color: #009485;
+                        margin: 10px;
                     }
                 }
             }

@@ -9,7 +9,7 @@ import { ProjectDetailsComponent } from './project-details-form.component';
         FormsModule,
         BrowserModule],
     declarations: [ProjectDetailsComponent],
-    providers: [],
+    providers: [ ],
     exports: [ProjectDetailsComponent]
 })
 export class ProjectDetailsModule { }

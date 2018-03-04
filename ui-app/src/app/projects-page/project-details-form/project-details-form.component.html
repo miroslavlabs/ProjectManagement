@@ -5,6 +5,8 @@
             <div class="close-dialog-btn cursor-pointer" (click)="closePopUp()"><i class="fa fa-times"></i></div>       
         </div>
         <div class="details-control-cont">
+            <div *ngIf="showMessage" class="edit-message">
+            </div>
             <div>
                 <div class="view-bar">
                     <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-info" title="Project information"></i></div>
@@ -16,11 +18,11 @@
             <div class="rel-container">
                 <div class="tools-bar">
                     <div class="tools-btn display-inline cursor-pointer"><i class="fa fa-redo-alt" title="Refresh"></i></div>
-                    <div class="tools-btn display-inline cursor-pointer"><i class="fa fa-edit" title="Edit project"></i></div>
+                    <div class="tools-btn display-inline cursor-pointer" (click)="showSubmitNCancelButtons()"><i class="fa fa-edit" title="Edit project"></i></div>
                     <div class="tools-btn display-inline cursor-pointer"><i class="fa fa-arrows-alt" title="Open in full screen"></i></div>
                     <div class="tools-btn display-inline cursor-pointer"><i class="fa fa-trash" title="Delete project"></i></div>
                 </div>
-                <form #projectDetailsForm="ngForm" (ngSubmit)="onSubmit(projectDetailsForm)">
+                <form #projectDetailsForm="ngForm">
                     <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" id="project-title" placeholder="" required 
@@ -35,6 +37,16 @@
                         <label for="full-description">Full Description</label>
                         <input type="text" class="form-control" id="full-description"
                         [(ngModel)]="project.fullDescription" value="{{project.fullDescription}}" name = "fullDescription">
+                    </div>
+                    <div>
+                        <button type="submit" class="project-form-actions cursor-pointer" (click)="onSubmit(projectDetailsForm)">
+                            <i class="fas fa-check"></i>
+                            Submit
+                        </button>
+                        <button type="button" class="project-form-actions cursor-pointer" (click)="hideSubmitNCancelButtons()">
+                            <i class="far fa-times-circle"></i>
+                            Cancel
+                        </button>
                     </div>
                 </form>
             </div>

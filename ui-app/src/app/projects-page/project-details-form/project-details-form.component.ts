@@ -18,6 +18,8 @@ import * as $ from "jquery";
 export class ProjectDetailsComponent implements OnChanges {
     @Input() projectId: number;
     @Output() projectChange = new EventEmitter<Project>();
+    showMessage: boolean = false;
+
     project = new Project();
 
     constructor(private projectDataService: ProjectDataService) {
@@ -49,7 +51,12 @@ export class ProjectDetailsComponent implements OnChanges {
             next: (projectData: Project) => this.projectChange.emit(projectData),
             error: (error) => { console.log(error); }, // TODO - show error message in form
             complete: () => {
-                $('.project-details-form').css('display', 'none');
+                this.showMessage = true;
+                this.hideSubmitNCancelButtons();
+                setTimeout(function(){
+                    this.showMessage = false;
+                    debugger;
+                }, 1000);
                 projectUpdateSubscription.unsubscribe();
             }
         });
@@ -57,5 +64,15 @@ export class ProjectDetailsComponent implements OnChanges {
 
     closePopUp() {
         $('project-details-form').css('display', 'none');
+    }
+
+    hideSubmitNCancelButtons() {
+        $('.fa-edit').css('opacity','1');
+        $('.project-form-actions').css('display','none');
+    }
+
+    showSubmitNCancelButtons() {
+        $('.fa-edit').css('opacity','0.3');
+        $('.project-form-actions').css('display','inline-block');
     }
 } 
