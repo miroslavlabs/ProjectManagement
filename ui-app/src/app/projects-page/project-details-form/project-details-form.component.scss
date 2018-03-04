@@ -17,71 +17,88 @@
         width: 70%;
 
         .title {
-            width: 98%;
+            width: 100%;
             background-color: #009688;
-            padding: 15px 10px;
+            padding: 15px 0px;
         
             h3 {
                 color: #fff;
-                margin: 0;
+                margin: 0px 0px 0px 10px;
+                display: inline-block;
+            }
+
+            .close-dialog-btn {
+                color: #fff;
+                font-size: 20px;
+                float: right;
+                padding-right: 15px;
+                display: inline-block;
             }
         }
 
-        .tools-bar {
-            border-bottom: 2px solid #009485;
-            width: 80%;
-            height: 39px;
-        }
-
-        .rel-container {
+        .details-control-cont {
             position: relative;
+
+            .tools-btn {
+                color: #009688;
+                padding: 13px;
+                text-align: center;
+
+                i {
+                    font-size: 24px;
+                }
+            }
 
             .view-bar {
                 border-right: 2px solid #009485;
-                width: 20%;
                 height: 100%;
                 position: absolute;
             }
-        }
 
-        form {
-            margin-left: 60px;
+            .rel-container {
+                position: relative;
+                width: 92%;
+                margin-left: 66px;
 
-            .form-group {
-                padding: 10px;
-
-                &:first-child {
-                    padding-right: 0;
-                }
-
-                label {
-                    display: block;
-                    padding-bottom: 5px;   
-                }
-
-                [for="title"] {
-                    display: inline-block;
-                    padding-right: 10px;
-                }
-
-                input {
-                    height: 24px;
+                .tools-bar {
+                    border-bottom: 2px solid #009485;
                     width: 100%;
-                    border: 2px solid #eae3e3;
-                    padding-left: 10px;
+                    height: 39px;
                 }
 
-                #project-title {
-                    width: 95.2%;
+                form {
+                    padding-top: 15px;
+                    width: 97%;
+        
+                    .form-group {
+                        padding: 10px;
+        
+                        &:first-child {
+                            padding-right: 0;
+                        }
+        
+                        label {
+                            display: block;
+                            padding-bottom: 5px;   
+                        }
+        
+                        [for="title"] {
+                            display: inline-block;
+                            padding-right: 10px;
+                        }
+        
+                        input {
+                            height: 24px;
+                            width: 100%;
+                            border: 2px solid #eae3e3;
+                            padding-left: 10px;
+                        }
+        
+                        #project-title {
+                            width: 94.7%;
+                        }
+                    }
                 }
-            }
-
-            .submit-project-btn {
-                background: #009688;
-                border-radius: 7px;
-                border-color: #009688;
-                height: 30px;
-                color: #fff;
             }
         }
     }
