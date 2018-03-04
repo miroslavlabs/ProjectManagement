@@ -5,7 +5,7 @@ import { Neo4jDriver, Neo4jDriverImpl } from './Neo4jDriver';
 /**
  * This class manages the connection to the Neo4j database.
  */
-class Neo4jConnector {
+export class Neo4jConnector {
     private driver: Driver;
     private driverWrapper: Neo4jDriver;
 
@@ -32,5 +32,3 @@ class Neo4jConnector {
         }
     }
 }
-
-export { Neo4jConnector };

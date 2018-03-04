@@ -8,7 +8,7 @@ import { Project } from "pm-shared-components";
  * This class provides methods which define the different REST endpoint functions for 
  * performing CRUD opertations on the projects' data.
  */
-class ProjectsRoutes {
+export class ProjectsRoutes {
     private neo4jProjectsDataProvider: Neo4jProjectsDataProvider;
 
     constructor(private neo4jDriver: Neo4jDriver) {
@@ -23,7 +23,7 @@ class ProjectsRoutes {
 
         router.get('/', this.getAllProjects());
         router.post('/', this.createProject());
-        router.put('/', this.updateProject());
+        router.put('/:id', this.updateProject());
         
         router.get('/:id', this.getProject());
 
@@ -77,6 +77,7 @@ class ProjectsRoutes {
     private updateProject(): (req: Request, res: Response, next: NextFunction) => void {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProvider.updateProject(
+                +req.params["id"],
                 req.body,
                 (projects: Project[]) => {
                     res.send(projects[0]);
@@ -89,5 +90,3 @@ class ProjectsRoutes {
         }
     }
 }
-
-export { ProjectsRoutes };

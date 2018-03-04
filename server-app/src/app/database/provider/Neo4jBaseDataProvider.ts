@@ -5,7 +5,7 @@ import { Neo4jDriver } from '../core/Neo4jDriver';
  * This a superclass to all subclasses which will access the data sored in the 
  * Neo4j database.
  */
-abstract class Neo4jBaseDataProvider {
+export abstract class Neo4jBaseDataProvider {
     constructor(protected driver: Neo4jDriver) {
     }
 
@@ -75,5 +75,3 @@ abstract class Neo4jBaseDataProvider {
             });
     }
 }
-
-export { Neo4jBaseDataProvider };

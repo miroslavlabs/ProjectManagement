@@ -6,7 +6,7 @@ import { Project } from 'pm-shared-components';
 /**
  * This class retrives and maintains information on projects from the Neo4j database.
  */
-class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
+export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
     private readonly PROJECT_CYPHER_VARIABLE = "project";
     constructor(driver: Neo4jDriver) {
         super(driver);
@@ -14,6 +14,7 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
 
     /**
      * The method retrieves information on all of the projects' data stored in the database.
+     * 
      * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
      * @param errorCallback This callback is invoked with an error should the data retrieval fail.
      */
@@ -34,6 +35,7 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
 
     /**
      * Acquire data about a project, given the ID of the project data Node.
+     * 
      * @param projectIdParam The ID of the Node which contains the requested project data.
      * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
      * @param errorCallback This callback is invoked with an error should the data retrieval fail.
@@ -57,6 +59,7 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
 
     /**
      * Create a project Node in the database.
+     * 
      * @param project The project object to be stored in the database.
      * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
      * @param errorCallback This callback is invoked with an error should the data retrieval fail.
@@ -80,13 +83,39 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
             errorCallback);
     }
 
-    //FIXME inplement, add jsdoc
+    /**
+     * Updates the project Node data in the database. The {@link Project.id} property will not be used. Instead, the projectIdParam will be used to determine the node ID.
+     * 
+     * @param projectIdParam The ID of the project Node that will be updated.
+     * @param project The project properties to be stored.
+     * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
+     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
+     */
     public updateProject(
+        projectIdParam: number,
         project: Project,
         successCallback: (result: Project[]) => void,
         errorCallback: (result: Error) => void): void {
-        
-        successCallback([project]);
+
+        let updateProjectQuery =
+            `MATCH (${this.PROJECT_CYPHER_VARIABLE}:Project)
+            WHERE ID(${this.PROJECT_CYPHER_VARIABLE})=$projectId
+            WITH ${this.PROJECT_CYPHER_VARIABLE}
+            SET ${this.PROJECT_CYPHER_VARIABLE}=$projectProperties
+            RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
+
+        delete project.id;
+
+        let updateProjectQueryProperties = {
+            projectProperties: project,
+            projectId: projectIdParam
+        };
+
+        super.executeWriteQuery(
+            updateProjectQuery,
+            updateProjectQueryProperties,
+            this.createRecordToProjectCallbackInterceptor(successCallback),
+            errorCallback);
     }
 
     private createRecordToProjectCallbackInterceptor(
@@ -115,5 +144,3 @@ class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
         return project;
     }
 }
-
-export { Neo4jProjectsDataProvider };
