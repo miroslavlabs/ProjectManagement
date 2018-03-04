@@ -14,7 +14,7 @@ export class Neo4jConnector {
      */
     connect(): Neo4jDriver {
         if (!this.driver) {
-            this.driver = Neo4j.driver('bolt://localhost:7687');
+            this.driver = Neo4j.driver('bolt://192.168.0.104:7687');
             this.driverWrapper = new Neo4jDriverImpl(this.driver);
         }
 

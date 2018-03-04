@@ -49,9 +49,13 @@ export class ProjectDetailsComponent implements OnChanges {
             next: (projectData: Project) => this.projectChange.emit(projectData),
             error: (error) => { console.log(error); }, // TODO - show error message in form
             complete: () => {
-                $('project-details-form').css('display', 'none');
+                $('.project-details-form').css('display', 'none');
                 projectUpdateSubscription.unsubscribe();
             }
         });
+    }
+
+    closePopUp() {
+        $('project-details-form').css('display', 'none');
     }
 } 
