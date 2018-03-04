@@ -1,6 +1,6 @@
 import { Neo4jConnector } from "../database";
 
-function setupCleanup(server: any, neo4jConnector: Neo4jConnector) {
+export function setupCleanup(server: any, neo4jConnector: Neo4jConnector) {
     process.on('exit', function () {
         close(server, neo4jConnector);
         console.log('exit: Disconnected from the Neo4j database.');
@@ -41,5 +41,3 @@ function close(server: any, neo4jConnector: Neo4jConnector): void {
         process.exit(0)
     }, 5 * 1000);
 }
-
-export { setupCleanup };

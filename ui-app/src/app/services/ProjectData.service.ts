@@ -24,14 +24,14 @@ export class ProjectDataService {
         return this.httpClient.get<Project[]>(url);
     }
 
-    public getProject(id: number): Observable<Project> {
-        let url = this.createUrlForProjectEndpoint(id);
+    public getProject(projectId: number): Observable<Project> {
+        let url = this.createUrlForProjectEndpoint(projectId);
 
         return this.httpClient.get<Project>(url);
     }
 
-    public updateProject(project: Project): Observable<Project> {
-        let url = this.createUrlForProjectEndpoint();
+    public updateProject(projectId: number, project: Project): Observable<Project> {
+        let url = this.createUrlForProjectEndpoint(projectId);
 
         let httpResponse = 
             this.httpClient.put<Project>(

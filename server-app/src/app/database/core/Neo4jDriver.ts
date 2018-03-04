@@ -20,5 +20,4 @@ class Neo4jDriverImpl implements Neo4jDriver {
     }
 }
 
-export { Neo4jDriver };
-export { Neo4jDriverImpl };
+export { Neo4jDriver, Neo4jDriverImpl };

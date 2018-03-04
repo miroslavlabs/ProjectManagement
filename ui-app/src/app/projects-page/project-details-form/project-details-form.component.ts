@@ -43,7 +43,7 @@ export class ProjectDetailsComponent implements OnChanges {
 
     onSubmit(form: NgForm) {
         let updatedProjectObservable: Observable<Project> =
-            this.projectDataService.updateProject(this.project);
+            this.projectDataService.updateProject(this.projectId, this.project);
 
         let projectUpdateSubscription: Subscription = updatedProjectObservable.subscribe({
             next: (projectData: Project) => this.projectChange.emit(projectData),
