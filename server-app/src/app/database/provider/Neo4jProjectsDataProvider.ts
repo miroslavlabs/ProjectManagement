@@ -70,11 +70,13 @@ export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
         errorCallback: (result: Error) => void): void {
 
         let createProjectQuery =
-            `CREATE (${this.PROJECT_CYPHER_VARIABLE}:Project {
-                title:$title,
-                shortDescription:$shortDescription,
-                fullDescription:$fullDescription})
+            `CREATE (${this.PROJECT_CYPHER_VARIABLE}:Project $projectProperties)
             RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
+
+        delete project.id;
+        let createProjectQueryProperties = {
+            projectProperties: project
+        };
 
         super.executeWriteQuery(
             createProjectQuery,
@@ -105,7 +107,6 @@ export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
             RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
 
         delete project.id;
-
         let updateProjectQueryProperties = {
             projectProperties: project,
             projectId: projectIdParam
