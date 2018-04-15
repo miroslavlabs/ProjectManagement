@@ -1,5 +1,4 @@
-header {
-  width: 50px;
+#views-header {
   height: 100vh;
   top: 0;
   left: 0;
@@ -9,28 +8,36 @@ header {
   background-color: #fff;
 }
 
-header nav {
+#views-header nav {
   margin-top: 60px;
 }
 
-header nav .arrow {
+#views-header nav .arrow {
   font-size: 20px;
   padding: 18px;
   color: #009688;
 }
 
-header nav a {
+#views-header nav a {
   display: block;
   padding: 12px;
   font-size: 21px;
 }
 
-header nav a:last-child {
+#views-header nav a:last-child {
   border-bottom: 1px solid #009688;
 }
 
-header div {
+#views-header div {
   font-size: 24px;
   color: #009688;
   padding: 14px;
+}
+
+.normal-views-header {
+  width: 50px;
+}
+
+.expanded-views-header {
+  width: 125px;
 }

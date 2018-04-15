@@ -12,10 +12,11 @@
 
 .form-container .form-content {
   background-color: #fefefe;
-  margin: 5% auto;
+  margin: 2% auto;
   font-size: 18px;
+  height: 90%;
   border: 1px solid #888;
-  width: 70%;
+  width: 85%;
 }
 
 .form-container .form-content .title {
@@ -24,7 +25,7 @@
   padding: 15px 0px;
 }
 
-.form-container .form-content .title h3 {
+.form-container .form-content .title h4 {
   color: #fff;
   margin: 0px 0px 0px 10px;
   display: inline-block;
@@ -38,19 +39,11 @@
   display: inline-block;
 }
 
-.form-container .form-content .edit-message {
-  position: absolute;
-  width: 200px;
-  height: 50px;
-  z-index: 1;
-  border: 1px solid #009688;
-  margin-left: 714px;
-  margin-top: 15px;
-  background: #fff;
-}
-
 .form-container .form-content .details-control-cont {
   position: relative;
+  height: 90%;
+  overflow: scroll;
+  overflow-x: initial;
 }
 
 .form-container .form-content .details-control-cont .tools-btn {
@@ -77,21 +70,17 @@
 
 .form-container .form-content .details-control-cont .rel-container .tools-bar {
   border-bottom: 2px solid #009485;
-  width: 100%;
+  width: 94%;
   height: 39px;
 }
 
 .form-container .form-content .details-control-cont .rel-container form {
   padding-top: 15px;
-  width: 97%;
+  width: 94%;
 }
 
 .form-container .form-content .details-control-cont .rel-container form .form-group {
-  padding: 10px;
-}
-
-.form-container .form-content .details-control-cont .rel-container form .form-group:first-child {
-  padding-right: 0;
+  padding-top: 15px;
 }
 
 .form-container .form-content .details-control-cont .rel-container form .form-group label {
@@ -107,21 +96,36 @@
 .form-container .form-content .details-control-cont .rel-container form .form-group input {
   height: 24px;
   width: 100%;
-  border: 2px solid #eae3e3;
+  border: none;
   padding-left: 10px;
 }
 
-.form-container .form-content .details-control-cont .rel-container form .form-group #project-title {
-  width: 94.7%;
+.form-container .form-content .details-control-cont .rel-container form .form-group .input-border {
+  border: 2px solid #eae3e3;
 }
 
-.form-container .form-content .details-control-cont .rel-container form .project-form-actions {
+.form-container .form-content .details-control-cont .rel-container form .form-group #project-title {
+  width: 100%;
+}
+
+.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed {
   display: none;
+  border-top: 2px solid #009485;
+  margin-top: 14px;
+  width: 105%;
+}
+
+.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed .project-form-actions {
   border: 1px solid #009485;
   border-radius: 7px;
   padding: 7px;
   font-size: 15px;
   background: #fff;
   color: #009485;
-  margin: 10px;
+  margin: 10px 10px 20px 10px;
+}
+
+.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed .project-form-actions:hover {
+  background: #009485;
+  color: #fff;
 }

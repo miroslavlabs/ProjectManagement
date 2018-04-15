@@ -1,5 +1,4 @@
-header {
-    width: 50px;
+#views-header {
     height: 100vh;
     top: 0;
     left: 0;
@@ -15,7 +14,6 @@ header {
             padding: 18px;
             color: #009688;
         }
-
         a {
             display: block;
             padding: 12px;
@@ -32,4 +30,12 @@ header {
         color: #009688;
         padding: 14px;
     }
+}
+
+.normal-views-header {
+    width: 50px;
+}
+
+.expanded-views-header {
+    width: 125px;
 }
