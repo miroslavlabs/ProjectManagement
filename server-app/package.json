@@ -32,7 +32,6 @@
     "express-server": "^0.7.0",
     "http-server": "^0.10.0",
     "neo4j-driver": "^1.5.3",
-    "pm-shared-components": "file:../shared-components",
     "ts-node": "^4.1.0",
     "typescript": "^2.6.2"
   },

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import { Neo4jDriver, Neo4jConnector, Neo4jProjectsDataProvider } from '../database/';
 import { Record } from 'neo4j-driver/types/v1';
-import { Project } from "pm-shared-components";
+import { Project } from '../model/Project';
 
 /**
  * This class provides methods which define the different REST endpoint functions for 

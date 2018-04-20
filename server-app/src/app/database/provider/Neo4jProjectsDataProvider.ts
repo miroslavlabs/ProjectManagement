@@ -1,15 +1,20 @@
 import { Session, Transaction, Record, Node } from 'neo4j-driver/types/v1';
 import { Neo4jDriver } from '../core/Neo4jDriver';
-import { Neo4jBaseDataProvider } from './Neo4jBaseDataProvider';
-import { Project } from 'pm-shared-components';
+import { Neo4jDataReader } from '../data/Neo4jDataReader';
+import { Neo4jRecordToObjectTypeConverter } from '../data/Neo4jRecordToObjectTypeConverter'
+import { Project } from '../../model/Project';
+
+const PROJECT_CYPHER_VARIABLE: string = "project";
 
 /**
- * This class retrives and maintains information on projects from the Neo4j database.
+ * This class retrives/modifies information on projects from a Neo4j database.
  */
-export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
-    private readonly PROJECT_CYPHER_VARIABLE = "project";
+export class Neo4jProjectsDataProvider {
+    private dataReader: Neo4jDataReader<Project>;
+
     constructor(driver: Neo4jDriver) {
-        super(driver);
+        this.dataReader = 
+            new Neo4jDataReader<Project>(driver, new Neo4jRecordToProjectConverter());
     }
 
     /**
@@ -23,13 +28,13 @@ export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
         errorCallback: (result: Error) => void): void {
 
         let getAllProjectsQuery =
-            `MATCH (${this.PROJECT_CYPHER_VARIABLE}:Project) 
-            RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
+            `MATCH (${PROJECT_CYPHER_VARIABLE}:Project) 
+            RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
-        super.executeReadQuery(
+        this.dataReader.read(
             getAllProjectsQuery,
             {} /*parameters*/,
-            this.createRecordToProjectCallbackInterceptor(successCallback),
+            successCallback,
             errorCallback);
     }
 
@@ -46,14 +51,14 @@ export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
         errorCallback: (result: Error) => void): void {
 
         let getProjectQuery =
-            `MATCH (${this.PROJECT_CYPHER_VARIABLE}:Project)
-            WHERE ID(${this.PROJECT_CYPHER_VARIABLE})=$projectId
-            RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
+            `MATCH (${PROJECT_CYPHER_VARIABLE}:Project)
+            WHERE ID(${PROJECT_CYPHER_VARIABLE})=$projectId
+            RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
-        super.executeReadQuery(
+        this.dataReader.read(
             getProjectQuery,
             { projectId: projectIdParam },
-            this.createRecordToProjectCallbackInterceptor(successCallback),
+            successCallback,
             errorCallback);
     }
 
@@ -70,18 +75,22 @@ export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
         errorCallback: (result: Error) => void): void {
 
         let createProjectQuery =
-            `CREATE (${this.PROJECT_CYPHER_VARIABLE}:Project $projectProperties)
-            RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
+            `CREATE (${PROJECT_CYPHER_VARIABLE}:Project $projectProperties),
+            (backlog: Backlog),
+            (archive: Archive),
+            (${PROJECT_CYPHER_VARIABLE})-[:HAS_BACKLOG]->(backlog),
+            (${PROJECT_CYPHER_VARIABLE})-[:HAS_ARCHIVE]->(archive)
+            RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
         delete project.id;
         let createProjectQueryProperties = {
             projectProperties: project
         };
 
-        super.executeWriteQuery(
+        this.dataReader.write(
             createProjectQuery,
-            project,
-            this.createRecordToProjectCallbackInterceptor(successCallback),
+            createProjectQueryProperties,
+            successCallback,
             errorCallback);
     }
 
@@ -100,11 +109,11 @@ export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
         errorCallback: (result: Error) => void): void {
 
         let updateProjectQuery =
-            `MATCH (${this.PROJECT_CYPHER_VARIABLE}:Project)
-            WHERE ID(${this.PROJECT_CYPHER_VARIABLE})=$projectId
-            WITH ${this.PROJECT_CYPHER_VARIABLE}
-            SET ${this.PROJECT_CYPHER_VARIABLE}=$projectProperties
-            RETURN ${this.PROJECT_CYPHER_VARIABLE}`;
+            `MATCH (${PROJECT_CYPHER_VARIABLE}:Project)
+            WHERE ID(${PROJECT_CYPHER_VARIABLE})=$projectId
+            WITH ${PROJECT_CYPHER_VARIABLE}
+            SET ${PROJECT_CYPHER_VARIABLE}=$projectProperties
+            RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
         delete project.id;
         let updateProjectQueryProperties = {
@@ -112,29 +121,19 @@ export class Neo4jProjectsDataProvider extends Neo4jBaseDataProvider {
             projectId: projectIdParam
         };
 
-        super.executeWriteQuery(
+        this.dataReader.write(
             updateProjectQuery,
             updateProjectQueryProperties,
-            this.createRecordToProjectCallbackInterceptor(successCallback),
+            successCallback,
             errorCallback);
     }
+}
 
-    private createRecordToProjectCallbackInterceptor(
-        interceptedCallback: (result: Project[]) => void): (result: Record[]) => void {
-        return (result: Record[]) => {
-            let projects: Project[] = new Array<Project>();
-
-            for (let i: number = 0; i < result.length; i++) {
-                projects.push(this.convertRecordToProject(result[i]));
-            }
-
-            interceptedCallback(projects);
-        };
-    }
-
-    private convertRecordToProject(record: Record): Project {
+class Neo4jRecordToProjectConverter implements Neo4jRecordToObjectTypeConverter<Project> {
+    
+    public convertRecord(record : Record): Project {
         let projectNode: Node =
-            record.get(this.PROJECT_CYPHER_VARIABLE);
+            record.get(PROJECT_CYPHER_VARIABLE);
 
         let project = new Project();
         project.id = projectNode.identity.toNumber();
