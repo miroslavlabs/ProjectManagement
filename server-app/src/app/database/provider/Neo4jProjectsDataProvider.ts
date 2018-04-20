@@ -13,7 +13,7 @@ export class Neo4jProjectsDataProvider {
     private dataReader: Neo4jDataReader<Project>;
 
     constructor(driver: Neo4jDriver) {
-        this.dataReader = 
+        this.dataReader =
             new Neo4jDataReader<Project>(driver, new Neo4jRecordToProjectConverter());
     }
 
@@ -83,6 +83,8 @@ export class Neo4jProjectsDataProvider {
             RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
         delete project.id;
+        project.createdDateTimestamp = new Date().getTime();
+
         let createProjectQueryProperties = {
             projectProperties: project
         };
@@ -130,16 +132,16 @@ export class Neo4jProjectsDataProvider {
 }
 
 class Neo4jRecordToProjectConverter implements Neo4jRecordToObjectTypeConverter<Project> {
-    
-    public convertRecord(record : Record): Project {
+
+    public convertRecord(record: Record): Project {
         let projectNode: Node =
             record.get(PROJECT_CYPHER_VARIABLE);
 
         let project = new Project();
         project.id = projectNode.identity.toNumber();
         project.title = projectNode.properties["title"];
-        project.shortDescription = projectNode.properties["shortDescription"];
         project.fullDescription = projectNode.properties["fullDescription"];
+        project.createdDateTimestamp = projectNode.properties["createdDateTimestamp"];
 
         return project;
     }

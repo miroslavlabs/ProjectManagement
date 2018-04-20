@@ -2,11 +2,11 @@ import { Priority } from "../model/Priority";
 
 export class Story {
     id?: number;
+    createdDateTimestamp: number;
     title: string;
     description: string;
-    creationDate: Date;
-    startDate: Date;
-    completionDate: Date;
+    startDateTimestamp: number;
+    completionDateTimestamp: number;
     estimatedTime: number;
     remainingTime: number;
     actualTime: number;

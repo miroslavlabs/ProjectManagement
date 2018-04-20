@@ -1,6 +1,6 @@
 export class Project {
     id?: number;
+    createdDateTimestamp: number;
     title: string;
-    shortDescription: string;
     fullDescription: string;
 }
