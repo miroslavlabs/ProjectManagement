@@ -1,4 +1,5 @@
 export class Board {
-    id?: number;
-    name: string;
+    id?: number = undefined;
+    name: string = undefined;
+    createdDateTimestamp: number = undefined;
 }

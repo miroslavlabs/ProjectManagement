@@ -1,14 +1,14 @@
 import { Priority } from "../model/Priority";
 
 export class Story {
-    id?: number;
-    createdDateTimestamp: number;
-    title: string;
-    description: string;
-    startDateTimestamp: number;
-    completionDateTimestamp: number;
-    estimatedTime: number;
-    remainingTime: number;
-    actualTime: number;
-    priority: Priority;
+    id?: number = undefined;
+    createdDateTimestamp: number = undefined;
+    title: string = undefined;
+    description: string = undefined;
+    startDateTimestamp: number = undefined;
+    completionDateTimestamp: number = undefined;
+    estimatedTime: number = undefined;
+    remainingTime: number = undefined;
+    actualTime: number = undefined;
+    priority: Priority = undefined;
 }

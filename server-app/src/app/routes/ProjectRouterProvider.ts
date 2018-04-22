@@ -1,14 +1,18 @@
 import { Router } from "express";
 import { Request, Response, NextFunction } from "express";
 import { Neo4jDriver, Neo4jConnector, Neo4jProjectsDataProvider } from '../database/';
+
+import { EntityRouterProvider } from './EntityRouterProvider';
 import { Record } from 'neo4j-driver/types/v1';
-import { Project } from '../model/Project';
+import { Project } from '../model';
+
+var config = require('../../resources/server-config');
 
 /**
  * This class provides methods which define the different REST endpoint functions for 
  * performing CRUD opertations on the projects' data.
  */
-export class ProjectsRoutes {
+export class ProjectRouterProvider implements EntityRouterProvider {
     private neo4jProjectsDataProvider: Neo4jProjectsDataProvider;
 
     constructor(private neo4jDriver: Neo4jDriver) {
@@ -18,19 +22,19 @@ export class ProjectsRoutes {
     /**
      * Creates the routes for the Project REST ednpoints.
      */
-    public createProjectRoutes(): Router {
+    public getRouter(): Router {
         let router = Router();
 
-        router.get('/', this.getAllProjects());
-        router.post('/', this.createProject());
-        router.put('/:id', this.updateProject());
-        
-        router.get('/:id', this.getProject());
+        let projectEndpoint = config.routes.project;
+        router.get(`${projectEndpoint}/`, this.getAllProjects());
+        router.post(`${projectEndpoint}/`, this.createProject());
+        router.put(`${projectEndpoint}/:id`, this.updateProject());
+        router.get(`${projectEndpoint}/:id`, this.getProject());
 
         return router;
     }
 
-    private getAllProjects(): (req: Request, res: Response, next: NextFunction) => void {
+    private getAllProjects() {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProvider.getAllProjects(
                 (projects: Project[]) => {
@@ -44,7 +48,7 @@ export class ProjectsRoutes {
         }
     }
 
-    private getProject(): (req: Request, res: Response, next: NextFunction) => void {
+    private getProject() {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProvider.getProject(
                 +req.params["id"],
@@ -59,7 +63,7 @@ export class ProjectsRoutes {
         }
     }
 
-    private createProject(): (req: Request, res: Response, next: NextFunction) => void {
+    private createProject() {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProvider.createProject(
                 req.body,
@@ -74,7 +78,7 @@ export class ProjectsRoutes {
         }
     }
 
-    private updateProject(): (req: Request, res: Response, next: NextFunction) => void {
+    private updateProject() {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProvider.updateProject(
                 +req.params["id"],

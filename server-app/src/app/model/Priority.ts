@@ -1,4 +1,4 @@
 export class Priority {
-    id?: number;
-    value: string;
+    id?: number = undefined;
+    value: string = undefined;
 }
