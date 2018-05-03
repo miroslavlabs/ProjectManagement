@@ -1,4 +1,3 @@
-import { Session, Transaction, Record, Node } from 'neo4j-driver/types/v1';
 import { Neo4jDriver } from '../core/Neo4jDriver';
 import { Neo4jDataReader } from "../data/Neo4jDataReader";
 import { Neo4jRecordToObjectTypeConverter } from '../data/Neo4jRecordToObjectTypeConverter'
@@ -85,8 +84,7 @@ export class Neo4jBoardsDataProvider {
             `OPTIONAL MATCH (project:Project)
             WHERE ID(project)=$projectId
             WITH project
-            CREATE (${BOARD_CYPHER_VARIABLE}:Board $boardProperties),
-            (project)-[:HAS_BOARD]->(${BOARD_CYPHER_VARIABLE})
+            CREATE (project)-[:HAS_BOARD]->(${BOARD_CYPHER_VARIABLE}:Board $boardProperties)
             RETURN ${BOARD_CYPHER_VARIABLE}`
 
         delete board.id;
