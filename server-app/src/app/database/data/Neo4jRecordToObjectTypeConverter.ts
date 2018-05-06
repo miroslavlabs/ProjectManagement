@@ -22,6 +22,10 @@ export class Neo4jRecordToObjectTypeConverter<T> {
         let typeProperties = Object.getOwnPropertyNames(objectOfType);
         typeProperties.forEach(propertyName => {
             let retrievedNode: Node = record.get(this.nodeName);
+
+            if (retrievedNode == null) {
+                return null;
+            }
             
             if (propertyName == "id") {
                 objectOfType[propertyName] = retrievedNode.identity.toNumber();

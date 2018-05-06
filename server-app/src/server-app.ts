@@ -7,6 +7,7 @@ import { Request, Response } from 'express';
 import { Neo4jConnector } from './app/database';
 import { CompositeRouterProvider } from './app/routes';
 import { setupCleanup } from './app/util/CleanupUtil';
+import { Objects } from './app/util/Objects';
 
 var config = require('./resources/server-config');
 
@@ -18,10 +19,12 @@ let neo4jDriver = neo4jConnector.connect();
 let routerProvider = new CompositeRouterProvider(neo4jDriver);
 
 app.use(cors(config.server.conf.cors));
-app.use(bodyParser())
+app.use(bodyParser.json());
 
 // All Endpoints
 app.use(routerProvider.getRouter());
+
+Objects.addProrortypesToExistingObjects();
 
 let server = app.listen(httpPort, () => console.log(`Listening on port ${httpPort} for requests.`));
 setupCleanup(server, neo4jConnector);

@@ -1,7 +1,8 @@
 export = {
     routes: {
         project: "/api/v1/project",
-        board: "/api/v1/board"
+        board: "/api/v1/board",
+        state: "/api/v1/state"
     },
     server: {
         conf: {
