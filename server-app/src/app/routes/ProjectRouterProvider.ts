@@ -5,6 +5,7 @@ import { Neo4jDriver, Neo4jConnector, Neo4jProjectsDataProvider } from '../datab
 import { EntityRouterProvider } from './EntityRouterProvider';
 import { Record } from 'neo4j-driver/types/v1';
 import { Project } from '../model';
+import { CallbackUtil } from "../util/CallbackUtil";
 
 var config = require('../../resources/server-config');
 
@@ -37,14 +38,8 @@ export class ProjectRouterProvider implements EntityRouterProvider {
     private getAllProjects() {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProvider.getAllProjects(
-                (projects: Project[]) => {
-                    res.send(projects);
-                    next();
-                },
-                (error: Error) => {
-                    res.send(error);
-                    next();
-                });
+                CallbackUtil.simpleRestSuccessCallback<Project[]>(res, next),
+                CallbackUtil.simpleRestErrorCallback(res, next));
         }
     }
 
@@ -52,14 +47,8 @@ export class ProjectRouterProvider implements EntityRouterProvider {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProvider.getProject(
                 +req.params["id"],
-                (projects: Project[]) => {
-                    res.send(projects[0]);
-                    next();
-                },
-                (error: Error) => {
-                    res.send(error);
-                    next();
-                });
+                CallbackUtil.simpleRestSuccessCallback<Project[]>(res, next),
+                CallbackUtil.simpleRestErrorCallback(res, next));
         }
     }
 
@@ -67,14 +56,8 @@ export class ProjectRouterProvider implements EntityRouterProvider {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jProjectsDataProvider.createProject(
                 req.body,
-                (projects: Project[]) => {
-                    res.send(projects[0]);
-                    next();
-                },
-                (error: Error) => {
-                    res.send(error);
-                    next();
-                });
+                CallbackUtil.simpleRestSuccessCallback<Project[]>(res, next),
+                CallbackUtil.simpleRestErrorCallback(res, next));
         }
     }
 
@@ -83,14 +66,8 @@ export class ProjectRouterProvider implements EntityRouterProvider {
             this.neo4jProjectsDataProvider.updateProject(
                 +req.params["id"],
                 req.body,
-                (projects: Project[]) => {
-                    res.send(projects[0]);
-                    next();
-                },
-                (error: Error) => {
-                    res.send(error);
-                    next();
-                });
+                CallbackUtil.simpleRestSuccessCallback<Project[]>(res, next),
+                CallbackUtil.simpleRestErrorCallback(res, next));
         }
     }
 }

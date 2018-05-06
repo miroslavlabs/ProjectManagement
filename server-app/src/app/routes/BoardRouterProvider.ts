@@ -5,6 +5,7 @@ import { Neo4jDriver, Neo4jConnector, Neo4jBoardsDataProvider } from '../databas
 import { EntityRouterProvider } from './EntityRouterProvider';
 import { Record } from 'neo4j-driver/types/v1';
 import { Board } from '../model';
+import { CallbackUtil } from "../util/CallbackUtil";
 
 var config = require('../../resources/server-config');
 
@@ -34,14 +35,8 @@ export class BoardRouterProvider implements EntityRouterProvider {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jBoardsDataProvider.getAllBoards(
                 +req.query["projectId"],
-                (boards: Board[]) => {
-                    res.send(boards);
-                    next();
-                },
-                (error: Error) => {
-                    res.send(error);
-                    next();
-                });
+                CallbackUtil.simpleRestSuccessCallback<Board[]>(res, next),
+                CallbackUtil.simpleRestErrorCallback(res, next));
         }
     }
 
@@ -49,46 +44,28 @@ export class BoardRouterProvider implements EntityRouterProvider {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jBoardsDataProvider.getBoard(
                 +req.params["id"],
-                (projects: Board[]) => {
-                    res.send(projects[0]);
-                    next();
-                },
-                (error: Error) => {
-                    res.send(error);
-                    next();
-                });
+                CallbackUtil.simpleRestSuccessCallback<Board[]>(res, next),
+                CallbackUtil.simpleRestErrorCallback(res, next));
         }
     }
 
-    private createBoard(): (req: Request, res: Response, next: NextFunction) => void {
+    private createBoard() {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jBoardsDataProvider.createBoard(
                 +req.query["projectId"],
                 req.body /*board JSON data*/,
-                (projects: Board[]) => {
-                    res.send(projects[0]);
-                    next();
-                },
-                (error: Error) => {
-                    res.send(error);
-                    next();
-                });
+                CallbackUtil.simpleRestSuccessCallback<Board[]>(res, next),
+                CallbackUtil.simpleRestErrorCallback(res, next));
         }
     }
 
-    private updateBoard(): (req: Request, res: Response, next: NextFunction) => void {
+    private updateBoard() {
         return (req: Request, res: Response, next: NextFunction) => {
             this.neo4jBoardsDataProvider.updateBoard(
                 +req.params["id"] /*board ID*/,
                 req.body /*board data*/,
-                (projects: Board[]) => {
-                    res.send(projects[0]);
-                    next();
-                },
-                (error: Error) => {
-                    res.send(error);
-                    next();
-                });
+                CallbackUtil.simpleRestSuccessCallback<Board[]>(res, next),
+                CallbackUtil.simpleRestErrorCallback(res, next));
         }
     }
 }

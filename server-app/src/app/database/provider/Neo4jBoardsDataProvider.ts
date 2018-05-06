@@ -85,7 +85,7 @@ export class Neo4jBoardsDataProvider {
             WHERE ID(project)=$projectId
             WITH project
             CREATE (project)-[:HAS_BOARD]->(${BOARD_CYPHER_VARIABLE}:Board $boardProperties)
-            RETURN ${BOARD_CYPHER_VARIABLE}`
+            RETURN ${BOARD_CYPHER_VARIABLE}`;
 
         delete board.id;
         board.createdDateTimestamp = new Date().getTime();
@@ -93,7 +93,7 @@ export class Neo4jBoardsDataProvider {
         let createBoardQueryProperties = {
             projectId: projectIdParam,
             boardProperties: board
-        }
+        };
 
         this.dataReader.write(
             createBoardQuery,

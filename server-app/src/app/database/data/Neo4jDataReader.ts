@@ -113,10 +113,6 @@ export class Neo4jDataReader<T> {
             });
     }
 
-    /**
-     * 
-     * @param interceptedCallback 
-     */
     private createRecordToObjectTypeInterceptor(
         interceptedCallback: (result: T[]) => void): (result: Record[]) => void {
         return (result: Record[]) => {
@@ -125,7 +121,10 @@ export class Neo4jDataReader<T> {
             for (let i = 0; i < result.length; i++) {
                 let convertedResult =
                     this.recordToObjectTypeConverter.convertRecord(result[i]);
-                projects.push(convertedResult);
+
+                if (convertedResult != null) {
+                    projects.push(convertedResult);
+                }
             }
 
             interceptedCallback(projects);
