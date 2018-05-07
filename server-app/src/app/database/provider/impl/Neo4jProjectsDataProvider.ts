@@ -3,13 +3,14 @@ import { Neo4jDriver } from '../../core/Neo4jDriver';
 import { Neo4jDataReader } from '../../data/Neo4jDataReader';
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
 import { Project } from '../../../model';
+import { CRUDDataProvider } from '../CRUDDataProvider';
 
 const PROJECT_CYPHER_VARIABLE: string = "project";
 
 /**
  * This class retrives/modifies information on projects from a Neo4j database.
  */
-export class Neo4jProjectsDataProvider {
+export class Neo4jProjectsDataProvider implements CRUDDataProvider<Project> {
     private dataReader: Neo4jDataReader<Project>;
 
     constructor(driver: Neo4jDriver) {
@@ -19,13 +20,7 @@ export class Neo4jProjectsDataProvider {
                 new Neo4jRecordToObjectTypeConverter(Project, PROJECT_CYPHER_VARIABLE));
     }
 
-    /**
-     * The method retrieves information on all of the projects' data stored in the database.
-     * 
-     * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public getAllProjects(
+    public getAllEntities(
         successCallback: (result: Project[]) => void,
         errorCallback: (result: Error) => void): void {
 
@@ -40,17 +35,10 @@ export class Neo4jProjectsDataProvider {
             errorCallback);
     }
 
-    /**
-     * Acquire data about a project, given the ID of the project data Node.
-     * 
-     * @param projectIdParam The ID of the Node which contains the requested project data.
-     * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public getProject(
-        projectIdParam: number,
+    public getEntity(
         successCallback: (result: Project[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        projectIdParam: number): void {
 
         let getProjectQuery =
             `MATCH (${PROJECT_CYPHER_VARIABLE}:Project)
@@ -64,17 +52,10 @@ export class Neo4jProjectsDataProvider {
             errorCallback);
     }
 
-    /**
-     * Create a project Node in the database.
-     * 
-     * @param project The project object to be stored in the database.
-     * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public createProject(
-        project: Project,
+    public createEntity(
         successCallback: (result: Project[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        project: Project): void {
 
         let createProjectQuery =
             `CREATE (${PROJECT_CYPHER_VARIABLE}:Project $projectProperties),
@@ -98,19 +79,11 @@ export class Neo4jProjectsDataProvider {
             errorCallback);
     }
 
-    /**
-     * Updates the project Node data in the database. The {@link Project.id} property will not be used. Instead, the projectIdParam will be used for the node ID.
-     * 
-     * @param projectIdParam The ID of the project Node that will be updated.
-     * @param project The project data to be stored.
-     * @param successCallback This callback is invoked with the updated project data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public updateProject(
-        projectIdParam: number,
-        project: Project,
+    public updateEntity(
         successCallback: (result: Project[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        projectIdParam: number,
+        project: Project): void {
 
         let updateProjectQuery =
             `MATCH (${PROJECT_CYPHER_VARIABLE}:Project)
@@ -130,5 +103,13 @@ export class Neo4jProjectsDataProvider {
             updateProjectQueryProperties,
             successCallback,
             errorCallback);
+    }
+
+    public deleteEntity(
+        successCallback: () => void,
+        errorCallback: (result: Error) => void,
+        projectIdParam: number): void {
+        
+        throw new Error("Operation not supported.");
     }
 }

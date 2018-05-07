@@ -1,12 +1,16 @@
 import { Router } from "express";
 
-import { Neo4jDriver, Neo4jStatesDataProvider } from '../../database/';
+import { 
+    Neo4jDriver,
+    Neo4jStatesDataProvider,
+    Neo4jBoardsDataProvider,
+    Neo4jProjectsDataProvider
+} from '../../database/';
+
 import { EntityRouterProvider } from '../EntityRouterProvider';
-import { ProjectRouterProvider } from '../ProjectRouterProvider';
-import { BoardRouterProvider } from '../BoardRouterProvider';
 import { CRUDEntityRouterProvider } from "./CRUDEntityRouterProvider";
 
-var config = require('../../resources/server-config');
+var config = require('../../../resources/server-config');
 
 export class CompositeRouterProvider implements EntityRouterProvider {
 
@@ -16,15 +20,22 @@ export class CompositeRouterProvider implements EntityRouterProvider {
     public getRouter(): Router {
         let compositeRouter = Router();
 
-        let projectRouterProvider = new ProjectRouterProvider(this.neo4jDriver);
+        let projectRouterProvider =
+            new CRUDEntityRouterProvider(
+                new Neo4jProjectsDataProvider(this.neo4jDriver),
+                config.routes.project)
         
-        let boardRouterProvider = new BoardRouterProvider(this.neo4jDriver);
-
+        let boardRouterProvider = 
+            new CRUDEntityRouterProvider(
+                new Neo4jBoardsDataProvider(this.neo4jDriver),
+                config.routes.board,
+                ["projectId"]);
+        
         let stateRouterProivder = 
             new CRUDEntityRouterProvider(
                 new Neo4jStatesDataProvider(this.neo4jDriver),
                 config.routes.state,
-                "boardId");
+                ["boardId"]);
 
         compositeRouter.use(
             projectRouterProvider.getRouter(),
