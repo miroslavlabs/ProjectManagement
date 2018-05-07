@@ -1,8 +1,8 @@
 import { Session, Transaction, Record, Node } from 'neo4j-driver/types/v1';
-import { Neo4jDriver } from '../core/Neo4jDriver';
-import { Neo4jDataReader } from '../data/Neo4jDataReader';
-import { Neo4jRecordToObjectTypeConverter } from '../data/Neo4jRecordToObjectTypeConverter'
-import { Project } from '../../model';
+import { Neo4jDriver } from '../../core/Neo4jDriver';
+import { Neo4jDataReader } from '../../data/Neo4jDataReader';
+import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
+import { Project } from '../../../model';
 
 const PROJECT_CYPHER_VARIABLE: string = "project";
 

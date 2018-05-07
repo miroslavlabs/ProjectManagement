@@ -1,14 +1,15 @@
-import { Neo4jDriver } from '../core/Neo4jDriver';
-import { Neo4jDataReader } from "../data/Neo4jDataReader";
-import { Neo4jRecordToObjectTypeConverter } from '../data/Neo4jRecordToObjectTypeConverter'
-import { State } from '../../model';
+import { Neo4jDriver } from '../../core/Neo4jDriver';
+import { Neo4jDataReader } from "../../data/Neo4jDataReader";
+import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
+import { State } from '../../../model';
+import { CRUDDataProvider } from '../CRUDDataProvider';
 
 const STATE_CYPHER_VARIABLE = "state";
 
 /**
  * This class retrives/modifies information on states from a Neo4j database.
  */
-export class Neo4jStatesDataProvider {
+export class Neo4jStatesDataProvider implements CRUDDataProvider<State> {
     private dataReader: Neo4jDataReader<State>;
 
     constructor(driver: Neo4jDriver) {
@@ -18,17 +19,10 @@ export class Neo4jStatesDataProvider {
                 new Neo4jRecordToObjectTypeConverter(State, STATE_CYPHER_VARIABLE));
     }
 
-    /**
-     * The method retrieves information on all of the states for a specific board.
-     * 
-     * @param boardIdParam The ID of the board to which the states belong to.
-     * @param successCallback This callback is invoked with the retrieved state data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public getAllStates(
-        boardIdParam: number,
+    public getAllEntities(
         successCallback: (result: State[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        boardIdParam: number): void {
 
         let createStateQuery =
             `OPTIONAL MATCH (board:Board)
@@ -44,17 +38,10 @@ export class Neo4jStatesDataProvider {
             errorCallback);
     }
 
-    /**
-     * The method retrieves information for a specific state.
-     * 
-     * @param stateIdParam The ID of the state.
-     * @param successCallback This callback is invoked with the retrieved state data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public getState(
-        stateIdParam: number,
+    public getEntity(
         successCallback: (result: State[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        stateIdParam: number): void {
         
         let getStateQuery =
             `OPTIONAL MATCH (${STATE_CYPHER_VARIABLE}:State)
@@ -68,19 +55,11 @@ export class Neo4jStatesDataProvider {
             errorCallback);
     }
 
-    /**
-     * The method creates a state for a specific board.
-     * 
-     * @param boardIdParam The ID of the board to which the state will be created.
-     * @param state The state object to be stored in the database.
-     * @param successCallback This callback is invoked with the retrieved state data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public createState(
-        boardIdParam: number,
-        state: State,
+    public createEntity(
         successCallback: (result: State[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        state: State,
+        boardIdParam: number): void {
 
         // The first part of the query finds the board. Then, the new state is created.
         // After that, the last state in the states list is acquired. If there is such a
@@ -109,19 +88,11 @@ export class Neo4jStatesDataProvider {
             errorCallback);
     }
 
-    /**
-     * Updates the state Node data in the database. The {@link State.id} property will not be used. Instead, the stateIdParam will be used for the node ID.
-     * 
-     * @param stateIdParam The ID of the state Node which will be updated.
-     * @param state The state object to be stored in the database.
-     * @param successCallback This callback is invoked with the retrieved state data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public updateState(
-        stateIdParam: number,
-        state: State,
+    public updateEntity(
         successCallback: (result: State[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        stateIdParam: number,
+        state: State): void {
         
         let updateStateQuery =
             `MATCH (${STATE_CYPHER_VARIABLE}:State)
@@ -143,17 +114,10 @@ export class Neo4jStatesDataProvider {
             errorCallback);
     }
 
-    /**
-     * Deletes the specified state Node from the database. The relevant relationships are updated.
-     * 
-     * @param stateIdParam The ID of the state Node which will be deleted.
-     * @param successCallback This callback is invoked with the retrieved state data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public deleteState(
-        stateIdParam: number,
+    public deleteEntity(
         successCallback: () => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        stateIdParam: number): void {
         
         // Deletes the state Node and updated the relationships between the previous and next state nodes,
         // if such exist.
