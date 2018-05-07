@@ -2,13 +2,14 @@ import { Neo4jDriver } from '../../core/Neo4jDriver';
 import { Neo4jDataReader } from "../../data/Neo4jDataReader";
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
 import { Board } from "../../../model"
+import { CRUDDataProvider } from '../CRUDDataProvider';
 
 const BOARD_CYPHER_VARIABLE = "board";
 
 /**
  * This class retrives/modifies information on project boards from a Neo4j database.
  */
-export class Neo4jBoardsDataProvider {
+export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
     private dataReader: Neo4jDataReader<Board>;
 
     constructor(driver: Neo4jDriver) {
@@ -18,17 +19,10 @@ export class Neo4jBoardsDataProvider {
                 new Neo4jRecordToObjectTypeConverter(Board, BOARD_CYPHER_VARIABLE));
     }
 
-    /**
-     * The method retrieves information on all of the projects' boards.
-     * 
-     * @param projectIdParam The ID of the project to which the board belongs to.
-     * @param successCallback This callback is invoked with the retrieved boards data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public getAllBoards(
-        projectIdParam: number,
+    public getAllEntities(
         successCallback: (result: Board[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        projectIdParam: number): void {
         
         let getAllBoardsQuery =
             `MATCH (project:Project)-[:HAS_BOARD]->(${BOARD_CYPHER_VARIABLE}:Board)
@@ -42,17 +36,10 @@ export class Neo4jBoardsDataProvider {
             errorCallback);
     }
 
-    /**
-     * Acquire data about a board, given the ID of the board data Node.
-     * 
-     * @param projectIdParam The ID of the Node which contains the requested board data.
-     * @param successCallback This callback is invoked with the retrieved board data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public getBoard(
-        boardIdParam: number,
+    public getEntity(
         successCallback: (result: Board[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        boardIdParam: number): void {
         
         let getBoardQuery =
             `MATCH (${BOARD_CYPHER_VARIABLE}:Board)
@@ -66,19 +53,11 @@ export class Neo4jBoardsDataProvider {
             errorCallback);
     }
 
-     /**
-     * Create a board Node in the database for a specfic project.
-     * 
-     * @param projectIdParam The ID of the project for which the board will be created.
-     * @param board The board object to be stored in the database.
-     * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public createBoard(
-        projectIdParam: number,
-        board: Board,
+    public createEntity(
         successCallback: (result: Board[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        board: Board,
+        projectIdParam: number): void {
     
         let createBoardQuery =
             `OPTIONAL MATCH (project:Project)
@@ -102,19 +81,11 @@ export class Neo4jBoardsDataProvider {
             errorCallback);
     }
 
-    /**
-     * Updates the board Node data in the database. The {@link Board.id} property will not be used. Instead, the boardIdParam will be used for the node ID.
-     * 
-     * @param boardIdParam The ID of the board Node that will be updated.
-     * @param board The board data to be stored.
-     * @param successCallback This callback is invoked with the updated board data on successful query completion.
-     * @param errorCallback This callback is invoked with an error should the data retrieval fail.
-     */
-    public updateBoard(
-        boardIdParam: number,
-        board: Board,
+    public updateEntity(
         successCallback: (result: Board[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        boardIdParam: number,
+        board: Board): void {
         
         let updateBoardQuery =
             `MATCH (${BOARD_CYPHER_VARIABLE}:Board)
@@ -134,5 +105,13 @@ export class Neo4jBoardsDataProvider {
             updateBoardQueryProperties,
             successCallback,
             errorCallback);
+    }
+
+    public deleteEntity(
+        successCallback: () => void,
+        errorCallback: (result: Error) => void,
+        boardIdParam: number): void {
+        
+        throw new Error("Operation not supported.");
     }
 }
