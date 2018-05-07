@@ -1,7 +1,7 @@
-import { Neo4jDriver } from '../core/Neo4jDriver';
-import { Neo4jDataReader } from "../data/Neo4jDataReader";
-import { Neo4jRecordToObjectTypeConverter } from '../data/Neo4jRecordToObjectTypeConverter'
-import { Board } from "../../model"
+import { Neo4jDriver } from '../../core/Neo4jDriver';
+import { Neo4jDataReader } from "../../data/Neo4jDataReader";
+import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
+import { Board } from "../../../model"
 
 const BOARD_CYPHER_VARIABLE = "board";
 

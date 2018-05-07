@@ -1,2 +1,2 @@
 export { EntityRouterProvider }  from './EntityRouterProvider';
-export { CompositeRouterProvider }  from './CompositeRouterProvider';
+export { CompositeRouterProvider }  from './impl/CompositeRouterProvider';
