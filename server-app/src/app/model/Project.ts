@@ -1,6 +1,6 @@
 export class Project {
-    id?: number;
-    createdDateTimestamp: number;
-    title: string;
-    fullDescription: string;
+    id?: number = undefined;
+    createdDateTimestamp: number = undefined;
+    title: string = undefined;
+    fullDescription: string = undefined;
 }

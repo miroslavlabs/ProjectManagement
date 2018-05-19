@@ -2,7 +2,7 @@ import { Session, Transaction, Record, Node } from 'neo4j-driver/types/v1';
 import { Neo4jDriver } from '../core/Neo4jDriver';
 import { Neo4jDataReader } from '../data/Neo4jDataReader';
 import { Neo4jRecordToObjectTypeConverter } from '../data/Neo4jRecordToObjectTypeConverter'
-import { Project } from '../../model/Project';
+import { Project } from '../../model';
 
 const PROJECT_CYPHER_VARIABLE: string = "project";
 
@@ -14,7 +14,9 @@ export class Neo4jProjectsDataProvider {
 
     constructor(driver: Neo4jDriver) {
         this.dataReader =
-            new Neo4jDataReader<Project>(driver, new Neo4jRecordToProjectConverter());
+            new Neo4jDataReader<Project>(
+                driver,
+                new Neo4jRecordToObjectTypeConverter(Project, PROJECT_CYPHER_VARIABLE));
     }
 
     /**
@@ -97,11 +99,11 @@ export class Neo4jProjectsDataProvider {
     }
 
     /**
-     * Updates the project Node data in the database. The {@link Project.id} property will not be used. Instead, the projectIdParam will be used to determine the node ID.
+     * Updates the project Node data in the database. The {@link Project.id} property will not be used. Instead, the projectIdParam will be used for the node ID.
      * 
      * @param projectIdParam The ID of the project Node that will be updated.
-     * @param project The project properties to be stored.
-     * @param successCallback This callback is invoked with the retrieved project data on successful query completion.
+     * @param project The project data to be stored.
+     * @param successCallback This callback is invoked with the updated project data on successful query completion.
      * @param errorCallback This callback is invoked with an error should the data retrieval fail.
      */
     public updateProject(
@@ -128,21 +130,5 @@ export class Neo4jProjectsDataProvider {
             updateProjectQueryProperties,
             successCallback,
             errorCallback);
-    }
-}
-
-class Neo4jRecordToProjectConverter implements Neo4jRecordToObjectTypeConverter<Project> {
-
-    public convertRecord(record: Record): Project {
-        let projectNode: Node =
-            record.get(PROJECT_CYPHER_VARIABLE);
-
-        let project = new Project();
-        project.id = projectNode.identity.toNumber();
-        project.title = projectNode.properties["title"];
-        project.fullDescription = projectNode.properties["fullDescription"];
-        project.createdDateTimestamp = projectNode.properties["createdDateTimestamp"];
-
-        return project;
     }
 }
