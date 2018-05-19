@@ -98,9 +98,6 @@
   width: 100%;
   border: none;
   padding-left: 10px;
-}
-
-.form-container .form-content .details-control-cont .rel-container form .form-group .input-border {
   border: 2px solid #eae3e3;
 }
 
@@ -120,12 +117,24 @@
   border-radius: 7px;
   padding: 7px;
   font-size: 15px;
-  background: #fff;
-  color: #009485;
+  background: #009485;
+  color: #fff;
   margin: 10px 10px 20px 10px;
 }
 
 .form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed .project-form-actions:hover {
-  background: #009485;
-  color: #fff;
+  background: #086358;
+  border: 1px solid #086358;
+}
+
+.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed button:disabled {
+  color: #fff !important;
+  border: 1px solid #acacac;
+  background: #acacac !important;
+}
+
+.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed button:disabled:hover {
+  cursor: default;
+  background: #acacac !important;
+  border: 1px solid #acacac !important;
 }

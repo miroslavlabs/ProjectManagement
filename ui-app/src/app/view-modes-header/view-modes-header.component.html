@@ -5,5 +5,10 @@
         <a><i class="far fa-chart-bar"></i></a>
         <a><i class="fas fa-chart-line"></i></a>
     </nav>
-    <div><i class="fa fa-plus-circle"></i></div>
+    <div (click)="addNewProject()"><i class="fa fa-plus-circle"></i></div>
 </header>
+<project-details-form *ngIf="visible"
+(formClosed)="onCloseForm($event)"
+ [configObj] = "createProject"
+ (projectChange)="onProjectChange($event)">
+</project-details-form>

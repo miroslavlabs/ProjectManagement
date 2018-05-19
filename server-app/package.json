@@ -26,14 +26,14 @@
   },
   "homepage": "https://github.com/miroslavlabs/ProjectManagement#readme",
   "dependencies": {
-    "@types/node": "^8.5.8",
+    "@types/node": "^8.10.9",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "express-server": "^0.7.0",
     "http-server": "^0.10.0",
     "neo4j-driver": "^1.5.3",
     "ts-node": "^4.1.0",
-    "typescript": "^2.6.2"
+    "typescript": "^2.8.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.3"

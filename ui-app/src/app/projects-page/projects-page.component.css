@@ -60,7 +60,3 @@
 .projects-container .project-container:hover .progress-bar .current-progress-segment {
   background-color: #ff9800;
 }
-
-project-details-form {
-  display: none;
-}

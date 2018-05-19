@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Project } from '../data-model/Project'
+import { Project } from '../../data-model/Project';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -33,7 +33,7 @@ export class ProjectDataService {
     public updateProject(projectId: number, project: Project): Observable<Project> {
         let url = this.createUrlForProjectEndpoint(projectId);
 
-        let httpResponse = 
+        let httpResponse =
             this.httpClient.put<Project>(
                 url,
                 project,
@@ -42,11 +42,24 @@ export class ProjectDataService {
         return httpResponse;
     }
 
+    public createProject(project: Project): Observable<Project> {
+        let url = this.createUrlForProjectEndpoint();
+
+        let httpResponse =
+            this.httpClient.post<Project>(
+                url,
+                project,
+                ProjectDataService.HTTP_OPTIONS
+            );
+
+        return httpResponse;
+    }
+
     private createUrlForProjectEndpoint(projectId?: number): string {
         let url =
             `${ProjectDataService.HTTP_SERVER_URL}${ProjectDataService.HTTP_PROJECT_ENDPOINT}`;
-        
-        if (typeof(projectId) != "undefined") {
+
+        if (typeof (projectId) != "undefined") {
             url = `${url}${projectId}`;
         }
 

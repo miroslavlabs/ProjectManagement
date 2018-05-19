@@ -18,4 +18,5 @@ conf.toolbarGroups = [
    
 conf.removeButtons = 'Cut,Undo,Copy,Paste,PasteText,PasteFromWord,Redo,Source,Save,Templates,NewPage,Preview,Print,Replace,SelectAll,Scayt,Form,Radio,TextField,Textarea,Select,Button,ImageButton,HiddenField,CopyFormatting,CreateDiv,BidiLtr,BidiRtl,Language,About,Maximize,ShowBlocks,HorizontalRule,Smiley,SpecialChar,PageBreak,Iframe,Anchor,Format,Styles,Flash';
 
+conf.extraPlugins = 'divarea';
 conf.uiColor = '#ffffff';

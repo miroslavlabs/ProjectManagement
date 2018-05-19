@@ -1,20 +1,29 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { ProjectDetailsModule } from './project-details-form/project-details-form.module';
 
 import { ProjectComponent } from './projects-page.component';
+import { SharedModule } from '../shared/';
+
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CKEditorModule } from 'ng2-ckeditor';
 
 import { HttpClient } from '@angular/common/http';
-import { ProjectDataService } from '../services/ProjectData.service';
+import { ProjectDataService } from '../shared/';
 
 @NgModule({
     imports: [
         BrowserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CKEditorModule,
         HttpClientModule,
-        ProjectDetailsModule
+        SharedModule
     ],
-    declarations: [ProjectComponent],
+    declarations: [
+        ProjectComponent
+    ],
     providers: [ProjectDataService, HttpClient],
     exports: [ProjectComponent]
 })

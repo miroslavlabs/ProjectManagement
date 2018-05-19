@@ -1,6 +1,6 @@
-import { Component, Output, OnInit } from '@angular/core';
-import { ProjectDataService } from '../services/ProjectData.service';
-import { Project } from '../data-model/Project'
+import { Component, Output, OnInit, Input} from '@angular/core';
+import { ProjectDataService } from '../shared/';
+import { Project } from '../data-model/Project';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -15,9 +15,16 @@ import * as $ from "jquery";
 })
 export class ProjectComponent implements OnInit {
     @Output() selectedProjectId: number;
+    @Output() editBtn: boolean = true;
+    @Output() updateProject: Object;
     projects: Project[];
+    visible: boolean = false;
 
     constructor(private projectDataService: ProjectDataService) {
+        this.updateProject = {
+            isEditAction: true,
+            isAddAction: false
+        }
     }
 
     ngOnInit() {
@@ -42,8 +49,16 @@ export class ProjectComponent implements OnInit {
         }
     }
 
+    onAddProject(projectData) {
+        this.projects.push(projectData);
+    }
+
+    onCloseForm(event) {
+        this.visible = false;
+    }
+
     onClick(projectId: number) {
         this.selectedProjectId = projectId;
-        $('project-details-form').css('display', 'block');
+        this.visible = true;
     }
 }
