@@ -8,7 +8,7 @@ export class CRUDEntityRouterProvider<T> implements EntityRouterProvider {
     constructor(
         private crudDataProvider: CRUDDataProvider<T>,
         private entityRoute: string,
-        private parentQueryIdParamNames?: string[]) {
+        private parentQueryIdParamName?: string) {
     }
 
     /**
@@ -75,15 +75,17 @@ export class CRUDEntityRouterProvider<T> implements EntityRouterProvider {
     }
 
     private getParentIdFromRequest(req: Request): number {
-        let parentId: number = undefined;
-        if (this.parentQueryIdParamNames != null && this.parentQueryIdParamNames != undefined) {
-            for (let parentQueryIdParamName of this.parentQueryIdParamNames) {
+        if (this.parentQueryIdParamName == undefined) {
+            return undefined;
+        }
 
-                parentId = +req.query[parentQueryIdParamName];
-                if (parentId != null) {
-                    break;
-                }
-            }
+        let parentId: number = undefined;
+        if (this.parentQueryIdParamName != null && this.parentQueryIdParamName != undefined) {
+            parentId = +req.query[this.parentQueryIdParamName];
+        }
+
+        if (!parentId) {
+            throw new Error(`Missing query parameter '${this.parentQueryIdParamName}'`);
         }
 
         return parentId;

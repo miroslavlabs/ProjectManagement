@@ -1,5 +1,6 @@
-export class Board {
-    id?: number = undefined;
+import { DataModel } from './DataModel';
+
+export class Board extends DataModel {
     name: string = undefined;
     createdDateTimestamp: number = undefined;
 }

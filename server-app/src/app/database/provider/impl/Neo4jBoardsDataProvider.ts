@@ -1,8 +1,9 @@
 import { Neo4jDriver } from '../../core/Neo4jDriver';
-import { Neo4jDataReader } from "../../data/Neo4jDataReader";
+import { Neo4jDataReaderAndWriter } from "../../data/Neo4jDataReaderAndWriter";
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
-import { Board } from "../../../model"
+import { Board, Project } from "../../../model"
 import { CRUDDataProvider } from '../CRUDDataProvider';
+import { DefaultDeleteSubtreeOfNodesDataProvider } from './DefaultDeleteSubtreeOfNodesDataProvider';
 
 const BOARD_CYPHER_VARIABLE = "board";
 
@@ -10,13 +11,13 @@ const BOARD_CYPHER_VARIABLE = "board";
  * This class retrives/modifies information on project boards from a Neo4j database.
  */
 export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
-    private dataReader: Neo4jDataReader<Board>;
+    private dataReaderAndWriter: Neo4jDataReaderAndWriter<Board>;
 
-    constructor(driver: Neo4jDriver) {
-        this.dataReader =
-            new Neo4jDataReader<Board>(
+    constructor(private driver: Neo4jDriver) {
+        this.dataReaderAndWriter =
+            new Neo4jDataReaderAndWriter<Board>(
                 driver,
-                new Neo4jRecordToObjectTypeConverter(Board, BOARD_CYPHER_VARIABLE));
+                [new Neo4jRecordToObjectTypeConverter(Board, BOARD_CYPHER_VARIABLE)]);
     }
 
     public getAllEntities(
@@ -29,11 +30,11 @@ export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
             WHERE ID(project)=$projectId
             RETURN ${BOARD_CYPHER_VARIABLE}`;
 
-        this.dataReader.read(
-            getAllBoardsQuery,
-            { projectId: projectIdParam },
+        this.dataReaderAndWriter.read(
             successCallback,
-            errorCallback);
+            errorCallback,
+            getAllBoardsQuery,
+            { projectId: projectIdParam });
     }
 
     public getEntity(
@@ -46,11 +47,11 @@ export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
             WHERE ID(${BOARD_CYPHER_VARIABLE})=$boardId
             RETURN ${BOARD_CYPHER_VARIABLE}`;
 
-        this.dataReader.read(
-            getBoardQuery,
-            { boardId: boardIdParam },
+        this.dataReaderAndWriter.read(
             successCallback,
-            errorCallback);
+            errorCallback,
+            getBoardQuery,
+            { boardId: boardIdParam });
     }
 
     public createEntity(
@@ -74,11 +75,11 @@ export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
             boardProperties: board
         };
 
-        this.dataReader.write(
-            createBoardQuery,
-            createBoardQueryProperties,
+        this.dataReaderAndWriter.write(
             successCallback,
-            errorCallback);
+            errorCallback,
+            createBoardQuery,
+            createBoardQueryProperties);
     }
 
     public updateEntity(
@@ -100,11 +101,11 @@ export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
             boardProperties: board
         };
 
-        this.dataReader.write(
-            updateBoardQuery,
-            updateBoardQueryProperties,
+        this.dataReaderAndWriter.write(
             successCallback,
-            errorCallback);
+            errorCallback,
+            updateBoardQuery,
+            updateBoardQueryProperties);
     }
 
     public deleteEntity(
@@ -112,6 +113,10 @@ export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
         errorCallback: (result: Error) => void,
         boardIdParam: number): void {
         
-        throw new Error("Operation not supported.");
+        new DefaultDeleteSubtreeOfNodesDataProvider(this.driver, Board, Project, "HAS_BOARD")
+            .deleteEntity(
+                successCallback,
+                errorCallback,
+                boardIdParam);
     }
 }

@@ -1,42 +1,42 @@
 import { Session, Transaction, Record, Node } from 'neo4j-driver/types/v1';
 import { Neo4jDriver } from '../../core/Neo4jDriver';
-import { Neo4jDataReader } from '../../data/Neo4jDataReader';
+import { Neo4jDataReaderAndWriter } from '../../data/Neo4jDataReaderAndWriter';
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
-import { Project } from '../../../model';
+import * as Models from '../../../model';
 import { CRUDDataProvider } from '../CRUDDataProvider';
+import { DefaultDeleteSubtreeOfNodesDataProvider } from './DefaultDeleteSubtreeOfNodesDataProvider';
 
 const PROJECT_CYPHER_VARIABLE: string = "project";
 
 /**
  * This class retrives/modifies information on projects from a Neo4j database.
  */
-export class Neo4jProjectsDataProvider implements CRUDDataProvider<Project> {
-    private dataReader: Neo4jDataReader<Project>;
+export class Neo4jProjectsDataProvider implements CRUDDataProvider<Models.Project> {
+    private dataReaderAndWriter: Neo4jDataReaderAndWriter<Models.Project>;
 
-    constructor(driver: Neo4jDriver) {
-        this.dataReader =
-            new Neo4jDataReader<Project>(
+    constructor(private driver: Neo4jDriver) {
+        this.dataReaderAndWriter =
+            new Neo4jDataReaderAndWriter<Models.Project>(
                 driver,
-                new Neo4jRecordToObjectTypeConverter(Project, PROJECT_CYPHER_VARIABLE));
+                [new Neo4jRecordToObjectTypeConverter(Models.Project, PROJECT_CYPHER_VARIABLE)]);
     }
 
     public getAllEntities(
-        successCallback: (result: Project[]) => void,
+        successCallback: (result: Models.Project[]) => void,
         errorCallback: (result: Error) => void): void {
 
         let getAllProjectsQuery =
             `MATCH (${PROJECT_CYPHER_VARIABLE}:Project) 
             RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
-        this.dataReader.read(
-            getAllProjectsQuery,
-            {} /*parameters*/,
+        this.dataReaderAndWriter.read(
             successCallback,
-            errorCallback);
+            errorCallback,
+            getAllProjectsQuery);
     }
 
     public getEntity(
-        successCallback: (result: Project[]) => void,
+        successCallback: (result: Models.Project[]) => void,
         errorCallback: (result: Error) => void,
         projectIdParam: number): void {
 
@@ -45,45 +45,57 @@ export class Neo4jProjectsDataProvider implements CRUDDataProvider<Project> {
             WHERE ID(${PROJECT_CYPHER_VARIABLE})=$projectId
             RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
-        this.dataReader.read(
-            getProjectQuery,
-            { projectId: projectIdParam },
+        this.dataReaderAndWriter.read(
             successCallback,
-            errorCallback);
+            errorCallback,
+            getProjectQuery,
+            { projectId: projectIdParam });
     }
 
     public createEntity(
-        successCallback: (result: Project[]) => void,
+        successCallback: (result: Models.Project[]) => void,
         errorCallback: (result: Error) => void,
-        project: Project): void {
+        project: Models.Project): void {
 
         let createProjectQuery =
-            `CREATE (${PROJECT_CYPHER_VARIABLE}:Project $projectProperties),
-            (backlog: Backlog),
-            (archive: Archive),
-            (${PROJECT_CYPHER_VARIABLE})-[:HAS_BACKLOG]->(backlog),
-            (${PROJECT_CYPHER_VARIABLE})-[:HAS_ARCHIVE]->(archive)
+            `OPTIONAL MATCH (connectedProject:Project)-[:NEXT*0]->(:Project)
+            WITH collect(connectedProject)[-1] as lastConnectedProject
+            CREATE (${PROJECT_CYPHER_VARIABLE}:Project $projectProperties),
+                (backlog: Backlog $backlogProperties),
+                (archive: Archive $archiveProperties),
+                (${PROJECT_CYPHER_VARIABLE})-[:HAS_BACKLOG]->(backlog),
+                (${PROJECT_CYPHER_VARIABLE})-[:HAS_ARCHIVE]->(archive)
+            WITH lastConnectedProject, ${PROJECT_CYPHER_VARIABLE}
+            FOREACH
+                (ls IN (CASE WHEN lastConnectedProject IS NOT NULL THEN [lastConnectedProject] ELSE [] END) | 
+                CREATE (ls)-[:NEXT]->(${PROJECT_CYPHER_VARIABLE}))
             RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
-        delete project.id;
-        project.createdDateTimestamp = new Date().getTime();
-
         let createProjectQueryProperties = {
-            projectProperties: project
+            projectProperties: project,
+            backlogProperties: new Models.Archive(),
+            archiveProperties: new Models.Backlog(),
         };
 
-        this.dataReader.write(
-            createProjectQuery,
-            createProjectQueryProperties,
+        delete createProjectQueryProperties.projectProperties["id"];
+        delete createProjectQueryProperties.backlogProperties["id"];
+        delete createProjectQueryProperties.archiveProperties["id"];
+
+        createProjectQueryProperties.projectProperties["createdDateTimestamp"] =
+            new Date().getTime();
+
+        this.dataReaderAndWriter.write(
             successCallback,
-            errorCallback);
+            errorCallback,
+            createProjectQuery,
+            createProjectQueryProperties);
     }
 
     public updateEntity(
-        successCallback: (result: Project[]) => void,
+        successCallback: (result: Models.Project[]) => void,
         errorCallback: (result: Error) => void,
         projectIdParam: number,
-        project: Project): void {
+        project: Models.Project): void {
 
         let updateProjectQuery =
             `MATCH (${PROJECT_CYPHER_VARIABLE}:Project)
@@ -98,18 +110,22 @@ export class Neo4jProjectsDataProvider implements CRUDDataProvider<Project> {
             projectId: projectIdParam
         };
 
-        this.dataReader.write(
-            updateProjectQuery,
-            updateProjectQueryProperties,
+        this.dataReaderAndWriter.write(
             successCallback,
-            errorCallback);
+            errorCallback,
+            updateProjectQuery,
+            updateProjectQueryProperties);
     }
 
-    public deleteEntity(
+    deleteEntity(
         successCallback: () => void,
         errorCallback: (result: Error) => void,
         projectIdParam: number): void {
-        
-        throw new Error("Operation not supported.");
+
+        new DefaultDeleteSubtreeOfNodesDataProvider(this.driver, Models.Project)
+            .deleteEntity(
+                successCallback,
+                errorCallback,
+                projectIdParam);
     }
 }

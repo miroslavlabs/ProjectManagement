@@ -3,53 +3,63 @@ import { Neo4jDriver } from '../core/Neo4jDriver';
 import { Neo4jRecordToObjectTypeConverter } from '../data/Neo4jRecordToObjectTypeConverter'
 
 /**
- * This a superclass to all subclasses which will access the data sored in the 
+ * This a superclass to all classes which will access the data sored in the 
  * Neo4j database.
  */
-export class Neo4jDataReader<T> {
+export class Neo4jDataReaderAndWriter<T> {
+    private driver: Neo4jDriver;
+    private recordToObjectTypeConverters: Neo4jRecordToObjectTypeConverter<T>[];
+
+    constructor(driver: Neo4jDriver);
     constructor(
-        private driver: Neo4jDriver,
-        private recordToObjectTypeConverter: Neo4jRecordToObjectTypeConverter<T>) {
+        driver: Neo4jDriver,
+        recordToObjectTypeConverters?: Neo4jRecordToObjectTypeConverter<T>[]);
+    constructor(
+        driver: Neo4jDriver,
+        recordToObjectTypeConverters?: Neo4jRecordToObjectTypeConverter<T>[]) {
+
+        this.driver = driver;
+        this.recordToObjectTypeConverters = recordToObjectTypeConverters;
     }
 
     /**
      * The method retrieves data from the Neo4j database by executing the read query with the specified parameters.
      * @param query The query to be executed against the Neo4j database.
-     * @param parameters The parameters for the query.
+     * @param parameters The parameters of the query.
      * @param successCallback The callback to be invoked when the data is retrieved successfully.
      * @param errorCallback The callback to be invoked when an error occurs while retrieving the data.
      */
     public read(
-        query: string,
-        parameters: object,
         successCallback: (result: T[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        query: string,
+        parameters?: object): void {
 
-        this.executeReadQuery(
-            query,
-            parameters,
+        this.executeReadTransaction(
             this.createRecordToObjectTypeInterceptor(successCallback),
-            errorCallback);
+            errorCallback,
+            query,
+            parameters);
     }
 
     /**
-     * The method deletes data in the Neo4j database by executing the delete query with the specified parameters.
+     * The method writes data in the Neo4j database by executing the query with the specified parameters.
      * @param query The query to be executed against the Neo4j database.
-     * @param parameters The parameters for the query.
-     * @param successCallback The callback to be invoked when the data is retrieved successfully.
-     * @param errorCallback The callback to be invoked when an error occurs while retrieving the data.
+     * @param parameters The parameters of the query.
+     * @param successCallback The callback to be invoked when the data is stored successfully.
+     * @param errorCallback The callback to be invoked when an error occurs while storing the data.
      */
     public write(
+        successCallback: (result?: T[]) => void,
+        errorCallback: (result: Error) => void,
         query: string,
-        parameters: object,
-        successCallback: (result: T[]) => void,
-        errorCallback: (result: Error) => void): void {
+        parameters?: object): void {
 
-        this.executeWriteQuery(
-            query,
-            parameters,
+        this.executeWriteTransaction(
             this.createRecordToObjectTypeInterceptor(successCallback),
-            errorCallback);
+            errorCallback,
+            query,
+            parameters);
     }
 
     /**
@@ -61,11 +71,11 @@ export class Neo4jDataReader<T> {
      * @param successCallback The callback to invoke when the query executes successfully.
      * @param errorCallback The callback to invoke when the query execution fails.
      */
-    private executeReadQuery(
-        query: string,
-        parameters: object,
+    private executeReadTransaction(
         successCallback: (result: Record[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        query: string,
+        parameters: object): void {
 
         let session: Session = this.driver.session;
         let writeTxPromise =
@@ -91,11 +101,11 @@ export class Neo4jDataReader<T> {
      * @param successCallback The callback to invoke when the query executes successfully.
      * @param errorCallback The callback to invoke when the query execution fails.
      */
-    private executeWriteQuery(
-        query: string,
-        parameters: object,
+    private executeWriteTransaction(
         successCallback: (result: Record[]) => void,
-        errorCallback: (result: Error) => void): void {
+        errorCallback: (result: Error) => void,
+        query: string,
+        parameters?: object): void {
 
         let session: Session = this.driver.session;
         let records: Record[] = null;
@@ -113,21 +123,25 @@ export class Neo4jDataReader<T> {
             });
     }
 
+    private createRecordToObjectTypeInterceptor(interceptedCallback: () => void);
+    private createRecordToObjectTypeInterceptor(interceptedCallback: (result: T[]) => void)
     private createRecordToObjectTypeInterceptor(
-        interceptedCallback: (result: T[]) => void): (result: Record[]) => void {
+        interceptedCallback: (result?: T[]) => void): (result: Record[]) => void {
         return (result: Record[]) => {
-            let projects: T[] = new Array<T>();
+            let convertedObjects: T[] = new Array<T>();
 
             for (let i = 0; i < result.length; i++) {
-                let convertedResult =
-                    this.recordToObjectTypeConverter.convertRecord(result[i]);
+                for (let converter of this.recordToObjectTypeConverters) {
+                    let convertedObject = converter.convertRecord(result[i]);
 
-                if (convertedResult != null) {
-                    projects.push(convertedResult);
+                    if (convertedObject != null) {
+                        convertedObjects.push(convertedObject);
+                        break;
+                    }
                 }
             }
 
-            interceptedCallback(projects);
+            interceptedCallback(convertedObjects);
         };
     }
 }

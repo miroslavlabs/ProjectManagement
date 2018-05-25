@@ -1,13 +1,14 @@
 import { Record, Node } from 'neo4j-driver/types/v1';
+import { DataModel } from '../../model';
 
 /**
  * Provides means of converting a {@link Record} to an object of a specified type.
  */
-export class Neo4jRecordToObjectTypeConverter<T> {
+export class Neo4jRecordToObjectTypeConverter<T extends DataModel> {
 
     public constructor(
         private objectTypeCtor: new () => T,
-        private nodeName: string) {
+        private queryVariableName: string) {
     }
 
     /**
@@ -21,7 +22,7 @@ export class Neo4jRecordToObjectTypeConverter<T> {
         
         let typeProperties = Object.getOwnPropertyNames(objectOfType);
         typeProperties.forEach(propertyName => {
-            let retrievedNode: Node = record.get(this.nodeName);
+            let retrievedNode: Node = record.get(this.queryVariableName);
 
             if (retrievedNode == null) {
                 return null;

@@ -12,7 +12,7 @@ export interface CRUDDataProvider<T> {
      * @param errorCallback This callback is invoked with an error should the data retrieval fail.
      * @param parentIdParam The ID of the parent Node to which the entities are related.
      */
-    getAllEntities(
+    getAllEntities?(
         successCallback: (result: T[]) => void,
         errorCallback: (result: Error) => void,
         parentIdParam?: number): void;
@@ -24,7 +24,7 @@ export interface CRUDDataProvider<T> {
      * @param successCallback This callback is invoked with the retrieved data on successful query completion.
      * @param errorCallback This callback is invoked with an error should the data retrieval fail.
      */
-    getEntity(
+    getEntity?(
         successCallback: (result: T[]) => void,
         errorCallback: (result: Error) => void,
         entityId: number): void;
@@ -37,7 +37,7 @@ export interface CRUDDataProvider<T> {
      * @param entity The entity to be stored in the database.
      * @param parentIdParam The ID of the parent node for which the entity will be created.
      */
-    createEntity(
+    createEntity?(
         successCallback: (result: T[]) => void,
         errorCallback: (result: Error) => void,
         entity: T,
@@ -51,7 +51,7 @@ export interface CRUDDataProvider<T> {
      * @param entityIdParam The ID of the entity Node that will be updated.
      * @param entity The entity data with whcih to update the entity Node in the database.
      */
-    updateEntity(
+    updateEntity?(
         successCallback: (result: T[]) => void,
         errorCallback: (result: Error) => void,
         entityIdParam: number,
@@ -64,7 +64,7 @@ export interface CRUDDataProvider<T> {
      * @param errorCallback This callback is invoked with an error should the data retrieval fail.
      * @param entityIdParam The ID of the entity Node to be deleted.
      */
-    deleteEntity(
+    deleteEntity?(
         successCallback: () => void,
         errorCallback: (result: Error) => void,
         entityIdParam: number): void;

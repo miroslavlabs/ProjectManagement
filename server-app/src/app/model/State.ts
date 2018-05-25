@@ -1,4 +1,5 @@
-export class State {
-    id?: number = undefined;
+import { DataModel } from './DataModel';
+
+export class State extends DataModel {
     name: string = undefined;
 }

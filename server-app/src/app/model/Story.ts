@@ -1,14 +1,11 @@
-import { Priority } from "../model/Priority";
+import { DataModel } from './DataModel';
 
-export class Story {
-    id?: number = undefined;
+export class Story extends DataModel {
     createdDateTimestamp: number = undefined;
     title: string = undefined;
     description: string = undefined;
-    startDateTimestamp: number = undefined;
-    completionDateTimestamp: number = undefined;
     estimatedTime: number = undefined;
     remainingTime: number = undefined;
     actualTime: number = undefined;
-    priority: Priority = undefined;
+    priority: string = undefined;
 }
