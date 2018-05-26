@@ -1,5 +1,6 @@
 import { DataModel } from './DataModel';
 
-export class Backlog extends DataModel {
+export class Backlog implements DataModel {
+    id?: number = undefined;
     name: string = "Backlog";
 }

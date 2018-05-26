@@ -18,16 +18,15 @@ export class Neo4jRecordToObjectTypeConverter<T extends DataModel> {
      * @returns An object of the specified type, created from the {@link Record} data.
      */
     convertRecord(record: Record): T {
-        let objectOfType = new this.objectTypeCtor();
-        
-        let typeProperties = Object.getOwnPropertyNames(objectOfType);
-        typeProperties.forEach(propertyName => {
-            let retrievedNode: Node = record.get(this.queryVariableName);
+        let retrievedNode: Node = record.get(this.queryVariableName);
 
-            if (retrievedNode == null) {
-                return null;
-            }
-            
+        if (retrievedNode == null) {
+            return null;
+        }
+
+        let objectOfType = new this.objectTypeCtor();
+        let typeProperties = Object.getOwnPropertyNames(objectOfType);
+        typeProperties.forEach(propertyName => {            
             if (propertyName == "id") {
                 objectOfType[propertyName] = retrievedNode.identity.toNumber();
             } else {

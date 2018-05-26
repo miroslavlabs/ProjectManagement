@@ -1,6 +1,7 @@
 import { DataModel } from './DataModel';
 
-export class Story extends DataModel {
+export class Story implements DataModel {
+    id?: number = undefined;
     createdDateTimestamp: number = undefined;
     title: string = undefined;
     description: string = undefined;
