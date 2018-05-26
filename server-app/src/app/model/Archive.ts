@@ -1,5 +1,6 @@
 import { DataModel } from './DataModel';
 
-export class Archive extends DataModel {
+export class Archive implements DataModel {
+    id?: number = undefined;
     name: string = "Archive";
 }

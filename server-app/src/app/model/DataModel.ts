@@ -1,3 +1,3 @@
-export class DataModel {
+export interface DataModel {
     id?: number;
 }
