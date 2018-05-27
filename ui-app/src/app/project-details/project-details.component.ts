@@ -31,7 +31,7 @@ export class ProjectDetailsComponent {
 
     ngOnInit() {
         this.projectId = this.route.snapshot.params['id'];
-        if(this.route.snapshot.params['operation'] == 'edit') {
+        if(this.route.snapshot.routeConfig.path.indexOf('edit') != -1) {
             this.configObj['isEditAction'] = true;
         } else {
             this.configObj['isAddAction'] = true;
