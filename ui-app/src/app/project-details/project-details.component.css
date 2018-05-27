@@ -1,0 +1,93 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #f1f1f1;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.display-inline {
+  display: inline-block;
+}
+
+.border-bottom-custom {
+  border-bottom: 1px solid #2d6886;
+}
+
+.container {
+  width: 80%;
+  margin: auto;
+}
+
+.container .tab {
+  text-align: center;
+}
+
+.container .tab .tablinks.active {
+  border-bottom: 1px solid #2d6886;
+}
+
+.container .tab button {
+  font-size: 16px;
+  padding: 1% 2%;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.container .tab button:focus {
+  outline: none !important;
+}
+
+.container input {
+  height: 24px;
+  width: 98.7%;
+  padding-left: 10px;
+  border: 2px solid #eae3e3;
+}
+
+.container .form-group {
+  width: 100%;
+}
+
+.container .form-group div {
+  margin: 10px 0;
+}
+
+.container .form-group label {
+  font-size: 17px;
+}
+
+.container #btns_actions_container-fixed {
+  border-top: 2px solid #2d6886;
+  margin-top: 14px;
+  width: 105%;
+}
+
+.container #btns_actions_container-fixed .project-form-actions {
+  border: 1px solid #2d6886;
+  border-radius: 7px;
+  padding: 7px;
+  font-size: 15px;
+  background: #2d6886;
+  color: #fff;
+  margin: 10px 10px 20px 10px;
+}
+
+.container #btns_actions_container-fixed .project-form-actions:hover {
+  background: #2d6886;
+  border: 1px solid #2d6886;
+}
+
+.container #btns_actions_container-fixed button:disabled {
+  color: #fff !important;
+  border: 1px solid #acacac;
+  background: #acacac !important;
+}
+
+.container #btns_actions_container-fixed button:disabled:hover {
+  cursor: default;
+  background: #acacac !important;
+  border: 1px solid #acacac !important;
+}

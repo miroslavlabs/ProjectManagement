@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { MainRoutingModule } from './main-menu-header-routing.module';
 
 import { ProjectsModule } from '../projects-page/projects-page.module';
 import { MenuComponent } from './main-menu-header.component';
 
 @NgModule({
-    imports: [ 
-      BrowserModule,
-      ProjectsModule
+    imports: [
+      CommonModule,
+      ProjectsModule,
+      MainRoutingModule
     ],
     declarations: [ MenuComponent ],
     providers: [],

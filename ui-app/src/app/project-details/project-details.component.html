@@ -1,0 +1,41 @@
+<!--Template for project details full screen.-->
+<div class="container">
+    <div class="form-content">
+        <div class="title">
+            <h4>Project Details</h4>     
+        </div>
+        <div class="details-control-cont">
+            <div>
+                <div class="tab">
+                    <button class="tablinks" (click)="openDetails($event, 'Details')">
+                        <i class="fa fa-info" title="Project information"></i>
+                        Details
+                    </button>
+                    <button class="tablinks" (click)="openDetails($event, 'Comments')">
+                        <i class="fa fa-comments" title="Project comments"></i>
+                        Comments
+                    </button>
+                    <button class="tablinks" (click)="openDetails($event, 'Attachments')">
+                        <i class="fa fa-paperclip" title="Project attachments"></i>
+                        Attachments
+                    </button>
+                </div>
+            </div>
+            <div id="Details" class="tabcontent">
+                <project-details-form
+                    [projectId]="projectId" 
+                    [configObj]="configObj"
+                    [isFullscreen]="fullscreen"
+                    (projectFormChange)="onProjectChange($event)"
+                    (projectFormAdd)="addNewProject($event)">
+                </project-details-form>
+            </div>
+            <div id="Comments" class="tabcontent">
+
+            </div>
+            <div id="Attachments" class="tabcontent">
+                    
+            </div>
+        </div>
+    </div>
+</div>

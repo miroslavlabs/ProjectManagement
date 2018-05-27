@@ -1,99 +1,62 @@
-.form-container {
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: black;
-  background-color: rgba(0, 0, 0, 0.4);
+/* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #f1f1f1;
 }
 
-.form-container .form-content {
-  background-color: #fefefe;
-  margin: 2% auto;
-  font-size: 18px;
-  height: 90%;
-  border: 1px solid #888;
-  width: 85%;
+.cursor-pointer {
+  cursor: pointer;
 }
 
-.form-container .form-content .title {
-  width: 100%;
-  background-color: #009688;
-  padding: 15px 0px;
-}
-
-.form-container .form-content .title h4 {
-  color: #fff;
-  margin: 0px 0px 0px 10px;
+.display-inline {
   display: inline-block;
 }
 
-.form-container .form-content .title .close-dialog-btn {
-  color: #fff;
-  font-size: 20px;
-  float: right;
-  padding-right: 15px;
-  display: inline-block;
+.border-bottom-custom {
+  border-bottom: 1px solid #2d6886;
 }
 
-.form-container .form-content .details-control-cont {
-  position: relative;
-  height: 90%;
-  overflow: scroll;
-  overflow-x: initial;
-}
-
-.form-container .form-content .details-control-cont .tools-btn {
-  color: #009688;
-  padding: 13px;
-  text-align: center;
-}
-
-.form-container .form-content .details-control-cont .tools-btn i {
-  font-size: 24px;
-}
-
-.form-container .form-content .details-control-cont .view-bar {
-  border-right: 2px solid #009485;
-  height: 100%;
-  position: absolute;
-}
-
-.form-container .form-content .details-control-cont .rel-container {
+.rel-container {
   position: relative;
   width: 92%;
   margin-left: 66px;
 }
 
-.form-container .form-content .details-control-cont .rel-container .tools-bar {
-  border-bottom: 2px solid #009485;
+.rel-container .tools-bar {
+  border-bottom: 2px solid #2d6886;
   width: 94%;
   height: 39px;
 }
 
-.form-container .form-content .details-control-cont .rel-container form {
+.rel-container .tools-bar .tools-btn {
+  color: #2d6886;
+  padding: 13px;
+  text-align: center;
+}
+
+.rel-container .tools-bar .tools-btn i {
+  font-size: 24px;
+}
+
+.rel-container form {
   padding-top: 15px;
   width: 94%;
 }
 
-.form-container .form-content .details-control-cont .rel-container form .form-group {
+.rel-container form .form-group {
   padding-top: 15px;
 }
 
-.form-container .form-content .details-control-cont .rel-container form .form-group label {
+.rel-container form .form-group label {
   display: block;
   padding-bottom: 5px;
 }
 
-.form-container .form-content .details-control-cont .rel-container form .form-group [for="title"] {
+.rel-container form .form-group [for="title"] {
   display: inline-block;
   padding-right: 10px;
 }
 
-.form-container .form-content .details-control-cont .rel-container form .form-group input {
+.rel-container form .form-group input {
   height: 24px;
   width: 100%;
   border: none;
@@ -101,39 +64,39 @@
   border: 2px solid #eae3e3;
 }
 
-.form-container .form-content .details-control-cont .rel-container form .form-group #project-title {
+.rel-container form .form-group #project-title {
   width: 100%;
 }
 
-.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed {
+.rel-container form #btns_actions_container-fixed {
   display: none;
-  border-top: 2px solid #009485;
+  border-top: 2px solid #2d6886;
   margin-top: 14px;
   width: 105%;
 }
 
-.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed .project-form-actions {
-  border: 1px solid #009485;
+.rel-container form #btns_actions_container-fixed .project-form-actions {
+  border: 1px solid #2d6886;
   border-radius: 7px;
   padding: 7px;
   font-size: 15px;
-  background: #009485;
+  background: #2d6886;
   color: #fff;
   margin: 10px 10px 20px 10px;
 }
 
-.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed .project-form-actions:hover {
-  background: #086358;
-  border: 1px solid #086358;
+.rel-container form #btns_actions_container-fixed .project-form-actions:hover {
+  background: #2d6886;
+  border: 1px solid #2d6886;
 }
 
-.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed button:disabled {
+.rel-container form #btns_actions_container-fixed button:disabled {
   color: #fff !important;
   border: 1px solid #acacac;
   background: #acacac !important;
 }
 
-.form-container .form-content .details-control-cont .rel-container form #btns_actions_container-fixed button:disabled:hover {
+.rel-container form #btns_actions_container-fixed button:disabled:hover {
   cursor: default;
   background: #acacac !important;
   border: 1px solid #acacac !important;

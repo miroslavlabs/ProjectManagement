@@ -1,14 +1,20 @@
 <header id="views-header" class="normal-views-header">
     <nav>
         <div class="arrow cursor-pointer" (click)="toggleViewModesHeader()"><i class="fas fa-chevron-right"></i></div>
-        <a class="active"><i class="fas fa-chart-area"></i></a>
-        <a><i class="far fa-chart-bar"></i></a>
-        <a><i class="fas fa-chart-line"></i></a>
+        <a class="header-item">
+            <i class="far fa-calendar-alt"></i>
+            <span class="label-hide">Calendar</span>
+        </a> 
     </nav>
-    <div (click)="addNewProject()"><i class="fa fa-plus-circle"></i></div>
+    <div class="add-btn-container" (click)="addNewProject()">
+        <div class="add-btn">
+            <i class="fa fa-plus"></i>
+        </div>
+        <span class="label-hide">Add project</span>
+    </div>
 </header>
-<project-details-form *ngIf="visible"
+<project-details-dialog *ngIf="visible"
 (formClosed)="onCloseForm($event)"
  [configObj] = "createProject"
  (projectChange)="onProjectChange($event)">
-</project-details-form>
+</project-details-dialog>

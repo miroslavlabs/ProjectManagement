@@ -2,21 +2,39 @@
 <div class="projects-container">
     <div *ngFor = "let project of projects" class="project-container" (click)="onClick(project.id)">
         <div class="project-details">
-            <a class ="project-name">{{ project.title }}</a>
-            <div class ="project-id">{{ project.id }}</div>
-            <div class ="project-short-desc">{{ project.shortDescription }}</div>
+            <div>
+                <a class ="project-name">{{ project.title }}</a> 
+            </div>
+            <div>
+                <div class ="project-id">{{ project.id }}</div>
+                <div class="icons">
+                    <i class="fa fa-trash" title="Delete project"></i>
+                    <i class="fa fa-edit" (click)="onClick(project.id)" title="Edit project"></i>
+                </div>
+            </div>
+            
         </div>
         <div class = "progress-bar">
             <div class="current-progress-segment"></div>
         </div>
     </div>
+
+    <div class="pagination">
+            <a href="#">&laquo;</a>
+            <a class="active" href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">6</a>
+            <a href="#">&raquo;</a>
+    </div>
 </div>
-<project-details-form *ngIf="visible" 
-    [projectId]="selectedProjectId" 
-    [editbtn]="editBtn"
+<project-details-dialog *ngIf="visible" 
+    [projectId]="selectedProjectId"
     [configObj]="updateProject"
     (formClosed)="onCloseForm($event)"
     (projectChange)="onProjectChange($event)"
     (projectAdd)="onAddProject($event)">
-</project-details-form>
+</project-details-dialog>
   
