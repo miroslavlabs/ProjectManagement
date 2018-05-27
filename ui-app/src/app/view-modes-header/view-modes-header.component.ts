@@ -8,7 +8,6 @@ import * as $ from "jquery";
 })
 export class ViewModesComponent implements OnInit { 
     visible: boolean = false;
-    @Output() editBtn: boolean = false;
     @Output() createProject: Object;
 
     ngOnInit() {
@@ -21,7 +20,10 @@ export class ViewModesComponent implements OnInit {
     toggleViewModesHeader() {
         $('.arrow svg').toggleClass('fa-chevron-right fa-chevron-left');
         $('#views-header').toggleClass('normal-views-header expanded-views-header');
-        $('.projects-container').css('margin-left', '140px');
+        $('.projects-container').toggleClass('projects-container-move');
+        $('.label-hide').toggleClass('label-show');
+        $('.add-btn-container').toggleClass('full-items');
+        $('.header-item').toggleClass('full-items');
     }
 
     addNewProject() {

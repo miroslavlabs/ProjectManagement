@@ -3,6 +3,7 @@ import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { Subscription } from 'rxjs/Subscription';
+import { Router } from '@angular/router';
 
 import { ProjectDataService } from '../../services/ProjectData.service';
 import { trimValidator } from '../../validators/trimValidator';
@@ -16,14 +17,13 @@ import * as CKEditorConf from '../../../custom-configs/ckeditor.js';
     templateUrl: './project-details-form.component.html',
     styleUrls: ['./project-details-form.component.scss']
 })
-export class ProjectDetailsComponent implements OnChanges, OnInit {
+export class ProjectDetailsFormComponent implements OnChanges, OnInit {
     @Input() projectId: number;
-    @Input() editbtn: boolean;
+    @Input() isFullscreen: boolean;
     @Input() configObj: Object = {};
-    @Output() projectChange = new EventEmitter<Project>();
-    @Output() projectAdd = new EventEmitter<Project>();
-    @Output() formClosed = new EventEmitter();
-    showMessage: boolean = false;
+    @Output() onFormClosed = new EventEmitter();
+    @Output() projectFormChange = new EventEmitter<Project>();
+    @Output() projectFormAdd = new EventEmitter<Project>();
     projectDetailsForm: FormGroup;
     enableReadOnly: boolean;
 
@@ -34,6 +34,7 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
 
     constructor(
         private projectDataService: ProjectDataService,
+        private router: Router,
         fb: FormBuilder) {
 
         this.projectDetailsForm = fb.group({
@@ -42,7 +43,7 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
     }
 
     ngOnInit() {
-        if(this.configObj['isAddAction'] == true && this.configObj['isEditAction'] == false) {
+        if(this.configObj['isAddAction'] == true || this.configObj['isEditAction'] == false) {
             this.showSubmitNCancelButtons();
             CKEditorConf.conf.readOnly = false;
         } else {
@@ -65,15 +66,24 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
         this.prepareForm();
     }
 
+    openProjectDetailsInFullscreen() {
+        if((this.project.id || this.project.id == 0) && this.configObj['isEditAction'] == true) {
+            this.router.navigate(['/projectDetails/edit', this.project.id]);
+        } else {
+            this.onFormClosed.emit();
+            this.router.navigate(['/projectDetails/add']);
+        }
+    }
+
     prepareForm() {
         let projectDetailsObservable: Observable<Project> =
             this.projectDataService.getProject(this.projectId);
 
         let projectDetailsSubscription: Subscription = projectDetailsObservable.subscribe({
             next: (projectData: Project) => {
-                this.project = projectData;
+                this.project = projectData[0];
                 // Update editor.
-                this.ckeditor.value = projectData.fullDescription;
+                this.ckeditor.value = projectData[0].fullDescription;
             },
             error: (error) => { console.log(error); }, // TODO - show error message in form
             complete: () => {
@@ -83,6 +93,7 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
     }
 
     onSubmit(form: NgForm) {
+        this.project.title = form.value.title;
         this.project.fullDescription = this.ckeditor.instance.getData();
 
         let updatedProjectObservable: Observable<Project> =
@@ -90,15 +101,11 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
 
         let projectUpdateSubscription: Subscription = updatedProjectObservable.subscribe({
             next: (projectData: Project) => {
-                this.projectChange.emit(projectData);
+                this.projectFormChange.emit(projectData);
             },
             error: (error) => { console.log(error); }, // TODO - show error message in form
             complete: () => {
-                this.showMessage = true;
-                this.hideSubmitNCancelButtons();
-                setTimeout(function () {
-                    this.showMessage = false;
-                }, 1000);
+                this.hideSubmitNCancelButtons();      
                 projectUpdateSubscription.unsubscribe();
             }
         });
@@ -110,12 +117,11 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
         if(this.configObj['isEditAction'] == true) {
             this.hideSubmitNCancelButtons();
         } else {
-            this.formClosed.emit(null);
+            // this.formClosed.emit(null);
         }
     }
 
     enableAddButton() {
-        debugger;
         if(this.configObj['isAddAction'] == true) {
             if(this.projectDetailsForm.controls.title.value != "" ) {
                 $('#addBtn').removeAttr('disabled');
@@ -123,12 +129,16 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
         }
     }
 
+    close() {
+        this.projectDetailsForm.controls.title.setValue('');
+        this.ckeditor.instance.setData('');
+    }
+
     onAddNewProject(form: NgForm) {
         let newProject = new Project();
 
         newProject.title = form.controls.title.value;
         newProject.fullDescription = this.ckeditor.instance.getData();
-        console.log(newProject);
 
         let createProjectObservable: Observable<Project> =
             this.projectDataService.createProject(newProject);
@@ -136,23 +146,15 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
         let projectCreateSubscription: Subscription = createProjectObservable.subscribe({
             next: (projectData: Project) => {
                 this.project = projectData;
-                this.projectAdd.emit(projectData);
-                console.log(projectData);
+                this.projectFormAdd.emit(projectData);
             },
             error: (error) => { console.log(error); }, // TODO - show error message in form
             complete: () => {
                 location.reload();
                 projectCreateSubscription.unsubscribe();
-                this.formClosed.emit(null);
+                // this.formClosed.emit(null);
             }
         });
-    }
-
-    closePopUp() {
-        this.projectDetailsForm.controls.title.setValue('');
-        this.ckeditor.instance.setData('');
-
-        this.formClosed.emit(null);
     }
 
     hideSubmitNCancelButtons() {
@@ -169,6 +171,5 @@ export class ProjectDetailsComponent implements OnChanges, OnInit {
         if(this.configObj['isAddAction'] != true) {
            this.enableReadOnly = false;
         }
-        console.log(this.enableReadOnly);
     }
 }

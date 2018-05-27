@@ -1,10 +1,11 @@
+@import '..\\..\\styles';
 header {
     height: 50px;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #009688;
+    background-color: $blue;
     z-index: 1;
 
     nav {
@@ -20,7 +21,7 @@ header {
         .active {
             color: #000;
             background-color: #fff;
-            border-top: 2px solid #009688;
+            border-top: 2px solid $blue;
         }
     }
 }

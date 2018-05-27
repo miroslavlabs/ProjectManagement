@@ -1,18 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
-
 body {
-    background-color: #f1f1f1;
+  background-color: #f1f1f1;
 }
 
-
 .cursor-pointer {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .display-inline {
-    display: inline-block;
+  display: inline-block;
 }
 
 .border-bottom-custom {
-    border-bottom: 1px solid #009485;
+  border-bottom: 1px solid #2d6886;
 }

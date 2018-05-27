@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+//import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 import { ProjectComponent } from './projects-page.component';
@@ -11,12 +12,15 @@ import { CKEditorModule } from 'ng2-ckeditor';
 
 import { HttpClient } from '@angular/common/http';
 import { ProjectDataService } from '../shared/';
+import { ProjectsPageRoutingModule } from './projects-page-routing.module';
 
 @NgModule({
     imports: [
-        BrowserModule,
+        //BrowserModule,
+        CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        ProjectsPageRoutingModule,
         CKEditorModule,
         HttpClientModule,
         SharedModule

@@ -1,0 +1,77 @@
+@import '..\\..\\_styles';
+
+.container {
+    width: 80%;
+    margin: auto;
+
+    .tab {
+        text-align: center;
+
+        .tablinks.active {
+            border-bottom: 1px solid $blue;
+        }
+
+        button {
+            font-size: 16px;
+            padding: 1% 2%;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        button:focus {
+            outline: none !important;
+        }
+    }
+
+    input {
+        height: 24px;
+        width: 98.7%;
+        padding-left: 10px;
+        border: 2px solid #eae3e3;
+    }
+
+    .form-group {
+        width: 100%;
+        div {
+            margin: 10px 0;
+        }
+
+        label {
+            font-size: 17px;
+        }
+    }
+
+    #btns_actions_container-fixed {
+        border-top: 2px solid $blue;
+        margin-top: 14px;
+        width: 105%;
+
+        .project-form-actions {
+            border: 1px solid  $blue;
+            border-radius: 7px;
+            padding: 7px;
+            font-size: 15px;
+            background: $blue;
+            color: #fff;
+            margin: 10px 10px 20px 10px;
+
+            &:hover {
+                background:  $blue;
+                border: 1px solid $blue;
+            }
+        }
+
+        button:disabled {
+            color: #fff !important;
+            border: 1px solid #acacac;
+            background: #acacac !important;
+
+            &:hover {
+                cursor: default;
+                background: #acacac !important;
+                border: 1px solid #acacac !important;
+            }
+        }
+    }
+}

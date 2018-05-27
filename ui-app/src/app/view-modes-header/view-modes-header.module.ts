@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+//import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { ViewModesComponent } from './view-modes-header.component';
 import { SharedModule } from '../shared/';
 
 @NgModule({
     imports: [ 
-        BrowserModule,
+        //BrowserModule,
+        CommonModule,
         SharedModule
     ],
     declarations: [ 

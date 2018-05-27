@@ -15,7 +15,6 @@ import * as $ from "jquery";
 })
 export class ProjectComponent implements OnInit {
     @Output() selectedProjectId: number;
-    @Output() editBtn: boolean = true;
     @Output() updateProject: Object;
     projects: Project[];
     visible: boolean = false;
