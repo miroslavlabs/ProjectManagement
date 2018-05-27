@@ -9,30 +9,19 @@ import { CompositeRouterProvider } from './app/routes';
 import { setupCleanup } from './app/util/CleanupUtil';
 import { Objects } from './app/util/Objects';
 
+import { LogFactory } from './app/log';
+
 var config = require('./resources/server-config');
 
-let httpPort = normalizePort(process.env.PORT || config.server.conf.port);
-let neo4jConnector = new Neo4jConnector();
-let app = express();
-
-let neo4jDriver = neo4jConnector.connect();
-let routerProvider = new CompositeRouterProvider(neo4jDriver);
-
-app.use(cors(config.server.conf.cors));
-app.use(bodyParser.json());
-
-// All Endpoints
-app.use(routerProvider.getRouter());
-
-Objects.addProrortypesToExistingObjects();
-
-let server = app.listen(httpPort, () => console.log(`Listening on port ${httpPort} for requests.`));
-setupCleanup(server, neo4jConnector);
+let init = () => {
+    Objects.addProrortypesToExistingObjects();
+    LogFactory.initialize();
+}
 
 /**
  * Normalize a port into a number, string, or false.
  */
-function normalizePort(val) {
+let normalizePort = (val) => {
     var port = parseInt(val, 10);
 
     if (isNaN(port)) {
@@ -48,3 +37,28 @@ function normalizePort(val) {
     throw new Error("Invalid port number.");
 }
 
+let main = () => {
+    init();
+
+    let httpPort = normalizePort(process.env.PORT || config.server.conf.port);
+    let neo4jConnector = new Neo4jConnector();
+    
+    let neo4jDriver = neo4jConnector.connect();
+    let routerProvider = new CompositeRouterProvider(neo4jDriver);
+    let logger = LogFactory.createLogger("root");
+
+    let app = express();
+    app.use(cors(config.server.conf.cors));
+    app.use(bodyParser.json());
+    app.use(routerProvider.getRouter()); // All Endpoints
+
+    let server = app.listen(httpPort, () => {
+        if (this.logger["isInfoEnabled"]()) {
+            logger.info(`Listening on port ${httpPort} for requests.`)
+        }
+    });
+    setupCleanup(server, neo4jConnector);
+}
+
+// Start the application;
+main();

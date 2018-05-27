@@ -1,8 +1,9 @@
+import * as Neo4jDataProviders from './impl';
+import * as Models from '../../model';
+
 import { CRUDDataProvider } from './CRUDDataProvider';
 import { Neo4jDriver } from '../core/Neo4jDriver';
 
-import * as Neo4jDataProviders from './impl';
-import * as Models from '../../model';
 
 const HAS_STATE_RELATIONSHIP_NAME = "HAS_STATE";
 const HAS_STORY_RELATIONSHIP_NAME = "HAS_STORY";

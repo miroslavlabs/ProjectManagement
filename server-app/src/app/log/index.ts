@@ -1,0 +1,1 @@
+export { LogFactory } from './LogFactory';

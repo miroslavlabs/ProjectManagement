@@ -1,8 +1,9 @@
+import * as Models from '../../../model';
+
 import { Session, Transaction, Record, Node } from 'neo4j-driver/types/v1';
 import { Neo4jDriver } from '../../core/Neo4jDriver';
 import { Neo4jDataReaderAndWriter } from '../../data/Neo4jDataReaderAndWriter';
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
-import * as Models from '../../../model';
 import { CRUDDataProvider } from '../CRUDDataProvider';
 import { DefaultDeleteSubtreeOfNodesDataProvider } from './DefaultDeleteSubtreeOfNodesDataProvider';
 
