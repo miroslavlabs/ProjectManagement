@@ -1,25 +1,31 @@
 <!--Template for projects page.-->
-<div class="projects-container">
-    <div *ngFor = "let project of projects" class="project-container" (click)="onClick(project.id)">
-        <div class="project-details">
-            <div>
-                <a class ="project-name">{{ project.title }}</a> 
-            </div>
-            <div>
-                <div class ="project-id">{{ project.id }}</div>
-                <div class="icons">
-                    <i class="fa fa-trash" title="Delete project"></i>
-                    <i class="fa fa-edit" (click)="onClick(project.id)" title="Edit project"></i>
+<div class="container">     
+    <div class="row">
+        <div *ngFor="let project of projects" class="col-md-4">
+            <div class="project-container">
+                <div class="project-details">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <a class ="project-name">{{ project.title }}</a> 
+                        </div>
+                        <div class="col-md-3">
+                            <div class ="project-id">{{ project.id }}</div>
+                            <div class="icons">
+                                <i class="fa fa-trash" title="Delete project"></i>
+                                <div class="display-inline" (click)="onClick(project.id)">
+                                    <i class="fa fa-edit" title="Edit project"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row progress-bar">
+                    <div class="col-md-12 current-progress-segment"></div>
                 </div>
             </div>
-            
-        </div>
-        <div class = "progress-bar">
-            <div class="current-progress-segment"></div>
         </div>
     </div>
-
-    <div class="pagination">
+    <!-- <div class="pagination">
             <a href="#">&laquo;</a>
             <a class="active" href="#">1</a>
             <a href="#">2</a>
@@ -28,7 +34,7 @@
             <a href="#">5</a>
             <a href="#">6</a>
             <a href="#">&raquo;</a>
-    </div>
+    </div> -->
 </div>
 <project-details-dialog *ngIf="visible" 
     [projectId]="selectedProjectId"

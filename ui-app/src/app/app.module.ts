@@ -10,6 +10,10 @@ import { MainMenuModule } from './main-menu-header/main-menu-header.module';
 import { ViewModesModule } from './view-modes-header/view-modes-header.module';
 import { AppComponent } from './app.component';
 
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ModalModule } from 'ngx-bootstrap/modal';
+
 
 @NgModule({
   imports: [
@@ -20,7 +24,10 @@ import { AppComponent } from './app.component';
     FormsModule, 
     MainMenuModule,
     ViewModesModule,
-    HttpModule
+    HttpModule,
+    BsDropdownModule.forRoot(),
+    TooltipModule.forRoot(),
+    ModalModule.forRoot()
   ],
   declarations: [ AppComponent ],
   providers: [],

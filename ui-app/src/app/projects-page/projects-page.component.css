@@ -15,120 +15,130 @@ body {
   border-bottom: 1px solid #2d6886;
 }
 
-.projects-container {
-  margin-left: 90px;
+.container {
+  margin-top: 70px;
 }
 
-.projects-container .pagination {
+.container .col-md-4 {
+  display: inline-block;
+}
+
+.container .pagination {
   display: block;
   margin: 15px auto;
   width: 30%;
   text-align: center;
 }
 
-.projects-container .pagination a {
+.container .pagination a {
   color: black;
   float: left;
   padding: 8px 16px;
   text-decoration: none;
 }
 
-.projects-container .pagination a.active {
+.container .pagination a.active {
   background-color: #2d6886;
   color: white;
 }
 
-.projects-container .pagination a:hover:not(.active) {
+.container .pagination a:hover:not(.active) {
   background-color: #ddd;
 }
 
-.projects-container .project-container {
+.container .project-container {
+  width: 100%;
   cursor: pointer;
-  width: 29%;
   height: 125px;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2), 0 4px 20px 0 rgba(0, 0, 0, 0.19);
   background-color: #fff;
-  margin-right: 30px;
-  margin-top: 70px;
   display: inline-block;
 }
 
-.projects-container .project-container .project-details {
-  padding: 20px 20px 10px 20px;
+.container .project-container .project-details {
+  padding: 20px 10px;
   height: 85px;
 }
 
-.projects-container .project-container .project-details > div:first-child {
-  display: inline-block;
-  width: 80%;
+.container .project-container .project-details .row {
+  width: 100%;
+  margin-left: 0 !important;
 }
 
-.projects-container .project-container .project-details > div:last-child {
+.container .project-container .project-details .row > div:first-child {
   display: inline-block;
-  width: 18%;
 }
 
-.projects-container .project-container .project-details .project-name {
-  width: 75%;
-  font-size: 20px;
+.container .project-container .project-details .row > div:last-child {
+  display: inline-block;
+  padding: 0;
+}
+
+.container .project-container .project-details .row .project-name {
+  font-size: 18px;
   text-align: left;
   display: inline-block;
   margin-bottom: 15px;
 }
 
-.projects-container .project-container .project-details .icons {
+.container .project-container .project-details .row .icons {
   text-align: right;
   position: relative;
-  bottom: -32px;
+  bottom: -18px;
+  font-size: 20px;
   color: #486a76;
   direction: rtl;
 }
 
-.projects-container .project-container .project-details .icons svg:hover {
+.container .project-container .project-details .row .icons svg:hover {
   color: #e6537f;
 }
 
-.projects-container .project-container .project-details .icons svg:first-child {
+.container .project-container .project-details .row .icons svg:first-child {
   padding: 0 0 0 5px;
 }
 
-.projects-container .project-container .project-details .icons svg:last-child {
+.container .project-container .project-details .row .icons svg:last-child {
   padding: 0 5px 0 0;
+  opacity: 1 !important;
 }
 
-.projects-container .project-container .project-details .project-id {
+.container .project-container .project-details .row .project-id {
   font-size: 20px;
   text-align: right;
 }
 
-.projects-container .project-container .project-details .project-short-desc {
+.container .project-container .project-details .row .project-short-desc {
   width: 100%;
   font-size: 15px;
   text-align: left;
   margin-bottom: 28px;
 }
 
-.projects-container .project-container .progress-bar {
+.container .project-container .progress-bar.row {
   width: 100%;
   height: 10px;
+  margin-left: 0 !important;
   background-color: #fff;
+  top: 30px;
+  position: relative;
 }
 
-.projects-container .project-container .progress-bar .current-progress-segment {
+.container .project-container .progress-bar.row .current-progress-segment {
   width: 70%;
   height: 10px;
   background-color: #2d6886;
 }
 
-.projects-container .project-container:hover {
-  background-color: #4486a0;
+.projects-container-move {
+  margin-left: 140px;
+}
+
+.selected-project {
+  background-color: #4486a0 !important;
   color: #fff;
 }
 
-.projects-container .project-container:hover .progress-bar .current-progress-segment {
+.selected-project .progress-bar .current-progress-segment {
   background-color: #e6537f;
-}
-
-.projects-container-move {
-  margin-left: 140px;
 }

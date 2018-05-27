@@ -20,7 +20,7 @@ export class ViewModesComponent implements OnInit {
     toggleViewModesHeader() {
         $('.arrow svg').toggleClass('fa-chevron-right fa-chevron-left');
         $('#views-header').toggleClass('normal-views-header expanded-views-header');
-        $('.projects-container').toggleClass('projects-container-move');
+        $('.container').toggleClass('projects-container-move');
         $('.label-hide').toggleClass('label-show');
         $('.add-btn-container').toggleClass('full-items');
         $('.header-item').toggleClass('full-items');
