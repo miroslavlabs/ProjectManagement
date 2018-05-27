@@ -2,7 +2,7 @@ import { Neo4jDriver } from '../../core/Neo4jDriver';
 import { Neo4jDataReaderAndWriter } from "../../data/Neo4jDataReaderAndWriter";
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
 import { CRUDDataProvider } from '../CRUDDataProvider';
-import { ClassUtils } from '../../../util/ClassUtils';
+import { ClassUtils } from '../../../util/';
 
 export class DefaultDeleteSubtreeOfNodesDataProvider<T, P> implements CRUDDataProvider<T> {
     private dataReaderAndWriter: Neo4jDataReaderAndWriter<T>;

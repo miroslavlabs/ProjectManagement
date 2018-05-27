@@ -1,7 +1,8 @@
+import * as Models from "../../../model"
+
 import { Neo4jDriver } from '../../core/Neo4jDriver';
 import { Neo4jDataReaderAndWriter } from "../../data/Neo4jDataReaderAndWriter";
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
-import * as Models from "../../../model"
 import { CRUDDataProvider } from '../CRUDDataProvider';
 
 const BCKARCH_CYPHER_VARIABLE = "bckarch";
