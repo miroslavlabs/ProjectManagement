@@ -1,4 +1,5 @@
 import * as Models from '../../../model';
+
 import { DefaultDeleteSubtreeOfNodesDataProvider } from './DefaultDeleteSubtreeOfNodesDataProvider';
 import { Neo4jDriver } from '../../core/Neo4jDriver';
 import { Neo4jConnectedNodeDataProvider } from './Neo4jConnectedNodeDataProvider';

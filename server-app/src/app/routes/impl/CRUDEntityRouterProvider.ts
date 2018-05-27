@@ -3,6 +3,11 @@ import { CRUDDataProvider } from "../../database/";
 import { Router, Request, Response, NextFunction } from "express";
 import { CallbackUtil } from "../../util/CallbackUtil";
 
+/**
+ * This class serves as a generalized router provider for CRUD endpoints on a Neo4j database.
+ * The different endpoints will handle the same types of operations. This necessitates the
+ * creation of this class.
+ */
 export class CRUDEntityRouterProvider<T> implements EntityRouterProvider {
 
     constructor(
