@@ -1,7 +1,11 @@
 @import '..\\..\\_styles';
 
-.projects-container {
-    margin-left: 90px;
+.container {
+    margin-top: 70px;
+
+    .col-md-4 {
+        display: inline-block;
+    }
 
     .pagination {
         display: block;
@@ -25,74 +29,80 @@
     }
 
     .project-container {
+        width: 100%;
         cursor: pointer;
-        width: 29%;
         height: 125px;
         box-shadow: 0 4px 10px 0 rgba(0,0,0,0.2),0 4px 20px 0 rgba(0,0,0,0.19);
         background-color: #fff;
-        margin-right: 30px;
-        margin-top: 70px;
         display: inline-block;   
         
         .project-details {
-            padding: 20px 20px 10px 20px;
+            padding: 20px 10px;
             height: 85px;
 
-            &>div:first-child {
-                display: inline-block;
-                width: 80%;
-            }
+          .row {  
+              width: 100%;
+              margin-left: 0 !important;
 
-            &>div:last-child {
-                display: inline-block;
-                width: 18%;
-            }
-
-            .project-name {
-                width: 75%;
-                font-size: 20px;
-                text-align: left;
-                display: inline-block;
-                margin-bottom: 15px;
-            }
-
-            .icons {
-                text-align: right;
-                position: relative;
-                bottom: -32px;
-                color: $dark_green;
-                direction: rtl;
-
-                svg:hover {
-                    color: $magenta;
+                &>div:first-child {
+                    display: inline-block;
                 }
 
-                svg:first-child {
-                    padding: 0 0 0 5px;
+                &>div:last-child {
+                    display: inline-block;
+                    padding: 0;
                 }
 
-                svg:last-child {
-                    padding: 0 5px 0 0;
+                .project-name {
+                    font-size: 18px;
+                    text-align: left;
+                    display: inline-block;
+                    margin-bottom: 15px;
                 }
-            }
-            
-            .project-id {
-                font-size: 20px;
-                text-align: right;
-            }
-            
-            .project-short-desc {
-                width: 100%;
-                font-size: 15px;
-                text-align: left;
-                margin-bottom: 28px;
+
+                .icons {
+                    text-align: right;
+                    position: relative;
+                    bottom: -18px;
+                    font-size: 20px;
+                    color: $dark_green;
+                    direction: rtl;
+
+                    svg:hover {
+                        color: $magenta;
+                    }
+
+                    svg:first-child {
+                        padding: 0 0 0 5px;
+                    }
+
+                    svg:last-child {
+                        padding: 0 5px 0 0;
+                        opacity: 1 !important;
+                    }
+                }
+                
+                .project-id {
+                    font-size: 20px;
+                    text-align: right;
+                }
+                
+                .project-short-desc {
+                    width: 100%;
+                    font-size: 15px;
+                    text-align: left;
+                    margin-bottom: 28px;
+                }
             }
         }
-
-        .progress-bar {
+    
+        .progress-bar.row {
             width: 100%;
             height: 10px;
+            margin-left: 0 !important;
             background-color: #fff;
+            top: 30px;
+            position: relative;
         
             .current-progress-segment {
                 width: 70%;
@@ -100,20 +110,20 @@
                 background-color: $blue;
             }
         }
-
-        &:hover {
-            background-color: $midtone_blue;
-            color: #fff;
-
-            .progress-bar {
-                .current-progress-segment {
-                    background-color: $magenta;
-                }
-            }
-        }
     }
 }
 
 .projects-container-move {
     margin-left: 140px;
+}
+
+.selected-project {
+    background-color: $midtone_blue !important;
+    color: #fff;
+
+    .progress-bar {
+        .current-progress-segment {
+            background-color: $magenta;
+        }
+    }
 }

@@ -9,8 +9,9 @@ import { ProjectDataService } from '../../services/ProjectData.service';
 import { trimValidator } from '../../validators/trimValidator';
 import { Project } from '../../../data-model/Project';
 
+import { CKEditorHelper } from '../../helpers/ckeditor-helper';
+
 import * as $ from "jquery";
-import * as CKEditorConf from '../../../custom-configs/ckeditor.js';
 
 @Component({
     selector: 'project-details-form',
@@ -30,7 +31,8 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
     @ViewChild('ckeditor') ckeditor: any;
     editorConfig: {};
 
-    project = new Project();    
+    project = new Project();
+    private ckeditorHelper: CKEditorHelper; 
 
     constructor(
         private projectDataService: ProjectDataService,
@@ -43,13 +45,14 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
     }
 
     ngOnInit() {
+        this.ckeditorHelper = new CKEditorHelper(this.ckeditor);
         if(this.configObj['isAddAction'] == true || this.configObj['isEditAction'] == false) {
             this.showSubmitNCancelButtons();
-            CKEditorConf.conf.readOnly = false;
+            this.ckeditorHelper.setReadOnly(false);
         } else {
             this.enableReadOnly = true;
         }
-        this.editorConfig = CKEditorConf.conf;
+        this.editorConfig = this.ckeditorHelper.getConfig();
     }
 
     ngAfterViewInit() {
@@ -83,7 +86,7 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
             next: (projectData: Project) => {
                 this.project = projectData[0];
                 // Update editor.
-                this.ckeditor.value = projectData[0].fullDescription;
+                this.ckeditorHelper.setValue(projectData[0].fullDescription);
             },
             error: (error) => { console.log(error); }, // TODO - show error message in form
             complete: () => {
@@ -94,7 +97,7 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
 
     onSubmit(form: NgForm) {
         this.project.title = form.value.title;
-        this.project.fullDescription = this.ckeditor.instance.getData();
+        this.project.fullDescription = this.ckeditorHelper.getData();
 
         let updatedProjectObservable: Observable<Project> =
             this.projectDataService.updateProject(this.projectId, this.project);
@@ -113,7 +116,7 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
 
     onCancel() {
         this.projectDetailsForm.controls.title.setValue(this.project.title);
-        this.ckeditor.instance.setData(this.project.fullDescription);
+        this.ckeditorHelper.setData(this.project.fullDescription);
         if(this.configObj['isEditAction'] == true) {
             this.hideSubmitNCancelButtons();
         } else {
@@ -131,14 +134,14 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
 
     close() {
         this.projectDetailsForm.controls.title.setValue('');
-        this.ckeditor.instance.setData('');
+        this.ckeditorHelper.setData('');
     }
 
     onAddNewProject(form: NgForm) {
         let newProject = new Project();
 
         newProject.title = form.controls.title.value;
-        newProject.fullDescription = this.ckeditor.instance.getData();
+        newProject.fullDescription = this.ckeditorHelper.getData();
 
         let createProjectObservable: Observable<Project> =
             this.projectDataService.createProject(newProject);
