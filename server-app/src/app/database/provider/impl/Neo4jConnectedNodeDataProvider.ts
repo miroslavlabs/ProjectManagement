@@ -84,14 +84,15 @@ export class Neo4jConnectedNodeDataProvider<T, P> implements CRUDDataProvider<T>
             WITH parentNode
             OPTIONAL MATCH 
                 (parentNode)-[:${this.parentToConnectedNodeRelationshipName}]->
-                (connectedNode:${this.connectedNodeModelName})-[:NEXT*0]->(:${this.connectedNodeModelName})
-            WITH parentNode, head(collect(connectedNode)) as lastconnectedNode
+                (lastConnectedNode:${this.connectedNodeModelName})
+            WHERE NOT (lastConnectedNode)-[:NEXT]->()
+            WITH parentNode,lastConnectedNode
             CREATE
                 (parentNode)-[:${this.parentToConnectedNodeRelationshipName}]->
                 (${CONNECTED_NODE_CYPHER_VARIABLE}:${this.connectedNodeModelName} $connectedNodeProperties)
-            WITH parentNode, lastconnectedNode, ${CONNECTED_NODE_CYPHER_VARIABLE}
+            WITH parentNode, lastConnectedNode, ${CONNECTED_NODE_CYPHER_VARIABLE}
             FOREACH
-                (ls IN (CASE WHEN lastconnectedNode IS NOT NULL THEN [lastconnectedNode] ELSE [] END) | 
+                (ls IN (CASE WHEN lastConnectedNode IS NOT NULL THEN [lastConnectedNode] ELSE [] END) | 
                 CREATE (ls)-[:NEXT]->(${CONNECTED_NODE_CYPHER_VARIABLE}))
             RETURN ${CONNECTED_NODE_CYPHER_VARIABLE}`;
 
