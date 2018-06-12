@@ -27,7 +27,12 @@ export class Neo4jProjectsDataProvider implements CRUDDataProvider<Models.Projec
         errorCallback: (result: Error) => void): void {
 
         let getAllProjectsQuery =
-            `MATCH (${PROJECT_CYPHER_VARIABLE}:Project) 
+            `MATCH (startProjectNode:Project)
+            WHERE NOT ()-[:NEXT]->(startProjectNode)
+            WITH startProjectNode
+            CALL apoc.path.subgraphAll(startProjectNode, {labelFilter: "Project"}) YIELD nodes as projects
+            WITH projects
+            UNWIND projects as ${PROJECT_CYPHER_VARIABLE}
             RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
         this.dataReaderAndWriter.read(
@@ -59,8 +64,9 @@ export class Neo4jProjectsDataProvider implements CRUDDataProvider<Models.Projec
         project: Models.Project): void {
 
         let createProjectQuery =
-            `OPTIONAL MATCH (connectedProject:Project)-[:NEXT*0]->(:Project)
-            WITH collect(connectedProject)[-1] as lastConnectedProject
+            `MATCH (lastConnectedProject:Project)
+            WHERE NOT (lastConnectedProject)-[:NEXT]->(:Project)
+            WITH lastConnectedProject
             CREATE (${PROJECT_CYPHER_VARIABLE}:Project $projectProperties),
                 (backlog: Backlog $backlogProperties),
                 (archive: Archive $archiveProperties),

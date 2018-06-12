@@ -53,7 +53,7 @@ let main = () => {
     app.use(routerProvider.getRouter()); // All Endpoints
 
     let server = app.listen(httpPort, () => {
-        if (this.logger["isInfoEnabled"]()) {
+        if (logger["isInfoEnabled"]()) {
             logger.info(`Listening on port ${httpPort} for requests.`)
         }
     });
