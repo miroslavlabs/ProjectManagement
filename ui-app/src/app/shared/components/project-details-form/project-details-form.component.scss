@@ -36,14 +36,21 @@
             [for="title"] {
                 display: inline-block;
                 padding-right: 10px;
+                position: relative;
+                top: -7px;
             }
 
             input {
-                height: 24px;
+                height: 30px;
                 width: 100%;
                 border: none;
                 padding-left: 10px;
+                background: #fff;
                 border: 2px solid #eae3e3;
+
+                &:focus {
+                    border: 2px solid #eae3e3 !important;
+                }
             }
 
             #project-title {

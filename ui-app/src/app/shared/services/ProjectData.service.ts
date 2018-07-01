@@ -42,6 +42,17 @@ export class ProjectDataService {
         return httpResponse;
     }
 
+    public deleteProject(projectId: number): Observable<Project> {
+        let url = this.createUrlForProjectEndpoint(projectId);
+
+        let httpResponse =
+            this.httpClient.delete<Project>(
+                url,
+                ProjectDataService.HTTP_OPTIONS);
+
+        return httpResponse;
+    }
+
     public createProject(project: Project): Observable<Project> {
         let url = this.createUrlForProjectEndpoint();
 

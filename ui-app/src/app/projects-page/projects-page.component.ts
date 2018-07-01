@@ -1,6 +1,7 @@
 import { Component, Output, OnInit, Input} from '@angular/core';
 import { ProjectDataService } from '../shared/';
 import { Project } from '../data-model/Project';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
@@ -17,9 +18,13 @@ export class ProjectComponent implements OnInit {
     @Output() selectedProjectId: number;
     @Output() updateProject: Object;
     projects: Project[];
+    isSelected: boolean = false;
     visible: boolean = false;
 
-    constructor(private projectDataService: ProjectDataService) {
+    constructor(
+        private projectDataService: ProjectDataService,
+        private router: Router) {
+
         this.updateProject = {
             isEditAction: true,
             isAddAction: false
@@ -54,6 +59,22 @@ export class ProjectComponent implements OnInit {
 
     onCloseForm(event) {
         this.visible = false;
+        location.reload();
+    }
+
+    onDeleteClick(projectId: number) {
+        let deleteProjectObservable: Observable<Project> =
+        this.projectDataService.deleteProject(projectId);
+
+        let projectDeleteSubscription: Subscription = deleteProjectObservable.subscribe({
+            next: () => {
+            },
+            error: (error) => { console.log(error); }, // TODO - show error message in form
+            complete: () => {    
+                projectDeleteSubscription.unsubscribe();
+                location.reload();
+            }
+        });
     }
 
     onClick(projectId: number) {
