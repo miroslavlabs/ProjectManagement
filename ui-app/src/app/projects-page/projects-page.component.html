@@ -11,7 +11,9 @@
                         <div class="col-md-3">
                             <div class ="project-id">{{ project.id }}</div>
                             <div class="icons">
-                                <i class="fa fa-trash" title="Delete project"></i>
+                                <div class="display-inline" (click)="onDeleteClick(project.id)">
+                                    <i class="fa fa-trash" title="Delete project"></i>
+                                </div>
                                 <div class="display-inline" (click)="onClick(project.id)">
                                     <i class="fa fa-edit" title="Edit project"></i>
                                 </div>

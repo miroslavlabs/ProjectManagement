@@ -27,6 +27,7 @@
                     [configObj]="configObj"
                     [isFullscreen]="fullscreen"
                     (projectFormChange)="onProjectChange($event)"
+                    (projectDelete)="onProjectDelete($event)"
                     (projectFormAdd)="addNewProject($event)">
                 </project-details-form>
             </div>

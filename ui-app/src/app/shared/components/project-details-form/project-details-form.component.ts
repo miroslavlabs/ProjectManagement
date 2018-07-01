@@ -23,6 +23,7 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
     @Input() isFullscreen: boolean;
     @Input() configObj: Object = {};
     @Output() onFormClosed = new EventEmitter();
+    @Output() projectDelete = new EventEmitter();
     @Output() projectFormChange = new EventEmitter<Project>();
     @Output() projectFormAdd = new EventEmitter<Project>();
     projectDetailsForm: FormGroup;
@@ -85,6 +86,7 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
         let projectDetailsSubscription: Subscription = projectDetailsObservable.subscribe({
             next: (projectData: Project) => {
                 this.project = projectData[0];
+                this.projectDetailsForm.patchValue({title: projectData[0].title});
                 // Update editor.
                 this.ckeditorHelper.setValue(projectData[0].fullDescription);
             },
@@ -96,6 +98,7 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
     }
 
     onSubmit(form: NgForm) {
+        debugger;
         this.project.title = form.value.title;
         this.project.fullDescription = this.ckeditorHelper.getData();
 
@@ -110,6 +113,21 @@ export class ProjectDetailsFormComponent implements OnChanges, OnInit {
             complete: () => {
                 this.hideSubmitNCancelButtons();      
                 projectUpdateSubscription.unsubscribe();
+            }
+        });
+    }
+
+    onDeleteClick(projectId: number) {
+        let deleteProjectObservable: Observable<Project> =
+        this.projectDataService.deleteProject(projectId);
+
+        let projectDeleteSubscription: Subscription = deleteProjectObservable.subscribe({
+            next: () => {
+            },
+            error: (error) => { console.log(error); }, // TODO - show error message in form
+            complete: () => {
+                projectDeleteSubscription.unsubscribe();
+                this.projectDelete.emit(true);
             }
         });
     }

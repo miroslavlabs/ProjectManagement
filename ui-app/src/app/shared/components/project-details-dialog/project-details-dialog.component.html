@@ -18,6 +18,7 @@
                 [configObj]="configObj"
                 (onFormClosed)="closePopUp($event)"
                 (projectFormChange)="onProjectChange($event)"
+                (projectDelete)="closePopUp($event)"
                 (projectFormAdd)="addNewProject($event)">
             </project-details-form>
         </div>

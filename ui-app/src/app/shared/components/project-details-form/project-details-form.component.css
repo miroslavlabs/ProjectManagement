@@ -54,14 +54,21 @@ body {
 .rel-container form .form-group [for="title"] {
   display: inline-block;
   padding-right: 10px;
+  position: relative;
+  top: -7px;
 }
 
 .rel-container form .form-group input {
-  height: 24px;
+  height: 30px;
   width: 100%;
   border: none;
   padding-left: 10px;
+  background: #fff;
   border: 2px solid #eae3e3;
+}
+
+.rel-container form .form-group input:focus {
+  border: 2px solid #eae3e3 !important;
 }
 
 .rel-container form .form-group #project-title {

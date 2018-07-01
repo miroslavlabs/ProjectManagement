@@ -26,7 +26,8 @@ export class ProjectDetailsComponent {
     fullscreen: boolean = true;
 
     constructor(
-        private route: ActivatedRoute ) {
+        private route: ActivatedRoute,
+        private router: Router) {
     }
 
     ngOnInit() {
@@ -45,6 +46,10 @@ export class ProjectDetailsComponent {
 
     addNewProject(event) {
         this.projectAdd.emit(event);
+    }
+
+    onProjectDelete(event) {
+        this.router.navigate(['/projects']);
     }
 
     openTabs(evt, tabName) {
