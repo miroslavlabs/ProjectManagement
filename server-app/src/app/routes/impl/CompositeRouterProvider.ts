@@ -1,9 +1,7 @@
 import { Router } from "express";
 
-import { 
-    Neo4jDriver,
-    CRUDDataProviderFactory
-} from '../../database/';
+import { Neo4jDriver } from '../../database/core';
+import { CRUDDataProviderFactory } from '../../database/';
 
 import { EntityRouterProvider } from '../EntityRouterProvider';
 import { CRUDEntityRouterProvider } from "./CRUDEntityRouterProvider";
