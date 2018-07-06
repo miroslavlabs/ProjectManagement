@@ -16,7 +16,7 @@ export class Neo4jConnectedNodeDataProvider<T, P> implements CRUDDataProvider<T>
 
     constructor(
             protected driver: Neo4jDriver,
-            private connectedNodeModelCtr: new() => T,
+            private connectedNodeModelCtr: new () => T,
             protected parentNodeModelCtr: new () => P,
             protected parentToConnectedNodeRelationshipName: string) {
 

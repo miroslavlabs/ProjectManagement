@@ -1,4 +1,4 @@
-import { Neo4jConnector } from "../database";
+import { Neo4jConnector } from "../database/core";
 
 export function setupCleanup(server: any, neo4jConnector: Neo4jConnector) {
     process.on('exit', function () {
