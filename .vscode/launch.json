@@ -22,10 +22,10 @@
             "type": "node",
             "request": "launch",
             "name": "Debug Server Application",
-            "args": ["${relativeFile}"],
+            "args": ["neo4jProtocol=bolt", "neo4jUri=localhost", "neo4jPort=7687", "neo4jUsername=neo4j",  "neo4jPassword=Neo4j"],
             "runtimeArgs": ["--nolazy", "-r", "${workspaceFolder}/server-app/node_modules/ts-node/register"],
             "sourceMaps": true,
-            "program": "${workspaceFolder}/server-app/src/server-app.ts",
+            "program": "${workspaceFolder}/server-app/server-app.ts",
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]

@@ -2,7 +2,7 @@ import * as Winston from 'winston';
 
 import { ClassUtils } from "../util";
 
-const WinstonConfig = require('../../resources/winston-config');
+const WinstonConfig = require('../../../resources/winston-config');
 const winstonNpmLevels = Winston.config.npm.levels;
 
 export class LogFactory {

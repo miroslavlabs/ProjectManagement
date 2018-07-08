@@ -7,7 +7,7 @@ import { EntityRouterProvider } from '../EntityRouterProvider';
 import { CRUDEntityRouterProvider } from "./CRUDEntityRouterProvider";
 import { LogFactory } from "../../log";
 
-var config = require('../../../resources/server-config');
+var config = require('../../../../resources/server-config');
 
 /**
  * This class registers all of REST the endpoints which will be supported by the application.

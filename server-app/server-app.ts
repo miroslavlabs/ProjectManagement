@@ -4,17 +4,16 @@ import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 
 import { Request, Response } from 'express';
-import { Neo4jConnector, ConnectionOptions, AuthenticationOptions } from './app/database/core';
-import { CompositeRouterProvider } from './app/routes';
-import { setupCleanup } from './app/util/CleanupUtil';
+import { Neo4jConnector, Neo4jConnectionOptions, Neo4jAuthenticationOptions } from './src/app/database/core';
+import { CompositeRouterProvider } from './src/app/routes';
+import { setupCleanup } from './src/app/util/CleanupUtil';
 // FIXME take out some of the classes from the util package and put them
 // at application level
-import { Objects, ClassUtils } from './app/util/';
+import { Objects, ClassUtils } from './src/app/util/';
 
-import { LogFactory } from './app/log';
+import { LogFactory } from './src/app/log';
 
 var config = require('./resources/server-config');
-var neo4j_db = require('./resources/neo4j-db');
 
 function init() {
     Objects.addProrortypesToExistingObjects();
@@ -47,8 +46,8 @@ function checkCommandLineArgumentsSpecified(): boolean {
 function getCommandLineArgumentValues(argumentNames: string[]) {
     let argumentValues;
 
-    for (let j = 0; j < process.argv.length; j++) {
-        for (let argumentName in argumentNames) {
+    for (let j = 2; j < process.argv.length; j++) {
+        for (let argumentName of argumentNames) {
             if (process.argv[j].startsWith(argumentName)) {
                 // Initialize only if argument values are speecified
                 if (!argumentValues) {
@@ -65,13 +64,16 @@ function getCommandLineArgumentValues(argumentNames: string[]) {
 }
 
 function parseCommandLineArgumentsForClass<T>(classCtr: new () => T) {
-    let classInstance: T;
+    let classInstance: T = new classCtr();
+    if (!checkCommandLineArgumentsSpecified()) {
+        return classInstance;
+    }
+    
     let propertyNames: string[] = ClassUtils.getPropertiesForClass(classCtr);
     let commandLineArgumentValues = getCommandLineArgumentValues(propertyNames);
 
     if (commandLineArgumentValues != undefined) {
-        classInstance = new classCtr();
-        for (let propertyName in propertyNames) {
+        for (let propertyName of propertyNames) {
             classInstance[propertyName] = commandLineArgumentValues[propertyName];
         }
     }
@@ -79,51 +81,50 @@ function parseCommandLineArgumentsForClass<T>(classCtr: new () => T) {
     return classInstance;
 }
 
-function getConnectionOptions() {
-    let connectionOptions: ConnectionOptions;
-    let hasCommandLineArguments: boolean = checkCommandLineArgumentsSpecified();
-    if (hasCommandLineArguments) {
-        connectionOptions = parseCommandLineArgumentsForClass(ConnectionOptions);
+function getNeo4jConnectionOptions() {
+    let neo4jConnectionOptions: Neo4jConnectionOptions = 
+        parseCommandLineArgumentsForClass(Neo4jConnectionOptions);
+
+    if (!neo4jConnectionOptions.neo4jPort) { 
+        throw new Error("Missing value for Neo4j port.");
     }
 
-    if (!hasCommandLineArguments || connectionOptions == undefined) {
-        connectionOptions = new ConnectionOptions();
-
-        connectionOptions.port = neo4j_db.connection.port;
-        connectionOptions.protocol = neo4j_db.connection.protocol;
-        connectionOptions.uri = neo4j_db.connection.uri;
+    if (!neo4jConnectionOptions.neo4jProtocol) {
+        throw new Error("Missing value for Neo4j protocol.");
     }
 
-    return connectionOptions;
+    if (!neo4jConnectionOptions.neo4jUri) {
+        throw new Error("Missing value for Neo4j URI.");
+    }
+
+    return neo4jConnectionOptions;
 }
 
-function getAuthenticationOptions() {
-    let authenticationOptions: AuthenticationOptions;
-    let hasCommandLineArguments: boolean = checkCommandLineArgumentsSpecified();
-    if (hasCommandLineArguments) {
-        authenticationOptions = parseCommandLineArgumentsForClass(AuthenticationOptions);
+function getNeo4jAuthenticationOptions() {
+    let neo4jAuthenticationOptions: Neo4jAuthenticationOptions = 
+        parseCommandLineArgumentsForClass(Neo4jAuthenticationOptions);
+
+    if (!neo4jAuthenticationOptions.neo4jUsername) {
+        throw new Error("Missing value for Neo4j login username.");
+    }
+    
+    if (!neo4jAuthenticationOptions.neo4jPassword) {
+        throw new Error("Missing value for Neo4j login password.");
     }
 
-    if (!hasCommandLineArguments || authenticationOptions == undefined) {
-        authenticationOptions = new AuthenticationOptions();
-
-        authenticationOptions.username = neo4j_db.authentication.username;
-        authenticationOptions.password = neo4j_db.authentication.password;
-    }
-
-    return authenticationOptions;
+    return neo4jAuthenticationOptions;
 }
 
-function main() {
+(function main() {
     init();
 
     let httpPort = normalizePort(process.env.PORT || config.server.conf.port);
     let neo4jConnector = new Neo4jConnector();
 
-    let connectionOptions = getConnectionOptions();
-    let authenticationOptions = getAuthenticationOptions();
+    let neo4jConnectionOptions = getNeo4jConnectionOptions();
+    let neo4jAuthenticationOptions = getNeo4jAuthenticationOptions();
 
-    let neo4jDriver = neo4jConnector.connect(connectionOptions, authenticationOptions);
+    let neo4jDriver = neo4jConnector.connect(neo4jConnectionOptions, neo4jAuthenticationOptions);
     let routerProvider = new CompositeRouterProvider(neo4jDriver);
     let logger = LogFactory.createLogger("root");
 
@@ -138,7 +139,4 @@ function main() {
         }
     });
     setupCleanup(server, neo4jConnector);
-}
-
-// Start the application;
-main();
+}())

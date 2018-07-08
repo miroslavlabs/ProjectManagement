@@ -10,7 +10,8 @@
     "clean": "rmdir /s /q .\\dist",
     "build": "d:\\Projects\\ProjectManagement\\server-app\\node_modules\\.bin\\tsc.cmd -p \"d:\\Projects\\ProjectManagement\\server-app\\tsconfig.json\"",
     "rebuild": "npm run clean && npm run build",
-    "start": "node ./dist/server-app.js"
+    "start": ".\\scripts\\start_server_app.bat --local",
+    "start_remote": ".\\scripts\\start_server_app.bat --remote"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
   "dependencies": {
     "@types/jasmine": "^2.8.8",
     "@types/node": "^8.10.9",
+    "@types/request": "^2.47.1",
     "@types/winston": "^2.3.9",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
