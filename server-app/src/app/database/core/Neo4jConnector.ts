@@ -1,8 +1,8 @@
 import { v1 as Neo4j } from 'neo4j-driver';
 import { Driver } from 'neo4j-driver/types/v1';
 import { Neo4jDriver, Neo4jDriverImpl } from './Neo4jDriver';
-import { ConnectionOptions } from './ConnectionOptions';
-import { AuthenticationOptions } from './AuthenticationOptions';
+import { Neo4jConnectionOptions } from './Neo4jConnectionOptions';
+import { Neo4jAuthenticationOptions } from './Neo4jAuthenticationOptions';
 
 /**
  * This class manages the connection to the Neo4j database.
@@ -15,15 +15,15 @@ export class Neo4jConnector {
      * Establish a connection to the database.
      */
     public connect(
-        connectionOptions: ConnectionOptions,
-        authenticationOptions: AuthenticationOptions): Neo4jDriver {
+        neo4jConnectionOptions: Neo4jConnectionOptions,
+        neo4jAuthenticationOptions: Neo4jAuthenticationOptions): Neo4jDriver {
         
         if (!this.driver) {
             this.driver = Neo4j.driver(
-                this.createNeo4jUriFromConnectionOptions(connectionOptions),
+                neo4jConnectionOptions.toStringUri(),
                 Neo4j.auth.basic(
-                    authenticationOptions.username,
-                    authenticationOptions.password));
+                    neo4jAuthenticationOptions.neo4jUsername,
+                    neo4jAuthenticationOptions.neo4jPassword));
             this.driverWrapper = new Neo4jDriverImpl(this.driver);
         }
 
@@ -39,9 +39,5 @@ export class Neo4jConnector {
             this.driver = null;
             this.driverWrapper = null;
         }
-    }
-
-    private createNeo4jUriFromConnectionOptions(connectionOptions: ConnectionOptions) {
-        return `${connectionOptions.protocol}://${connectionOptions.uri}:${connectionOptions.port}`;
     }
 }

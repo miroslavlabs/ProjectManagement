@@ -21,7 +21,7 @@ export class DefaultDeleteSubtreeOfNodesDataProvider<T, P> implements CRUDDataPr
         errorCallback: (result: Error) => void,
         startNodeIdParam: number): void {
 
-        let deleteNodeNodeAndAllChildNodesQuery =
+        let deleteNodeAndAllChildNodesQuery =
             `MATCH (startNode)
             WHERE ID(startNode)=$startNodeId
             WITH startNode
@@ -39,7 +39,7 @@ export class DefaultDeleteSubtreeOfNodesDataProvider<T, P> implements CRUDDataPr
         this.dataReaderAndWriter.write(
             successCallback,
             errorCallback,
-            deleteNodeNodeAndAllChildNodesQuery,
+            deleteNodeAndAllChildNodesQuery,
             { startNodeId: startNodeIdParam });
     }
 
