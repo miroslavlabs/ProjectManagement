@@ -1,23 +1,21 @@
 import { Router } from "express";
 
 import { Neo4jDriver } from '../../database/core';
-import { CRUDDataProviderFactory } from '../../database/';
+import { CRUDDataProviderFactory } from '../../database/provider';
 
 import { EntityRouterProvider } from '../EntityRouterProvider';
 import { CRUDEntityRouterProvider } from "./CRUDEntityRouterProvider";
 import { LogFactory } from "../../log";
 
-var config = require('../../../../resources/server-config');
-
 /**
  * This class registers all of REST the endpoints which will be supported by the application.
  */
 export class CompositeRouterProvider implements EntityRouterProvider {
-    private crudDataProviderFactory: CRUDDataProviderFactory;
     private logger = LogFactory.createLogger(CompositeRouterProvider.name);
 
-    constructor(neo4jDriver: Neo4jDriver) {
-        this.crudDataProviderFactory = new CRUDDataProviderFactory(neo4jDriver);
+    constructor(
+        private crudDataProviderFactory: CRUDDataProviderFactory,
+        private modelsRoutesConfig: any) {
     }
 
     public getRouter(): Router {
@@ -27,55 +25,55 @@ export class CompositeRouterProvider implements EntityRouterProvider {
         requestRouters.push(
             new CRUDEntityRouterProvider(
                 this.crudDataProviderFactory.getProjectsDataProvider(),
-                config.routes.project)
+                this.modelsRoutesConfig.project)
             .getRouter());
         
         requestRouters.push(
             new CRUDEntityRouterProvider(
                 this.crudDataProviderFactory.getBoardsDataProvider(),
-                config.routes.board,
+                this.modelsRoutesConfig.board,
                 "projectId")
             .getRouter());
 
         requestRouters.push(
             new CRUDEntityRouterProvider(
                 this.crudDataProviderFactory.getBacklogAndArchiveDataProvider(),
-                config.routes.bckarch,
+                this.modelsRoutesConfig.bckarch,
                 "projectId")
             .getRouter());
         
         requestRouters.push( 
             new CRUDEntityRouterProvider(
                 this.crudDataProviderFactory.getStateDataProvider(),
-                config.routes.state,
+                this.modelsRoutesConfig.state,
                 "boardId")
             .getRouter());
 
         requestRouters.push( 
             new CRUDEntityRouterProvider(
                 this.crudDataProviderFactory.getStoryInStateDataProvider(),
-                config.routes.storyInState,
+                this.modelsRoutesConfig.storyInState,
                 "stateId")
             .getRouter());
 
         requestRouters.push( 
             new CRUDEntityRouterProvider(
                 this.crudDataProviderFactory.getStoryInArchiveDataProvider(),
-                config.routes.storyInArchive,
+                this.modelsRoutesConfig.storyInArchive,
                 "archiveId")
             .getRouter());
 
         requestRouters.push(
             new CRUDEntityRouterProvider(
                 this.crudDataProviderFactory.getStoryInBacklogDataProvider(),
-                config.routes.storyInBacklog,
+                this.modelsRoutesConfig.storyInBacklog,
                 "backlogId")
             .getRouter());
 
         requestRouters.push(
             new CRUDEntityRouterProvider(
                 this.crudDataProviderFactory.getTaskDataProvider(),
-                config.routes.task,
+                this.modelsRoutesConfig.task,
                 "storyId")
             .getRouter());
 

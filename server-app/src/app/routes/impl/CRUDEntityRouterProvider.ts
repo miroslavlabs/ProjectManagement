@@ -1,5 +1,5 @@
 import { EntityRouterProvider } from "../EntityRouterProvider";
-import { CRUDDataProvider } from "../../database/";
+import { CRUDDataProvider } from "../../database/provider";
 import { Router, Request, Response, NextFunction } from "express";
 import { CallbackUtil } from "../../util/CallbackUtil";
 
