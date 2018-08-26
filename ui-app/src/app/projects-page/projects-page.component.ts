@@ -1,5 +1,5 @@
 import { Component, Output, OnInit, Input} from '@angular/core';
-import { ProjectDataService } from '../shared/';
+import { ProjectDataService } from '../shared';
 import { Project } from '../data-model/Project';
 import { Router } from '@angular/router';
 
@@ -20,6 +20,7 @@ export class ProjectComponent implements OnInit {
     projects: Project[];
     isSelected: boolean = false;
     visible: boolean = false;
+    dialogTitle: string;
 
     constructor(
         private projectDataService: ProjectDataService,
@@ -36,7 +37,10 @@ export class ProjectComponent implements OnInit {
             this.projectDataService.getProjects();
 
         let projectsSubscription = projectsObservable.subscribe({
-            next: (projects: Project[]) => this.projects = projects,
+            next: (projects: Project[]) => {
+                this.projects = projects;
+            },
+
             error: (error) => { console.log(error) }, // TODO show error message
             complete: () => {
                 projectsSubscription.unsubscribe();
@@ -77,7 +81,8 @@ export class ProjectComponent implements OnInit {
         });
     }
 
-    onClick(projectId: number) {
+    onClick(projectId: number, projectName: string) {
+        this.dialogTitle = projectName;
         this.selectedProjectId = projectId;
         this.visible = true;
     }

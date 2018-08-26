@@ -1,0 +1,29 @@
+<div class="form-container">
+        <div class="form-content">
+            <div class="title">
+                <h5>Create Story</h5>
+                <div class="close-dialog-btn cursor-pointer" (click)="closePopUp($event)"><i class="fa fa-times"></i></div>       
+            </div>
+            <div class="details-control-cont">
+                <div>
+                    <div class="view-bar">
+                        <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-info" title="Project information"></i></div>
+                        <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-comments" title="Story comments"></i></div>
+                        <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-paperclip" title="Story attachments"></i></div>
+                    </div>
+                </div>
+                <base-form
+                    [fields]="storyFields"
+                    [addCKEditor]="true"
+                    [withToolsBar]="false"
+                    [ckEditorValue]="ckEditorValue"
+                    [configObj]="configObj"
+                    (onSubmitForm)="onSubmit($event)"
+                    (onAddnew)="onAddStory($event)"
+                    (onDelete)="onDeleteClick($event)"
+                    (onCancelForm)="closePopUp($event)"
+            ></base-form>
+            </div>
+        </div>
+    </div>
+    

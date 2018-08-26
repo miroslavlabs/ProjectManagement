@@ -1,4 +1,4 @@
-@import '..\\..\\..\\..\\_styles';
+@import '\\..\\..\\..\\_styles';
 
 .form-container {
     position: fixed; 
@@ -13,18 +13,18 @@
 
     .form-content {
         background-color: #fefefe;
-        margin: 2% auto;
+        margin: 15% auto;
         font-size: 18px;
-        height: 90%;
+        height: auto;
         border: 1px solid #888;
-        width: 85%;
+        width: 50%;
 
         .title {
             width: 100%;
             background-color: $blue;
             padding: 15px 0px;
         
-            h4 {
+            h5 {
                 color: #fff;
                 margin: 0px 0px 0px 10px;
                 display: inline-block;
@@ -38,27 +38,31 @@
                 display: inline-block;
             }
         }
+        
+        button {
+            border: 1px solid  $blue;
+            border-radius: 7px;
+            padding: 7px;
+            font-size: 15px;
+            background: $blue;
+            color: #fff;
+            margin: 10px 10px 20px 10px;
 
-        .details-control-cont {
-            position: relative;
-            height: 90%;
-            overflow: scroll;
-            overflow-x: initial;
-
-            .tools-btn {
-                color: $blue;
-                padding: 13px;
-                text-align: center;
-
-                i {
-                    font-size: 24px;
-                }
+            &:hover {
+                background:  $blue;
+                border: 1px solid $blue;
             }
+        }
 
-            .view-bar {
-                border-right: 2px solid $blue;
-                height: 100%;
-                position: absolute;
+        button:disabled {
+            color: #fff !important;
+            border: 1px solid #acacac;
+            background: #acacac !important;
+
+            &:hover {
+                cursor: default;
+                background: #acacac !important;
+                border: 1px solid #acacac !important;
             }
         }
     }

@@ -5,8 +5,8 @@
             <div class="project-container">
                 <div class="project-details">
                     <div class="row">
-                        <div class="col-md-8">
-                            <a class ="project-name">{{ project.title }}</a> 
+                        <div class="col-md-8" [routerLink]="['/project/'+ project.id +'/boards']" >
+                            <a class ="project-name">{{ project.title }}</a>
                         </div>
                         <div class="col-md-3">
                             <div class ="project-id">{{ project.id }}</div>
@@ -14,7 +14,7 @@
                                 <div class="display-inline" (click)="onDeleteClick(project.id)">
                                     <i class="fa fa-trash" title="Delete project"></i>
                                 </div>
-                                <div class="display-inline" (click)="onClick(project.id)">
+                                <div class="display-inline" (click)="onClick(project.id, project.title)">
                                     <i class="fa fa-edit" title="Edit project"></i>
                                 </div>
                             </div>
@@ -38,11 +38,33 @@
             <a href="#">&raquo;</a>
     </div> -->
 </div>
-<project-details-dialog *ngIf="visible" 
-    [projectId]="selectedProjectId"
-    [configObj]="updateProject"
-    (formClosed)="onCloseForm($event)"
-    (projectChange)="onProjectChange($event)"
-    (projectAdd)="onAddProject($event)">
-</project-details-dialog>
+
+<div *ngIf="visible" class="form-container">
+        <div class="form-content">
+                <div class="title">
+                        <h4>{{ dialogTitle }}</h4>
+                        <div class="close-dialog-btn cursor-pointer" 
+                            (click)="onCloseForm($event)">
+                            <i class="fa fa-times"></i>
+                        </div>       
+                    </div>
+                    <div class="details-control-cont">
+                        <div>
+                            <div class="view-bar">
+                                <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-info" title="Information"></i></div>
+                                <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-comments" title="Comments"></i></div>
+                                <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-paperclip" title="Attachments"></i></div>
+                                <!-- <div class="cursor-pointer"><i class="fa fa-paperclip" title="Project attachments"></i></div> -->
+                            </div>
+                        </div>
+                            <project-details-form
+                                            [id]="selectedProjectId" 
+                                            [configObj]="updateProject"
+                                            (formChange)="onChange($event)"
+                                            (delete)="onDeleteClick($event)"
+                                            (formAdd)="onAdd($event)">
+                            </project-details-form>
+                        </div>
+    </div>
+</div>
   

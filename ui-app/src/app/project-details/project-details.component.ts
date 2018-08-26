@@ -1,16 +1,17 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges, Inject, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChildren, QueryList } from '@angular/core';
+import { Location } from '@angular/common';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { Subscription } from 'rxjs/Subscription';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import { Project } from './../data-model/Project';
+import { Project } from '../data-model/Project';
 import { ProjectDataService } from '../shared';
 import { trimValidator } from '../shared';
 
 import * as $ from "jquery";
-import * as CKEditorConf from './../custom-configs/ckeditor.js';
+import * as CKEditorConf from '../custom-configs/ckeditor';
 
 @Component({
     selector: 'project-details',
@@ -22,12 +23,15 @@ export class ProjectDetailsComponent {
     @Input() configObj: Object = {};
     @Output() projectChange = new EventEmitter<Project>();
     @Output() projectAdd = new EventEmitter<Project>();
+    @ViewChildren('tabcontent') tabcontents: QueryList<any>;
+    @ViewChildren('tablinks') tablinks: QueryList<any>;
 
     fullscreen: boolean = true;
 
     constructor(
         private route: ActivatedRoute,
-        private router: Router) {
+        private router: Router,
+        private location: Location) {
     }
 
     ngOnInit() {
@@ -37,7 +41,10 @@ export class ProjectDetailsComponent {
         } else {
             this.configObj['isAddAction'] = true;
         }
-        console.log(this.configObj);
+    }
+
+    goBack() {
+        this.location.back();
     }
 
     onProjectChange(event) {
@@ -53,22 +60,14 @@ export class ProjectDetailsComponent {
     }
 
     openTabs(evt, tabName) {
-        // Declare all variables
-        var i, tabcontent, tablinks;
-    
-        // Get all elements with class="tabcontent" and hide them
-        tabcontent = document.getElementsByClassName("tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-    
-        // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("tablinks");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-    
-        // Show the current tab, and add an "active" class to the button that opened the tab
+        this.tabcontents.forEach( tabcontent => {
+            tabcontent.nativeElement.style.display= "none";
+        });
+     
+        this.tablinks.forEach( tablink => {
+            tablink.nativeElement.className = tablink.nativeElement.className.replace(" active", "");
+        });
+        
         document.getElementById(tabName).style.display = "block";
         evt.currentTarget.className += " active";
     }

@@ -1,0 +1,61 @@
+<div class="form-container">
+        <div class="form-content">
+            <div class="title">
+                <h5>Create column</h5>
+                <div class="close-dialog-btn cursor-pointer" (click)="closePopUp($event)"><i class="fa fa-times"></i></div>       
+            </div>
+            <div style="padding: 10px" class="details-control-cont">
+                    <form [formGroup]="columnCreationForm">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label for="title" class="col-form-label">Column Title<span style="color: red">*</span></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input type="text" formControlName="title" class="form-control">
+                                </div>
+                            </div>
+                            <div *ngIf="columnCreationForm.controls.title.invalid &&columnCreationForm.controls.title.touched" class="alert alert-danger">
+                                Column Title is required.
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-9">
+                                    <div>
+                                        <input (change)="onOptionSelected($event)" type="radio" id="first" name="columnOrderControl"
+                                                value="first" checked="checked" />
+                                        <label for="scales">First</label>
+                                    </div>
+                                    <div>
+                                        <input (change)="onOptionSelected($event)" type="radio" id="last" name="columnOrderControl"
+                                                value="last" />
+                                        <label for="scales">Last</label>
+                                    </div>
+                                    <div>
+                                        <input (change)="onOptionSelected($event)" type="radio" style="display: inline-block" id="after" name="columnOrderControl"
+                                                value="after" />
+                                        <label for="scales">After</label>
+                                        <div style="display: inline-block; margin-left: 30px">
+                                            <select [disabled]="disableColumnNameSelection">
+                                                <option value="0">Select column:</option>
+                                                <option value="column1">Column1</option>
+                                                <option value="column2">Column2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" class="cursor-pointer" (click)="onCancel()">
+                                    <i class="far fa-times-circle"></i>
+                                    Cancel
+                                </button>
+                                <button type="button" class="cursor-pointer" (click)="onAddColumn(columnCreationForm)" [disabled]="columnCreationForm.controls.title.invalid">
+                                    <i class="fas fa-check"></i>
+                                    Add column
+                                </button>
+                            </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+    

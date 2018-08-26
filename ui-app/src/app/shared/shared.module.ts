@@ -5,8 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CKEditorModule } from 'ng2-ckeditor';
 
-import { ProjectDetailsDialogComponent } from './components/project-details-dialog/project-details-dialog.component';
 import { ProjectDetailsFormComponent } from './components/project-details-form/project-details-form.component';
+import { ProjectDataService } from './services/ProjectData.service';
+import { BoardDataService } from './services/BoardsData.service';
+import { StoryDataService } from './services/StoryData.service';
+import { BaseFormComponent } from './components/base-form/base-form.component';
 
 @NgModule({
     imports: [
@@ -16,12 +19,17 @@ import { ProjectDetailsFormComponent } from './components/project-details-form/p
         CKEditorModule
     ],
     declarations: [
-        ProjectDetailsDialogComponent,
-        ProjectDetailsFormComponent
+        ProjectDetailsFormComponent,
+        BaseFormComponent
     ],
     exports: [
-        ProjectDetailsDialogComponent,
-        ProjectDetailsFormComponent
+        ProjectDetailsFormComponent,
+        BaseFormComponent
+    ],
+    providers: [
+        ProjectDataService,
+        BoardDataService,
+        StoryDataService
     ]
 })
 export class SharedModule { }

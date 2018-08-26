@@ -1,0 +1,58 @@
+<div class="rel-container">
+    <div *ngIf="withToolsBar" class="tools-bar">
+        <div *ngIf="configObj.isEditAction" class="tools-btn display-inline cursor-pointer" (click)="refresh()"><i class="fa fa-redo-alt" title="Refresh"></i></div>
+        <div *ngIf="configObj.isEditAction" class="tools-btn display-inline cursor-pointer" (click)="showSubmitNCancelButtons()" [ngClass]="{'selected_tool': !hideButtons}">
+            <i class="fa fa-edit" title="Edit"></i>
+        </div>
+        <div *ngIf="!isFullscreen" class="tools-btn display-inline cursor-pointer" (click)="openInFullscreen()"><i class="fa fa-arrows-alt" title="Open in full screen"></i></div>
+        <div (click)="onDeleteClick()" *ngIf="configObj.isEditAction" class="tools-btn display-inline cursor-pointer"><i class="fa fa-trash" title="Delete"></i></div>
+    </div>
+    
+    <form [formGroup]="baseForm">
+        <div *ngFor="let field of fields" class="form-group" [ngClass]="{'row' : !field.canUseHalfSpace, 'col-md-6 display-inline no-padding' : field.canUseHalfSpace }">
+            
+            <div [ngClass]="{'col-md-1' : !field.canUseHalfSpace, 'col-md-3 display-inline no-padding' : field.canUseHalfSpace }">
+                <label for="field.label" class="col-form-label">
+                    {{field.label}}<span style="color: red">*</span>
+                </label>
+            </div>
+            <div [ngClass]="{'col-md-11' : !field.canUseHalfSpace, 'col-md-8 display-inline' : field.canUseHalfSpace }">
+                <input *ngIf="!field.typeOfField" type="text" formControlName="{{field.label}}" [readonly]="enableReadOnly" class="form-control" [value]="field.value">
+               
+                <select *ngIf="field.typeOfField === 'dropdown'" formControlName="{{field.label}}">
+                    <option *ngFor="let value of field.values" value="value">{{ value }}</option>
+                </select>
+            </div>
+        
+    </div>
+        <!-- <div class="row" style="margin-top: -20px;">
+            <div class="col-md-1"></div>
+            <div class="col-md-11" *ngIf="!enableReadOnly">
+                <div [ngClass]="{ 'display-block': baseForm.invalid && baseForm.touched}" class="invalid-feedback">
+                    The title needs to be specified!
+                </div>
+            </div>
+        </div> -->
+        <div *ngIf="addCKEditor" class="form-group">
+            <label for="full-description">Description</label>
+            <ckeditor [config]="editorConfig" [readonly]="enableReadOnly" #ckeditor>
+            </ckeditor>
+        </div>
+        <div class="footer">
+            <div id="btns_actions_container-fixed" [ngClass]="{'show_btns': !hideButtons}">
+                <button *ngIf="configObj.isEditAction" [ngClass]="{'disabled': baseForm.invalid}" type="submit" class="project-form-actions cursor-pointer" (click)="onSubmit(baseForm)">
+                    <i class="fas fa-check"></i>
+                     Submit
+                </button>
+                <button *ngIf="configObj.isAddAction" id="addBtn" type="submit" class="project-form-actions cursor-pointer" (click)="onAddNew(baseForm)" [ngClass]="{'disabled' : (configObj.isAddAction && baseForm.controls.title.invalid) || baseForm.controls.title.invalid}">
+                    <i class="fas fa-check"></i>
+                     Add New
+                </button>
+                <button type="button" class="project-form-actions cursor-pointer" (click)="onCancel()">
+                    <i class="far fa-times-circle"></i>
+                    Cancel
+                </button>
+            </div>
+        </div>
+</form>
+</div>

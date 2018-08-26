@@ -1,40 +1,37 @@
 <!--Template for project details full screen.-->
 <div class="container">
     <div class="form-content">
-        <div class="title">
-            <h4>Project Details</h4>     
-        </div>
-        <div class="details-control-cont">
+        <div class="details-control-cont mt-50">
             <div>
                 <div class="tab">
-                    <button class="tablinks" (click)="openDetails($event, 'Details')">
+                    <button class="tablinks active" (click)="openTabs($event, 'Details')" #tablinks>
                         <i class="fa fa-info" title="Project information"></i>
                         Details
                     </button>
-                    <button class="tablinks" (click)="openDetails($event, 'Comments')">
+                    <button class="tablinks" (click)="openTabs($event, 'Comments')" #tablinks>
                         <i class="fa fa-comments" title="Project comments"></i>
                         Comments
                     </button>
-                    <button class="tablinks" (click)="openDetails($event, 'Attachments')">
+                    <button class="tablinks" (click)="openTabs($event, 'Attachments')" #tablinks>
                         <i class="fa fa-paperclip" title="Project attachments"></i>
                         Attachments
                     </button>
                 </div>
             </div>
-            <div id="Details" class="tabcontent">
+            <div id="Details" class="tabcontent" #tabcontent>
                 <project-details-form
-                    [projectId]="projectId" 
+                    [id]="projectId" 
                     [configObj]="configObj"
                     [isFullscreen]="fullscreen"
-                    (projectFormChange)="onProjectChange($event)"
-                    (projectDelete)="onProjectDelete($event)"
-                    (projectFormAdd)="addNewProject($event)">
+                    (formChange)="onProjectChange($event)"
+                    (delete)="onProjectDelete($event)"
+                    (formAdd)="addNewProject($event)">
                 </project-details-form>
             </div>
-            <div id="Comments" class="tabcontent">
+            <div id="Comments" class="tabcontent" #tabcontent>
 
             </div>
-            <div id="Attachments" class="tabcontent">
+            <div id="Attachments" class="tabcontent" #tabcontent>
                     
             </div>
         </div>

@@ -1,0 +1,45 @@
+<header [ngClass]="{ 'expanded-views-header': isExpanded}" id="views-header" class="normal-views-header">
+    <nav>
+        <div class="arrow cursor-pointer" (click)="toggleViewModesHeader()" #arrow>
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        <a [ngClass]="{ 'full-items': isExpanded}" class="header-item">
+            <i class="far fa-calendar-alt"></i>
+            <span [ngClass]="{ 'label-show': isExpanded}"  class="label-hide">Calendar</span>
+        </a> 
+    </nav>
+    <div [ngClass]="{ 'full-items': isExpanded}" class="add-btn-container" (click)="addNewProject()">
+        <div [ngClass]="{ 'no_marign': isExpanded}" class="add-btn">
+            <i class="fa fa-plus"></i>
+        </div>
+        <span [ngClass]="{ 'label-show': isExpanded}"  class="label-hide add_label">Add project</span>
+    </div>
+</header>
+
+<div *ngIf="visible" class="form-container">
+        <div class="form-content">
+                <div class="title">
+                        <h4>{{ dialogTitle }}</h4>
+                        <div class="close-dialog-btn cursor-pointer" 
+                            (click)="onCloseForm($event)">
+                            <i class="fa fa-times"></i>
+                        </div>       
+                    </div>
+                    <div class="details-control-cont">
+                        <div>
+                            <div class="view-bar">
+                                <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-info" title="Information"></i></div>
+                                <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-comments" title="Comments"></i></div>
+                                <div class="tools-btn border-bottom-custom cursor-pointer"><i class="fa fa-paperclip" title="Attachments"></i></div>
+                                <!-- <div class="cursor-pointer"><i class="fa fa-paperclip" title="Project attachments"></i></div> -->
+                            </div>
+                        </div>
+                            <project-details-form
+                                            [id]="id" 
+                                            [configObj]="createProject"
+                                            (formChange)="onProjectChange($event)"
+                                            (formAdd)="addNewProject($event)">
+                            </project-details-form>
+                        </div>
+    </div>
+</div>

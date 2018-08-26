@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ViewModesComponent } from './view-modes-header.component';
-import { SharedModule } from '../shared/';
+import { SharedModule } from '../../shared';
 
 @NgModule({
     imports: [ 

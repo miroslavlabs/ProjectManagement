@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-menu-header-routing.module';
 
-import { ProjectsModule } from '../projects-page/projects-page.module';
+import { ProjectsModule } from '../../projects-page/projects-page.module';
 import { MenuComponent } from './main-menu-header.component';
 
 @NgModule({

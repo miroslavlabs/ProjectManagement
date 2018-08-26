@@ -20,6 +20,18 @@ body {
     display: inline-block;
 }
 
+.display-block {
+    display: block;
+}
+
+.no-padding {
+    padding: 0;
+}
+
 .border-bottom-custom {
     border-bottom: 1px solid $blue;
+}
+
+.mt-50 {
+    margin-top: 50px;
 }

@@ -8,7 +8,7 @@
     .tools-bar {
         border-bottom: 2px solid $blue;
         width: 94%;
-        height: 39px;
+        height: 47px;
 
         .tools-btn {
             color: $blue;
@@ -43,7 +43,6 @@
             input {
                 height: 30px;
                 width: 100%;
-                border: none;
                 padding-left: 10px;
                 background: #fff;
                 border: 2px solid #eae3e3;
@@ -51,6 +50,11 @@
                 &:focus {
                     border: 2px solid #eae3e3 !important;
                 }
+            }
+
+            select {
+                width: 100%;
+                border: 2px solid #eae3e3;
             }
 
             #project-title {
@@ -79,7 +83,7 @@
                 }
             }
 
-            button:disabled {
+            button:disabled, button.disabled{
                 color: #fff !important;
                 border: 1px solid #acacac;
                 background: #acacac !important;
@@ -91,5 +95,13 @@
                 }
             }
         }   
+    }
+
+    .selected_tool {
+        opacity: 0.3 !important;
+    }
+
+    .show_btns {
+        display: inline-block !important;
     }
 }

@@ -1,4 +1,4 @@
-import { Component, Output, OnInit } from '@angular/core';
+import { Component, Output, OnInit, ViewChild, ElementRef} from '@angular/core';
 import * as $ from "jquery";
 
 @Component({
@@ -8,7 +8,10 @@ import * as $ from "jquery";
 })
 export class ViewModesComponent implements OnInit { 
     visible: boolean = false;
+    isExpanded: boolean = false;
     @Output() createProject: Object;
+    @ViewChild('arrow') arrow: ElementRef;
+    dialogTitle: string = "Create Project";
 
     ngOnInit() {
         this.createProject = {
@@ -18,12 +21,13 @@ export class ViewModesComponent implements OnInit {
     }
 
     toggleViewModesHeader() {
+        if(this.isExpanded === false) {
+            this.isExpanded = true;
+        } else {
+            this.isExpanded = false;
+        }
         $('.arrow svg').toggleClass('fa-chevron-right fa-chevron-left');
-        $('#views-header').toggleClass('normal-views-header expanded-views-header');
         $('.container').toggleClass('projects-container-move');
-        $('.label-hide').toggleClass('label-show');
-        $('.add-btn-container').toggleClass('full-items');
-        $('.header-item').toggleClass('full-items');
     }
 
     addNewProject() {

@@ -4,19 +4,20 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 import { ProjectComponent } from './projects-page.component';
-import { SharedModule } from '../shared/';
+import { SharedModule } from '../shared';
 
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CKEditorModule } from 'ng2-ckeditor';
 
 import { HttpClient } from '@angular/common/http';
-import { ProjectDataService } from '../shared/';
+import { ProjectDataService } from '../shared';
 import { ProjectsPageRoutingModule } from './projects-page-routing.module';
+import { BoardsModule } from '../board-view/board-view.module';
 
 @NgModule({
     imports: [
-        //BrowserModule,
+        BoardsModule,
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
