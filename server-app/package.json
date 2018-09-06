@@ -6,7 +6,8 @@
   "main": "./dist/server-app.js",
   "scripts": {
     "test": "",
-    "it_test": ".\\scripts\\run_it_tests.bat",
+    "it_test": ".\\scripts\\run_it_tests.bat --remote",
+    "start_container": ".\\scripts\\start_neo4j_container.bat",
     "clean": "rmdir /s /q .\\dist",
     "build": "d:\\Projects\\ProjectManagement\\server-app\\node_modules\\.bin\\tsc.cmd -p \"d:\\Projects\\ProjectManagement\\server-app\\tsconfig.json\"",
     "rebuild": "npm run clean && npm run build",
@@ -38,7 +39,7 @@
     "http-server": "^0.10.0",
     "jasmine": "^3.1.0",
     "jasmine-ts-console-reporter": "^3.1.1",
-    "neo4j-driver": "^1.5.3",
+    "neo4j-driver": "^1.6.3",
     "npm": "^6.1.0",
     "ts-node": "^4.1.0",
     "typescript": "^2.8.3",

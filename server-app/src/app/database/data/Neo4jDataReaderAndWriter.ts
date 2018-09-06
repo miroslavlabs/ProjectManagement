@@ -1,14 +1,20 @@
+import * as Winston from 'winston';
+import { NumberOrInteger } from 'neo4j-driver/types/v1/graph-types'
+import { LogFactory } from '../../log'
+
 import { Session, Transaction, Record, ResultSummary } from 'neo4j-driver/types/v1';
 import { Neo4jDriver } from '../core/Neo4jDriver';
 import { Neo4jRecordToObjectTypeConverter } from '../data/Neo4jRecordToObjectTypeConverter'
+import { DataModel } from '../../model';
 
 /**
  * This a superclass to all classes which will access the data sored in the 
  * Neo4j database.
  */
-export class Neo4jDataReaderAndWriter<T> {
+export class Neo4jDataReaderAndWriter<T extends DataModel> {
     private driver: Neo4jDriver;
     private recordToObjectTypeConverters: Neo4jRecordToObjectTypeConverter<T>[];
+    private logger: Winston.LoggerInstance;
 
     constructor(driver: Neo4jDriver);
     constructor(
@@ -20,6 +26,7 @@ export class Neo4jDataReaderAndWriter<T> {
 
         this.driver = driver;
         this.recordToObjectTypeConverters = recordToObjectTypeConverters;
+        this.logger = LogFactory.createLogger(Neo4jDataReaderAndWriter.name);
     }
 
     /**
@@ -83,12 +90,16 @@ export class Neo4jDataReaderAndWriter<T> {
 
         writeTxPromise
             .then((result) => {
-                successCallback(result.records);
+                this.logResult(result);
+
                 this.driver.closeSession(session);
+                successCallback(result.records);
             })
             .catch((error: Error) => {
-                errorCallback(error);
+                this.logError(error);
+
                 this.driver.closeSession(session);
+                errorCallback(error);
             });
     }
 
@@ -114,10 +125,14 @@ export class Neo4jDataReaderAndWriter<T> {
 
         writeTxPromise
             .then((result) => {
+                this.logResult(result);
+
                 successCallback(result.records);
                 this.driver.closeSession(session);
             })
             .catch((error) => {
+                this.logError(error);
+
                 errorCallback(error);
                 this.driver.closeSession(session);
             });
@@ -143,5 +158,17 @@ export class Neo4jDataReaderAndWriter<T> {
 
             interceptedCallback(convertedObjects);
         };
+    }
+
+    private logResult(result: {
+        records: Record[];
+        summary: ResultSummary<NumberOrInteger>;
+    }) {
+        this.logger.debug(
+            `The result for statement:\n${result.summary.statement.text}\n with parameters:\n${JSON.stringify(result.summary.statement.parameters, null, 3)} is\n ${JSON.stringify(result.records, null, 3)}`);
+    }
+
+    private logError(error: Error) {
+        this.logger.error(`Failed to execute statement.\n ${error.stack}`);
     }
 }

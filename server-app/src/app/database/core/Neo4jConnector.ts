@@ -23,7 +23,7 @@ export class Neo4jConnector {
                 neo4jConnectionOptions.toStringUri(),
                 Neo4j.auth.basic(
                     neo4jAuthenticationOptions.neo4jUsername,
-                    neo4jAuthenticationOptions.neo4jPassword));
+                    neo4jAuthenticationOptions.neo4jPassword)),
             this.driverWrapper = new Neo4jDriverImpl(this.driver);
         }
 

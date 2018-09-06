@@ -59,3 +59,6 @@ typings/
 
 # compiled directories
 dist/
+
+# Neo4j Container directories
+neo4j-container

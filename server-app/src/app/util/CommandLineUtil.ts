@@ -8,7 +8,6 @@ export class CommandLineUtil {
             let argumentValue = argumentParts[1];
     
             argumentValues[argumentName] = argumentValue;
-            break;
         }
     
         return argumentValues;

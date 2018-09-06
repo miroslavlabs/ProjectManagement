@@ -3,8 +3,9 @@ import { Neo4jDataReaderAndWriter } from "../../data/Neo4jDataReaderAndWriter";
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
 import { CRUDDataProvider } from '../CRUDDataProvider';
 import { ClassUtils } from '../../../util/';
+import { DataModel } from '../../../model';
 
-export class DefaultDeleteSubtreeOfNodesDataProvider<T, P> implements CRUDDataProvider<T> {
+export class DefaultDeleteSubtreeOfNodesDataProvider<T extends DataModel, P> implements CRUDDataProvider<T> {
     private dataReaderAndWriter: Neo4jDataReaderAndWriter<T>;
     
     constructor(

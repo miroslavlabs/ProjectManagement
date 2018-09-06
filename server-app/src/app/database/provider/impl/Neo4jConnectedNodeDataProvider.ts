@@ -3,13 +3,14 @@ import { Neo4jDataReaderAndWriter } from "../../data/Neo4jDataReaderAndWriter";
 import { Neo4jRecordToObjectTypeConverter } from '../../data/Neo4jRecordToObjectTypeConverter'
 import { CRUDDataProvider } from '../CRUDDataProvider';
 import { ClassUtils } from '../../../util/ClassUtils';
+import { DataModel } from '../../../model';
 
 const CONNECTED_NODE_CYPHER_VARIABLE = "connectedNode";
 
 /**
  * This class retrives/modifies information on conneted nodes from a Neo4j database.
  */
-export class Neo4jConnectedNodeDataProvider<T, P> implements CRUDDataProvider<T> {
+export class Neo4jConnectedNodeDataProvider<T extends DataModel, P> implements CRUDDataProvider<T> {
     private dataReaderAndWriter: Neo4jDataReaderAndWriter<T>;
     private connectedNodeModelName: string;
     private parentNodeModelName: string;

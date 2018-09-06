@@ -22,12 +22,12 @@ export class CRUDEntityRouterProvider<T> implements EntityRouterProvider {
     public getRouter(): Router {
         let router = Router();
         
-        router.get(`${this.entityRoute}`, this.getAllEntitiesRequestHandler());
-        router.post(`${this.entityRoute}`, this.createEntityRequestHandler());
+        router.get(`/${this.entityRoute}`, this.getAllEntitiesRequestHandler());
+        router.post(`/${this.entityRoute}`, this.createEntityRequestHandler());
 
-        router.get(`${this.entityRoute}/:id`, this.getEntityRequestHandler());
-        router.put(`${this.entityRoute}/:id`, this.updateEntityRequestHandler());
-        router.delete(`${this.entityRoute}/:id`, this.deleteEntityRequestHandler());
+        router.get(`/${this.entityRoute}/:id(\\d+)`, this.getEntityRequestHandler());
+        router.put(`/${this.entityRoute}/:id(\\d+)`, this.updateEntityRequestHandler());
+        router.delete(`/${this.entityRoute}/:id(\\d+)`, this.deleteEntityRequestHandler());
 
         return router;
     }

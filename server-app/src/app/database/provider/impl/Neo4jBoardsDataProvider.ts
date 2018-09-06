@@ -40,29 +40,28 @@ export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
     public getEntity(
         successCallback: (result: Board[]) => void,
         errorCallback: (result: Error) => void,
-        boardIdParam: number): void {
+        boardId: number): void {
         
         let getBoardQuery =
             `MATCH (${BOARD_CYPHER_VARIABLE}:Board)
-            WHERE ID(${BOARD_CYPHER_VARIABLE})=$boardId
+            WHERE ID(${BOARD_CYPHER_VARIABLE})=${boardId}
             RETURN ${BOARD_CYPHER_VARIABLE}`;
 
         this.dataReaderAndWriter.read(
             successCallback,
             errorCallback,
-            getBoardQuery,
-            { boardId: boardIdParam });
+            getBoardQuery);
     }
 
     public createEntity(
         successCallback: (result: Board[]) => void,
         errorCallback: (result: Error) => void,
         board: Board,
-        projectIdParam: number): void {
+        projectId: number): void {
     
         let createBoardQuery =
             `OPTIONAL MATCH (project:Project)
-            WHERE ID(project)=$projectId
+            WHERE ID(project)=${projectId}
             WITH project
             CREATE (project)-[:HAS_BOARD]->(${BOARD_CYPHER_VARIABLE}:Board $boardProperties)
             RETURN ${BOARD_CYPHER_VARIABLE}`;
@@ -70,42 +69,32 @@ export class Neo4jBoardsDataProvider implements CRUDDataProvider<Board> {
         delete board.id;
         board.createdDateTimestamp = new Date().getTime();
 
-        let createBoardQueryProperties = {
-            projectId: projectIdParam,
-            boardProperties: board
-        };
-
         this.dataReaderAndWriter.write(
             successCallback,
             errorCallback,
             createBoardQuery,
-            createBoardQueryProperties);
+            { boardProperties: board });
     }
 
     public updateEntity(
         successCallback: (result: Board[]) => void,
         errorCallback: (result: Error) => void,
-        boardIdParam: number,
+        boardId: number,
         board: Board): void {
         
         let updateBoardQuery =
             `MATCH (${BOARD_CYPHER_VARIABLE}:Board)
-            WHERE ID(${BOARD_CYPHER_VARIABLE})=$boardId
+            WHERE ID(${BOARD_CYPHER_VARIABLE})=${boardId}
             WITH ${BOARD_CYPHER_VARIABLE}
             SET ${BOARD_CYPHER_VARIABLE}=$boardProperties
             RETURN ${BOARD_CYPHER_VARIABLE}`;
 
         delete board.id;
-        let updateBoardQueryProperties = {
-            boardId: boardIdParam,
-            boardProperties: board
-        };
-
         this.dataReaderAndWriter.write(
             successCallback,
             errorCallback,
             updateBoardQuery,
-            updateBoardQueryProperties);
+            { boardProperties: board });
     }
 
     public deleteEntity(

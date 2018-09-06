@@ -3,7 +3,7 @@ import * as readline from 'readline';
 
 // TODO doc
 // FIXME Take out into more genral folder so that it can be reused in tests.
-export class IniToJsonParser {
+export class IniFileToJsonObjectParser {
 
     public static convertIniToJson(initFilePath: string): any {
         var lineReader = readline.createInterface({
@@ -21,7 +21,7 @@ export class IniToJsonParser {
                     return;
                 }
 
-                let propertyName = line.substr(0, equalsSignSeprataorIndex);
+                let propertyName = line.substr(0, equalsSignSeprataorIndex).trim();
                 let propertyValue = line.substr(equalsSignSeprataorIndex + 1).trim();
 
                 let propertyNameParts = propertyName.split(".");

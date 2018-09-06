@@ -9,7 +9,7 @@ import { CRUDDataProviderFactory } from './src/app/database/provider';
 import { CompositeRouterProvider } from './src/app/routes';
 // FIXME take out some of the classes from the util package and put them
 // at application level
-import { Objects, ClassUtils, CommandLineUtil, IniToJsonParser, setupCleanup } from './src/app/util';
+import { Objects, ClassUtils, ConfigurationUtil, setupCleanup } from './src/app/util';
 import { LogFactory } from './src/app/log';
 
 // FIXME !!!
@@ -26,7 +26,7 @@ class ServerApp {
         Objects.addProrortypesToExistingObjects();
         LogFactory.initialize();
 
-        let config = this.readConfigurationData();
+        let config = ConfigurationUtil.readConfigurationData(process.argv);
 
         let httpPort = this.normalizePort(process.env.PORT || config.app.port);
         let neo4jConnector = new Neo4jConnector();
@@ -41,23 +41,9 @@ class ServerApp {
         app.use(routerProvider.getRouter()); // All Endpoints
 
         let server = app.listen(httpPort, () => {
-            if (logger["isInfoEnabled"]()) {
-                logger.info(`Listening on port ${httpPort} for requests.`)
-            }
+            logger.info(`Listening on port ${httpPort} for requests.`);
         });
         setupCleanup(server, neo4jConnector);
-    }
-
-    private readConfigurationData(): any {
-        let commandLineArgumentValues = CommandLineUtil.parseCommandLineArgumentValues(process.argv);
-        let configurationFileLoation = commandLineArgumentValues["configPath"];
-        if (!configurationFileLoation) {
-            throw new Error("Missing configuration path.");
-        }
-
-        let config = IniToJsonParser.convertIniToJson(configurationFileLoation);
-
-        return config;
     }
 
     private createNeo4jDriver(neo4jConnector: Neo4jConnector, config: any): Neo4jDriver {
@@ -99,13 +85,13 @@ class ServerApp {
         if (!config.neo4j.conn.username) {
             throw new Error("Missing value for Neo4j login username.");
         } else {
-            neo4jAuthenticationOptions = config.neo4j.conn.username;
+            neo4jAuthenticationOptions.neo4jUsername = config.neo4j.conn.username;
         }
 
         if (!config.neo4j.conn.password) {
             throw new Error("Missing value for Neo4j login password.");
         } else {
-            neo4jAuthenticationOptions = config.neo4j.conn.password;
+            neo4jAuthenticationOptions.neo4jPassword = config.neo4j.conn.password;
         }
 
         return neo4jAuthenticationOptions;

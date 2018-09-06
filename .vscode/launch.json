@@ -29,6 +29,30 @@
             "outFiles": [
                 "${workspaceFolder}/**/*.js"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Server Application - Remote Neo4j",
+            "args": ["configPath=${workspaceFolder}/server-app/resources/config/remote/application.ini"],
+            "runtimeArgs": ["--nolazy", "-r", "${workspaceFolder}/server-app/node_modules/ts-node/register"],
+            "sourceMaps": true,
+            "program": "${workspaceFolder}/server-app/server-app.ts",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Integration Tests",
+            "args": ["JASMINE_CONFIG_PATH=${workspaceFolder}/server-app/spec/support/jasmine.json"],
+            "runtimeArgs": ["--nolazy", "-r", "${workspaceFolder}/server-app/node_modules/ts-node/register"],
+            "sourceMaps": true,
+            "program": "${workspaceFolder}/server-app/node_modules/jasmine/bin/jasmine.js",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
         }
     ]
 }

@@ -1,3 +1,5 @@
+import * as neo4j from 'neo4j-driver';
+
 import { Record, Node } from 'neo4j-driver/types/v1';
 import { DataModel } from '../../model';
 
@@ -28,9 +30,15 @@ export class Neo4jRecordToObjectTypeConverter<T extends DataModel> {
         let typeProperties = Object.getOwnPropertyNames(objectOfType);
         typeProperties.forEach(propertyName => {            
             if (propertyName == "id") {
-                objectOfType[propertyName] = retrievedNode.identity.toNumber();
+                objectOfType.id = retrievedNode.identity.toNumber();
             } else {
-                objectOfType[propertyName] = retrievedNode.properties[propertyName];
+                let propertyValue = retrievedNode.properties[propertyName];
+                
+                if (neo4j.v1.isInt(propertyValue)) {
+                    objectOfType[propertyName] = propertyValue.toNumber();
+                } else {
+                    objectOfType[propertyName] = propertyValue;
+                }
             }
         });
 

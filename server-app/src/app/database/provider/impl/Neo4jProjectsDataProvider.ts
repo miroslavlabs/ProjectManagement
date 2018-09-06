@@ -44,18 +44,17 @@ export class Neo4jProjectsDataProvider implements CRUDDataProvider<Models.Projec
     public getEntity(
         successCallback: (result: Models.Project[]) => void,
         errorCallback: (result: Error) => void,
-        projectIdParam: number): void {
+        projectId: number): void {
 
         let getProjectQuery =
             `MATCH (${PROJECT_CYPHER_VARIABLE}:Project)
-            WHERE ID(${PROJECT_CYPHER_VARIABLE})=$projectId
+            WHERE ID(${PROJECT_CYPHER_VARIABLE})=${projectId}
             RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
         this.dataReaderAndWriter.read(
             successCallback,
             errorCallback,
-            getProjectQuery,
-            { projectId: projectIdParam });
+            getProjectQuery);
     }
 
     public createEntity(
@@ -64,7 +63,7 @@ export class Neo4jProjectsDataProvider implements CRUDDataProvider<Models.Projec
         project: Models.Project): void {
 
         let createProjectQuery =
-            `MATCH (lastConnectedProject:Project)
+            `OPTIONAL MATCH (lastConnectedProject:Project)
             WHERE NOT (lastConnectedProject)-[:NEXT]->(:Project)
             WITH lastConnectedProject
             CREATE (${PROJECT_CYPHER_VARIABLE}:Project $projectProperties),
@@ -101,27 +100,22 @@ export class Neo4jProjectsDataProvider implements CRUDDataProvider<Models.Projec
     public updateEntity(
         successCallback: (result: Models.Project[]) => void,
         errorCallback: (result: Error) => void,
-        projectIdParam: number,
+        projectId: number,
         project: Models.Project): void {
 
         let updateProjectQuery =
             `MATCH (${PROJECT_CYPHER_VARIABLE}:Project)
-            WHERE ID(${PROJECT_CYPHER_VARIABLE})=$projectId
+            WHERE ID(${PROJECT_CYPHER_VARIABLE})=${projectId}
             WITH ${PROJECT_CYPHER_VARIABLE}
             SET ${PROJECT_CYPHER_VARIABLE}=$projectProperties
             RETURN ${PROJECT_CYPHER_VARIABLE}`;
 
         delete project.id;
-        let updateProjectQueryProperties = {
-            projectProperties: project,
-            projectId: projectIdParam
-        };
-
         this.dataReaderAndWriter.write(
             successCallback,
             errorCallback,
             updateProjectQuery,
-            updateProjectQueryProperties);
+            { projectProperties: project });
     }
 
     deleteEntity(
@@ -131,8 +125,8 @@ export class Neo4jProjectsDataProvider implements CRUDDataProvider<Models.Projec
 
         new DefaultDeleteSubtreeOfNodesDataProvider(this.driver, Models.Project)
             .deleteEntity(
-                successCallback,
-                errorCallback,
-                projectIdParam);
+            successCallback,
+            errorCallback,
+            projectIdParam);
     }
 }
